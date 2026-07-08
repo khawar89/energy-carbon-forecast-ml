@@ -82,6 +82,10 @@ The intended story is:
 
 Do not frame the result as a decision-grade national forecast. It is a statistical extrapolation portfolio project using historical public data.
 
+## Data storytelling (agreed 8 Jul 2026)
+
+Khawar's stated professional identity for this project is data scientist, and he finds the framing layer of the work as compelling as the modeling: the same data supports opposite stories depending on how the question is posed (China leads totals; Qatar, where he lives and works, leads per capita at ~40 t/person). Figures should surface this kind of denominator-aware, question-framing insight, not just describe the data. Conventions: every figure states one modeling consequence in its markdown cell; figures are saved to `results/figures/` so README claims tie to saved artifacts; counterfactuals (e.g. "world at Qatar's rate would be ~9x current") are always labeled as illustrations, never scenarios. Public narrative anchor: he anchors sanity checks on the country he lives in, which happens to be the world's most carbon-intensive per person. LinkedIn profile for posts about this project: https://www.linkedin.com/in/khawar-naeem-203a6524/
+
 ## Working division
 
 Codex handles engineering, debugging, execution, tests, and reproducibility. Claude supports first-principles teaching, leakage review, analytical framing, and prose review. Khawar makes and understands the modeling decisions.

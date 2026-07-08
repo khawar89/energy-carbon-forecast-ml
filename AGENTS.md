@@ -66,6 +66,15 @@ Do not start these until the one-year model reproduces from a clean run:
 - Prefer small, readable functions over a long notebook-only pipeline.
 - Do not tune XGBoost extensively. Generalization through time matters more than validation-window optimization.
 
+## Figure rules
+
+- Khawar is a data scientist and treats framing as part of the analysis: the same data can support opposite stories depending on the denominator (China leads totals; Qatar leads per capita). Figures should surface a framing insight where one exists, not only describe the data.
+- Every figure's markdown cell states one modeling consequence.
+- Save every figure to `results/figures/` as a PNG; README claims must cite saved figures, not notebook-only output.
+- Label counterfactuals as illustrations. Never present them as scenarios or projections.
+- The public repo is https://github.com/khawar89/energy-carbon-forecast-ml; work ships session by session, so figures must render correctly in executed notebooks on GitHub.
+- National flag assets for highlight annotations live in `assets/flags/` (flagcdn PNGs).
+
 ## Verification gates
 
 Before accepting a result, verify:
