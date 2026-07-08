@@ -163,6 +163,10 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 - Built the approved Session 1 report: `reports/Session1_Report_EmissionTrajectory_KhawarNaeem.docx` and `.pdf`, Book Antiqua, 10 sections, all 8 figures, emissions and energy feature tables, check-question record. Local only (gitignored).
 - Session 1 fully closed. Next exact action: Session 2, `src/build_features.py` plus `notebooks/02_build_features_walkthrough.ipynb`, verifying Qatar by hand.
 
+## Skills born in this project
+
+Reusable skills live in `1_CV-khawar/0_Skills_Library_/` per the standing convention (never create or update skills inside projects). Born here so far, both in `4_Communication/`: `session-report-builder` (from the Session 1 report build) and `data-storytelling-figures` (from figures 1-8). A `panel-data-leakage-review` skill is planned after Session 2 exercises the AGENTS.md checklist for real. When this project teaches one of these skills something new, update the library copy, re-zip into `_installable/`, and log it in the library registry.
+
 ## Approved plan: Session 1 report (approved by Khawar 8 Jul 2026, evening; BUILT same evening)
 
 STATUS: COMPLETE. Both `reports/Session1_Report_EmissionTrajectory_KhawarNaeem.docx` and `.pdf` built 8 Jul (PDF exported via Word automation). All 8 figures embedded, all 10 sections present. Local only, gitignored.
