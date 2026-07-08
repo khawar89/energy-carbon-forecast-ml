@@ -26,7 +26,7 @@ External affiliation must always be written as:
 | Ridge/tree models | Not started |
 | XGBoost | Not started |
 | Error analysis | Not started |
-| Public GitHub repository | Not created |
+| Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml (Session 1 pushed) |
 
 ## Current next action
 
@@ -34,7 +34,7 @@ Session 1 is complete. Next:
 
 1. Decide the 2024 test-year question left open in the frozen problem statement (2024 may be a partially final OWID release year) before Session 2 starts.
 2. Session 2: build the modeling table in `src/build_features.py` (target shift, lags, rolls, eligibility filter, now including `cement_co2` and `flaring_co2` in wave 1), verifying Qatar by hand against the values in `notebooks/01_framing_eda_check_questions.md`.
-3. Create the public GitHub repository (name to be confirmed with Khawar) and push Session 1 work.
+3. Public GitHub repository created and Session 1 pushed: https://github.com/khawar89/energy-carbon-forecast-ml. Push again at the end of each future session.
 4. Add a visualization/story layer (distributions, outliers, scale concentration, persistence check) as its own notebook or folder, planned for the end of the project, to support the public portfolio version.
 
 Do not train XGBoost until Session 5.
