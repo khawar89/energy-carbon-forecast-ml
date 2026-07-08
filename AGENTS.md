@@ -88,6 +88,10 @@ Before accepting a result, verify:
 7. A clean run reproduces the reported table.
 8. README claims match saved results.
 
+## Local reports
+
+`reports/` is gitignored and stays out of the public repo: it holds Khawar's personal session reports (Book Antiqua docx/pdf learning records), not portfolio content. The approved Session 1 report plan is in `CLAUDE.md` under "Approved plan: Session 1 report"; if a build is interrupted, resume from that plan.
+
 ## Data safety
 
 - `data/raw/owid-co2-data.csv` is downloaded locally and ignored by Git.

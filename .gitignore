@@ -7,4 +7,5 @@ data/raw/owid-co2-data.csv
 data/processed/
 models/
 .claude/
+reports/
 

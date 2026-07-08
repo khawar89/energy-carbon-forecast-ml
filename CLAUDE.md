@@ -156,6 +156,23 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 - Khawar proposed adding visualization to Session 1 and expanding scope to energy prediction. Resolved: visual EDA built now (`notebooks/01b_visual_eda.ipynb`, six figures in `results/figures/`); energy columns adopted as feature candidates (7-8% missing); energy as a second prediction target deferred as a gated extension per the sprint cut rules.
 - Next exact action: Session 2, `src/build_features.py` plus `notebooks/02_build_features_walkthrough.ipynb`.
 
+### 8 July 2026, night: figures 7-8, LinkedIn post, session report (with Claude)
+
+- Beautified figure 7 (flags, styled diagonals, insight box) and built figure 8, the ranking reversal: top-10 totals beside top-10 per capita, only Saudi Arabia and the US on both lists. Flags for 19 countries committed to `assets/flags/`.
+- Khawar published the LinkedIn post with figure 8; Claude prepared answers to four anticipated challenges (fairness framing, cumulative, per-GDP, production-vs-consumption for Qatar's LNG), recorded in the session report section 8.
+- Built the approved Session 1 report: `reports/Session1_Report_EmissionTrajectory_KhawarNaeem.docx` and `.pdf`, Book Antiqua, 10 sections, all 8 figures, emissions and energy feature tables, check-question record. Local only (gitignored).
+- Session 1 fully closed. Next exact action: Session 2, `src/build_features.py` plus `notebooks/02_build_features_walkthrough.ipynb`, verifying Qatar by hand.
+
+## Approved plan: Session 1 report (approved by Khawar 8 Jul 2026, evening; BUILT same evening)
+
+STATUS: COMPLETE. Both `reports/Session1_Report_EmissionTrajectory_KhawarNaeem.docx` and `.pdf` built 8 Jul (PDF exported via Word automation). All 8 figures embedded, all 10 sections present. Local only, gitignored.
+
+Deliverable: `reports/Session1_Report_EmissionTrajectory_KhawarNaeem.docx` (+ .pdf if a converter is available). LOCAL ONLY: `reports/` is gitignored; this is a personal learning record, not portfolio content. Book Antiqua 11pt, justified, US English, no em-dashes, References section with full URLs.
+
+Ten sections: (1) project overview with repo link and honest-scope statement; (2) data foundation (OWID provenance, 50,411 rows, 79 cols, 1750-2024, what `co2` measures); (3) entity filtering and all exclusions (Kosovo, Ryukyu, Kuwaiti Oil Fires, Monaco/San Marino/Vatican, Antarctica, Christmas Island); (4) emissions analysis findings with figures (skew 172 vs 10.5, top-5 62%, persistence 4.40%, Qatar anchor table 2015-2024); (5) emissions feature columns table with % missing and wave assignment; (6) energy section (five columns, missingness, 1965+ coverage, coupling finding, feature-candidates-now / target-later decision); (7) frozen problem statement including the 2024 provisional-year decision; (8) framing insight (figs 7-8, denominator reversal, mapping to percentage and size-tier errors, four anticipated challenges including production-vs-consumption for Qatar); (9) the five check questions with Khawar's original answers, corrections, and final answers; (10) decisions log and Session 2 next steps, then References. All 8 figures embedded with captions stating modeling consequences.
+
+Build: python-docx script; PDF via LibreOffice if installed, otherwise deliver docx and flag manual export. If a session is interrupted mid-build, resume from this plan; source content lives in this file's session log, `notebooks/01_framing_eda_check_questions.md`, `data/README.md`, and `results/figures/`.
+
 ## References
 
 OWID CO2 data repository: https://github.com/owid/co2-data
