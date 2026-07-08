@@ -29,7 +29,9 @@ Separately, of the 218 ISO-coded countries, three have an ISO code but zero non-
 
 Wave 1 (near-complete, drop missing rows, no imputation): `co2` and its lags/rolls, `population`, `co2_per_capita`, `share_global_co2`, **plus `cement_co2` and `flaring_co2`** (4.8% and 8.1% missing 1990+, close enough to the Wave-1 threshold that row-dropping the missing fraction is cheap, and both carry industrial-process signal distinct from combustion `co2`).
 
-Wave 2 (29-47% missing, needs explicit missing-data handling — imputation, drop, or a missingness-indicator feature, to be decided when this wave is built): `coal_co2`, `gas_co2`, `gdp`, `consumption_co2`.
+Wave 2 (29-47% missing, needs explicit missing-data handling — imputation, drop, or a missingness-indicator feature, to be decided when this wave is built): `coal_co2`, `gas_co2`, `gdp`, `consumption_co2`, `energy_per_gdp` (29.8% missing and its series ends in 2022).
+
+Energy feature candidates (checked 8 Jul 2026): `primary_energy_consumption` (7.1% missing 1990+, 205 countries, through 2024), `energy_per_capita` (7.6%), `co2_per_unit_energy` (7.8%). All three sit in the same missingness band as cement/flaring and are candidates for early inclusion; their series start in 1965, later than the co2 series, which shortens usable history for lag features and must be accounted for when they are added. Predicting energy consumption as a second target is a gated extension after the one-year CO2 model ships (the pipeline is target-agnostic), not part of the current scope.
 
 ## References
 

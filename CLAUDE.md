@@ -55,6 +55,7 @@ Do not train XGBoost until Session 5.
 - Error reporting is scale-aware: overall MAE/RMSE plus median errors, percentage errors, and emitter-size tiers (8 Jul).
 - First-wave features use near-complete columns (co2 lags/rolls, population, co2_per_capita, share_global_co2, cement_co2, flaring_co2); fuel-mix (coal, gas) and GDP/consumption_co2 features are a second wave with explicit missing-data handling (8 Jul; cement/flaring added to wave 1 same day after confirming 4.8%/8.1% missing, see `data/README.md`).
 - 2024 targets are excluded from the headline test set (test = predicting 2019-2023) because the newest OWID release year is provisional and subject to revision; 2024 predictions are reported separately in a clearly labeled provisional appendix table. Features from 2023 and earlier are settled, so only the target side is affected (8 Jul).
+- Energy columns (`primary_energy_consumption`, `energy_per_capita`, `co2_per_unit_energy`; 7-8% missing 1990+) are feature candidates for the CO2 model; `energy_per_gdp` goes to wave 2. Predicting energy as a second target is a gated extension after the one-year CO2 model ships, not current scope (8 Jul).
 
 ## File map
 
@@ -62,7 +63,9 @@ Do not train XGBoost until Session 5.
 - `CLAUDE.md`: authoritative state, decisions, and restart log.
 - `ML_QuickSprint_Execution_Plan.md`: active seven-session plan (scope, gates, verification).
 - `ML_Learning_Plan_KhawarNaeem.md`: learning-depth layer; plan amendments, per-session concepts and check questions, gradient-boosting learning path. Wins on schedule and teaching.
-- `notebooks/01_framing_eda.ipynb`: Session 1 teaching notebook (drafted 8 Jul).
+- `notebooks/01_framing_eda.ipynb`: Session 1 teaching notebook (run and completed 8 Jul).
+- `notebooks/01_framing_eda_check_questions.md`: Session 1 check-question answers with corrections.
+- `notebooks/01b_visual_eda.ipynb`: Session 1b visual EDA; six executed figures saved to `results/figures/` (skew, concentration, persistence, missingness waves, energy-CO2 coupling, Qatar anchor).
 - `MLProject_Guide_KhawarNaeem.md`: earlier broad ten-day plan, retained for history.
 - `.gitignore`: excludes raw data, model artifacts, caches, and local environments.
 - `data/README.md`: data provenance and download locations.
@@ -141,6 +144,13 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 - Session 1 marked complete in the status table.
 - Agreed with Khawar: this project will ship as a public GitHub repository, built up section by section (each session's work pushed as it completes), with an added data-visualization layer (distributions, outliers, scale concentration, persistence check) planned for the end of the project. Repository name and creation still pending Khawar's confirmation.
 - Next exact action: decide the 2024 test-year question, choose and create the public repo, then start Session 2 (`src/build_features.py`).
+
+### 8 July 2026, evening: repo shipped, 2024 decided, visual EDA added (with Claude)
+
+- Public repository created and pushed: https://github.com/khawar89/energy-carbon-forecast-ml (name chosen by Khawar with Claude's casing cleanup; description: one-year-ahead country CO2 forecasting with honest baseline comparisons).
+- 2024 test-year question decided (option 3): headline test = 2019-2023 targets; 2024 in a labeled provisional appendix. Frozen problem statement in the notebook updated to match.
+- Khawar proposed adding visualization to Session 1 and expanding scope to energy prediction. Resolved: visual EDA built now (`notebooks/01b_visual_eda.ipynb`, six figures in `results/figures/`); energy columns adopted as feature candidates (7-8% missing); energy as a second prediction target deferred as a gated extension per the sprint cut rules.
+- Next exact action: Session 2, `src/build_features.py` plus `notebooks/02_build_features_walkthrough.ipynb`.
 
 ## References
 
