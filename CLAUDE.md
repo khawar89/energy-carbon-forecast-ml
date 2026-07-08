@@ -32,8 +32,8 @@ External affiliation must always be written as:
 
 Session 1 is complete. Next:
 
-1. Decide the 2024 test-year question left open in the frozen problem statement (2024 may be a partially final OWID release year) before Session 2 starts.
-2. Session 2: build the modeling table in `src/build_features.py` (target shift, lags, rolls, eligibility filter, now including `cement_co2` and `flaring_co2` in wave 1), verifying Qatar by hand against the values in `notebooks/01_framing_eda_check_questions.md`.
+1. 2024 test-year question DECIDED 8 Jul: headline test = 2019-2023 targets only; 2024 predictions go in a separate provisional appendix table (see authoritative decisions).
+2. Session 2: build the modeling table in `src/build_features.py` (target shift, lags, rolls, eligibility filter, now including `cement_co2` and `flaring_co2` in wave 1), verifying Qatar by hand against the values in `notebooks/01_framing_eda_check_questions.md`. Alongside it, `notebooks/02_build_features_walkthrough.ipynb` as the teaching layer that imports and demonstrates the functions.
 3. Public GitHub repository created and Session 1 pushed: https://github.com/khawar89/energy-carbon-forecast-ml. Push again at the end of each future session.
 4. Add a visualization/story layer (distributions, outliers, scale concentration, persistence check) as its own notebook or folder, planned for the end of the project, to support the public portfolio version.
 
@@ -54,6 +54,7 @@ Do not train XGBoost until Session 5.
 - Models may predict the year-over-year delta internally; all models are scored on the reconstructed level, on identical rows (8 Jul).
 - Error reporting is scale-aware: overall MAE/RMSE plus median errors, percentage errors, and emitter-size tiers (8 Jul).
 - First-wave features use near-complete columns (co2 lags/rolls, population, co2_per_capita, share_global_co2, cement_co2, flaring_co2); fuel-mix (coal, gas) and GDP/consumption_co2 features are a second wave with explicit missing-data handling (8 Jul; cement/flaring added to wave 1 same day after confirming 4.8%/8.1% missing, see `data/README.md`).
+- 2024 targets are excluded from the headline test set (test = predicting 2019-2023) because the newest OWID release year is provisional and subject to revision; 2024 predictions are reported separately in a clearly labeled provisional appendix table. Features from 2023 and earlier are settled, so only the target side is affected (8 Jul).
 
 ## File map
 
@@ -107,6 +108,7 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 | 8 Jul 2026 | Scale-aware error reporting | Top-5 emitters are ~62% of 2023 global CO2; overall MAE alone is dominated by giants. |
 | 8 Jul 2026 | Two-wave feature strategy | coal_co2 ~38%, gas_co2 ~44%, gdp ~29%, consumption_co2 ~47% missing in post-1990 country rows. |
 | 8 Jul 2026 | Teaching mode: assistant implements, Khawar must pass check questions | Maximize learning depth at his 2-4 hr/day cadence. |
+| 8 Jul 2026 | 2024 targets out of headline test, reported in a provisional appendix | Newest OWID release year is provisional and revisable; scoring against it would tie README claims to numbers OWID may replace. Features (2023 and earlier) are settled, so a labeled side table is safe. |
 
 ## Session log
 
