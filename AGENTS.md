@@ -1,6 +1,6 @@
 # AGENTS.md — Emission-Trajectory ML Project
 
-> Tool-neutral instructions for Codex and other coding agents. This file outranks model recall about this project. Read it first, then `CLAUDE.md`, then `ML_QuickSprint_Execution_Plan.md`. Last updated: 8 July 2026.
+> Tool-neutral instructions for Codex and other coding agents. This file outranks model recall about this project. Read it first, then `CLAUDE.md`, then `docs/ML_QuickSprint_Execution_Plan.md`. Last updated: 13 July 2026.
 
 ## Current objective
 
@@ -18,12 +18,21 @@ The SQL Global Carbon Inventory is paused, not canceled. This ML project reads t
 
 1. `AGENTS.md`
 2. `CLAUDE.md`
-3. `ML_QuickSprint_Execution_Plan.md`, the authoritative execution plan for scope, gates, and verification
-4. `ML_Learning_Plan_KhawarNaeem.md`, the learning-depth layer; it wins on schedule, teaching mode, and the four 8 July amendments (skill score, delta parameterization, scale-aware metrics, two-wave features)
+3. `docs/ML_QuickSprint_Execution_Plan.md`, the authoritative execution plan for scope, gates, and verification
+4. `docs/ML_Learning_Plan_KhawarNaeem.md`, the learning-depth layer; it wins on schedule, teaching mode, and the four 8 July amendments (skill score, delta parameterization, scale-aware metrics, two-wave features)
 5. `data/README.md` when handling data
 6. Only the notebook or source file required for the current session
 
-`MLProject_Guide_KhawarNaeem.md` is the earlier, broader plan. Where it conflicts with the quick-sprint plan, the quick-sprint plan wins.
+`docs/MLProject_Guide_KhawarNaeem.md` is the earlier, broader plan. Where it conflicts with the quick-sprint plan, the quick-sprint plan wins.
+
+## Folder layout and naming conventions
+
+- Root: `README.md`, `AGENTS.md`, `CLAUDE.md`, `.gitignore` only. Planning documents live in `docs/`.
+- `notebooks/`: numbered by pipeline stage, one stage per notebook, letters for supplements: `01_framing_eda`, `01b_visual_eda`, `02_build_features_walkthrough`; reserved next: `03_baselines`, `04_models_ridge_tree`, `05_xgboost`, `06_error_analysis`. Each session's check-question record sits beside its notebook as `NN_..._check_questions.md`.
+- `src/`: reusable pipeline code (`build_features.py`, later `train.py`, `evaluate.py`).
+- `results/`: saved metrics and `figures/`. `assets/`: static images (flags). `data/`: README plus `raw/` (gitignored CSV) and `processed/` (gitignored outputs).
+- `reports/`: personal session reports, gitignored, local only.
+- `learning_notes/` and `linkedin_drafts/`: gitignored, local only. The first holds the project mental model (read it early in a new session); the second holds post angles and the standing rules for public posts. Neither may ever be committed or quoted verbatim in public files.
 
 ## Locked decisions
 
@@ -55,10 +64,11 @@ Do not start these until the one-year model reproduces from a clean run:
 
 - Khawar owns the target, split, feature timing, baseline choice, model-selection rationale, and interpretation.
 - Codex may scaffold, implement, debug, test, and refactor when asked.
-- Teaching mode (8 Jul): whenever an agent implements a step, it must also explain the logic, the data structures used, and why the approach is efficient. A session closes only after Khawar answers that session's check questions in `ML_Learning_Plan_KhawarNaeem.md`.
+- Teaching mode (8 Jul): whenever an agent implements a step, it must also explain the logic, the data structures used, and why the approach is efficient. A session closes only after Khawar answers that session's check questions in `docs/ML_Learning_Plan_KhawarNaeem.md`.
 - Before writing model code, state the target year, feature year, and split boundaries.
 - Group all lags and rolling calculations by country.
 - Prevent leakage. No feature for year `t` may use data after `t`.
+- Compute growth/percentage-change features with `pct_change(fill_method=None)`; never let a real data gap forward-fill into a fabricated growth rate (13 Jul 2026 finding: pandas' own default for this parameter has changed across versions, so state it explicitly rather than depend on whichever default a given installed pandas version ships).
 - Fit preprocessing only on training years.
 - Compare models on the same eligible rows.
 - Set random seeds where applicable.

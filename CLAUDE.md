@@ -1,6 +1,6 @@
 # CLAUDE.md — Emission-Trajectory ML Project
 
-> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 8 July 2026.
+> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 13 July 2026.
 
 ## Identity and purpose
 
@@ -21,23 +21,36 @@ External affiliation must always be written as:
 | OWID codebook | Downloaded locally |
 | Repository scaffold | Partial |
 | Session 1 framing and EDA | Complete 8 Jul; notebook run end to end, all 5 check questions answered (see `notebooks/01_framing_eda_check_questions.md`) |
-| Modeling table | Not started |
-| Baselines | Not started |
-| Ridge/tree models | Not started |
+| Modeling table | Built and verified 10 Jul (`src/build_features.py`); Session 2 CLOSED 13 Jul, five check questions answered (`notebooks/02_build_features_walkthrough_check_questions.md`) |
+| Baselines | Scaffolded 10 Jul (`notebooks/03_baselines.ipynb`, unexecuted, + `src/evaluate.py` tested); ready for Khawar to run now that Session 2 is closed |
+| Ridge/tree models | Scaffolded 10 Jul (`notebooks/04_models_ridge_tree.ipynb`, unexecuted, smoke-tested); runs after Session 3 |
 | XGBoost | Not started |
 | Error analysis | Not started |
 | Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml (Session 1 pushed) |
 
-## Current next action
+## Current next action (handoff state, updated 13 Jul 2026)
 
-Session 1 is complete. Next:
+Where things stand: Session 1 complete and pushed. **Session 2 CLOSED 13 Jul** — worked cell by cell with Claude (real code executed live against the actual raw CSV and `data/processed/modeling_table.csv`, since Jupyter is not installed on this machine; every notebook claim verified against genuine output, not toy claims), all five check questions answered and recorded in `notebooks/02_build_features_walkthrough_check_questions.md`. Sessions 3 and 4 are SCAFFOLDED (unexecuted notebooks, smoke-tested code, results deliberately withheld so they emerge for Khawar at run time). `src/evaluate.py` is finished and self-tested; `requirements.txt` exists; repo organized (plans in `docs/`, conventions in AGENTS.md). Environment note: `pandas`/`numpy` are installed on this machine; `scikit-learn`/`xgboost`/`jupyter` are not yet installed and will be needed before Session 3/4 can run (`pip3 install -r requirements.txt`).
 
-1. 2024 test-year question DECIDED 8 Jul: headline test = 2019-2023 targets only; 2024 predictions go in a separate provisional appendix table (see authoritative decisions).
-2. Session 2: build the modeling table in `src/build_features.py` (target shift, lags, rolls, eligibility filter, now including `cement_co2` and `flaring_co2` in wave 1), verifying Qatar by hand against the values in `notebooks/01_framing_eda_check_questions.md`. Alongside it, `notebooks/02_build_features_walkthrough.ipynb` as the teaching layer that imports and demonstrates the functions.
-3. Public GitHub repository created and Session 1 pushed: https://github.com/khawar89/energy-carbon-forecast-ml. Push again at the end of each future session.
-4. Add a visualization/story layer (distributions, outliers, scale concentration, persistence check) as its own notebook or folder, planned for the end of the project, to support the public portfolio version.
+Khawar's queue, in strict order (do not skip ahead of him):
 
-Do not train XGBoost until Session 5.
+1. ~~Session 2 study~~ DONE 13 Jul.
+2. Execute `notebooks/03_baselines.ipynb`: fill the pre-registration section FIRST, then run, reconcile, answer the three check questions, commit results.
+3. Execute `notebooks/04_models_ridge_tree.ipynb`: pre-registration first, freeze the two alpha choices himself (the `...` cells), run, reconcile, answer the four check questions, commit.
+4. Only THEN scaffold and run Session 5 per the approved spec below.
+
+Standing agent behavior: teaching mode per AGENTS.md (implement AND explain; sessions close on check answers). Never reveal the withheld Session 3/4 numeric results before Khawar executes the notebooks with his pre-registrations written. Commit and push at the end of each session. Read `learning_notes/BigPicture_MentalModel_KhawarNaeem.md` early for the project's reasoning and named traps.
+
+## Approved spec: Session 5 scaffold (build only after Sessions 3-4 results exist)
+
+Deliberately NOT pre-built: its choices must react to the Sessions 3-4 validation table. When Khawar has committed Session 4 results, build `notebooks/05_xgboost.ipynb` plus `src/train.py` to this spec:
+
+- Same table, same features, same referee (`evaluate.comparison_table`), same rows as all prior models.
+- `XGBRegressor`, both parameterizations (level and delta) unless Session 4 showed one clearly dominant; small defensible grid only (max_depth, n_estimators, learning_rate, optionally subsample/colsample_bytree), selected on validation, with early stopping against validation years. Seeds set. No wide search.
+- Freeze the chosen configuration in writing (a Khawar decision, like the alpha freezes), then run the SINGLE test evaluation: all six-plus models scored once on test targets 2019-2023, same-rows rule. The 2024 provisional appendix is a separate labeled table.
+- `src/train.py` = the clean-run script reproducing the final metrics end to end (build features if missing, fit frozen configs, write `results/model_comparison.csv` with val and test rows).
+- Pre-registration: Khawar ranks all models on test BEFORE the test run; per `linkedin_drafts/`, both the "wins" and "loses" post drafts are written before seeing test results.
+- After the test run, results are frozen: no going back to tune anything on any split. Session 6 interprets; it does not re-fit.
 
 ## Authoritative decisions
 
@@ -61,18 +74,22 @@ Do not train XGBoost until Session 5.
 
 - `AGENTS.md`: behavioral and verification rules for coding agents.
 - `CLAUDE.md`: authoritative state, decisions, and restart log.
-- `ML_QuickSprint_Execution_Plan.md`: active seven-session plan (scope, gates, verification).
-- `ML_Learning_Plan_KhawarNaeem.md`: learning-depth layer; plan amendments, per-session concepts and check questions, gradient-boosting learning path. Wins on schedule and teaching.
+- `docs/ML_QuickSprint_Execution_Plan.md`: active seven-session plan (scope, gates, verification).
+- `docs/ML_Learning_Plan_KhawarNaeem.md`: learning-depth layer; plan amendments, per-session concepts and check questions, gradient-boosting learning path. Wins on schedule and teaching.
+- `docs/MLProject_Guide_KhawarNaeem.md`: earlier broad ten-day plan, retained for history.
 - `notebooks/01_framing_eda.ipynb`: Session 1 teaching notebook (run and completed 8 Jul).
 - `notebooks/01_framing_eda_check_questions.md`: Session 1 check-question answers with corrections.
 - `notebooks/01b_visual_eda.ipynb`: Session 1b visual EDA; six executed figures saved to `results/figures/` (skew, concentration, persistence, missingness waves, energy-CO2 coupling, Qatar anchor).
-- `MLProject_Guide_KhawarNaeem.md`: earlier broad ten-day plan, retained for history.
-- `.gitignore`: excludes raw data, model artifacts, caches, and local environments.
-- `data/README.md`: data provenance and download locations.
-- `data/raw/`: locally downloaded OWID CSV and codebook.
-- `notebooks/`: exploration, baselines, and error analysis.
-- `src/`: reusable feature, training, and evaluation code.
-- `results/`: saved metric tables and reproducible outputs.
+- `notebooks/02_build_features_walkthrough.ipynb`: Session 2 classroom for the feature pipeline.
+- `notebooks/02_build_features_walkthrough_check_questions.md`: Session 2 check-question answers with corrections (closed 13 Jul).
+- `src/build_features.py`: builds and verifies `data/processed/modeling_table.csv` (10 Jul).
+- `.gitignore`: excludes raw data, processed outputs, model artifacts, caches, reports, and local environments.
+- `data/README.md`: data provenance, download locations, and entity exclusions.
+- `data/raw/`: locally downloaded OWID CSV and codebook. `data/processed/`: pipeline outputs, gitignored.
+- Naming conventions for `notebooks/` and folders: see AGENTS.md "Folder layout and naming conventions" (reserved next: 03 baselines, 04 Ridge/tree, 05 XGBoost, 06 error analysis).
+- `results/`: saved metric tables and figures. `reports/`: personal session reports, gitignored.
+- `learning_notes/` (gitignored): `BigPicture_MentalModel_KhawarNaeem.md` is the project's mental model, named traps, and standing facts; ANY NEW AI SESSION should read it right after AGENTS.md and this file to absorb the reasoning, not just the file list. Also holds the pipeline map SVG.
+- `linkedin_drafts/` (gitignored): per-session post angles, standing post rules, and the posted/ record. Read before drafting any public post about this project.
 
 ## Project story for employers
 
@@ -156,12 +173,48 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 - Khawar proposed adding visualization to Session 1 and expanding scope to energy prediction. Resolved: visual EDA built now (`notebooks/01b_visual_eda.ipynb`, six figures in `results/figures/`); energy columns adopted as feature candidates (7-8% missing); energy as a second prediction target deferred as a gated extension per the sprint cut rules.
 - Next exact action: Session 2, `src/build_features.py` plus `notebooks/02_build_features_walkthrough.ipynb`.
 
+### 10 July 2026, Session 2 prepared (with Claude)
+
+- Built and verified `src/build_features.py`: one flat modeling table with target (`target_co2_next`, plus `target_delta`), wave-1 features (co2 lags 1/3/5/10, rolling means 5/10, 5-year slope, co2_per_capita, share_global_co2, population and 5-year growth, cement_co2, flaring_co2), nullable energy candidates (primary_energy_consumption, 1-year growth, energy_per_capita), and splits keyed on target year.
+- Verified against the real data: 7,443 rows, 24 columns, 153 countries, feature years 1870-2023. Splits: train 5,917 / val 612 (exactly 4 per country) / test 762 / provisional_2024 152. Qatar 2023 row confirmed: target 125.812, split provisional_2024. Energy candidates ~24% missing in the final table.
+- Built-in verification: Qatar answer key, 200 random targets and lags re-derived from the raw CSV, duplicate check, split bounds. Script refuses to save on any failure.
+- Two implementation decisions recorded: population >= 1M measured at feature year t, not t+1 (t+1 population unknowable at prediction time; deviation from plan wording); `pct_change(fill_method=None)` so data gaps yield NaN instead of fabricated growth rates. Also: per-country calendar reindex before any shift, because shift is positional, not temporal.
+- Wrote `notebooks/02_build_features_walkthrough.ipynb`: teaching notebook (shift target, positional-vs-temporal trap with toy gap demo, feature families, order of operations, split keying, exclusion accounting) plus five check questions.
+- 65 of 218 countries excluded by eligibility rules; the walkthrough's section 6 produces the accounting for the README data-limitations section.
+- Khawar's Session 2 work: run the walkthrough, run the script, read it top to bottom, answer the five check questions, commit and push.
+- Next exact action after that: Session 3, baselines (`notebooks/02_baselines.ipynb` reading `data/processed/modeling_table.csv`), persistence and linear trend with the skill-score table.
+
+### 10 July 2026, Session 3 scaffolded (with Claude)
+
+- Built `src/evaluate.py`: shared metrics (MAE, RMSE, MedianAE, MdAPE with near-zero exclusion, persistence skill score), `comparison_table` enforcing the same-rows rule, `error_by_country`. Self-test on hand-checkable numbers passes (`python src/evaluate.py` prints OK). Every model in Sessions 3-6 must be scored through this module.
+- Built `notebooks/03_baselines.ipynb` as an UNEXECUTED skeleton: pre-registration section (Khawar commits three predictions before running), persistence and trend cells, comparison table, per-country winner analysis, Qatar check, results/model_comparison.csv writer, reconciliation prompts, three check questions. All code paths smoke-tested against the real modeling table; numeric results deliberately withheld so they emerge first for Khawar.
+- Session ordering agreed 10 Jul: Khawar studies Session 2 (walkthrough + check questions) tonight, THEN runs Session 3. Session 3 is not started until Session 2's check questions are answered.
+- Next exact action: Khawar closes Session 2 (five check answers to Claude), then executes 03_baselines.ipynb top to bottom, filling the pre-registration first.
+
+### 10 July 2026, Session 4 scaffolded (with Claude)
+
+- Built `notebooks/04_models_ridge_tree.ipynb`, unexecuted skeleton: concepts block (Ridge vs OLS with correlated lags, scaling for linear vs tree models, bagging vs boosting, fit-on-train-only preprocessing), four pre-registration predictions, Ridge in level and delta parameterizations (small alpha grid chosen on validation, alpha cells left as `...` for Khawar to freeze), HistGradientBoostingRegressor in both parameterizations (modest fixed settings, no wide search), six-way comparison table via `evaluate.comparison_table` (2 baselines + 4 models, same-rows rule), full rewrite of `results/model_comparison.csv`, reconciliation prompts, four check questions.
+- All six model paths smoke-tested against the real modeling table with sklearn 1.7; results withheld so they emerge for Khawar at run time.
+- Added `requirements.txt` (pandas, numpy, scikit-learn, xgboost, matplotlib, jupyter).
+- Feature set frozen for Session 4: 14 core + 3 nullable energy columns; `year` deliberately excluded (era memorization does not extrapolate).
+- Boundary agreed: Session 5 (XGBoost) is NOT pre-built; its tuning choices must react to Sessions 3-4 validation results.
+- Queue for Khawar, in order: (1) Session 2 study + five check answers, (2) execute 03_baselines with pre-registration, (3) execute 04_models_ridge_tree with pre-registration and alpha freezes. No new scaffolds until this queue clears.
+
 ### 8 July 2026, night: figures 7-8, LinkedIn post, session report (with Claude)
 
 - Beautified figure 7 (flags, styled diagonals, insight box) and built figure 8, the ranking reversal: top-10 totals beside top-10 per capita, only Saudi Arabia and the US on both lists. Flags for 19 countries committed to `assets/flags/`.
 - Khawar published the LinkedIn post with figure 8; Claude prepared answers to four anticipated challenges (fairness framing, cumulative, per-GDP, production-vs-consumption for Qatar's LNG), recorded in the session report section 8.
 - Built the approved Session 1 report: `reports/Session1_Report_EmissionTrajectory_KhawarNaeem.docx` and `.pdf`, Book Antiqua, 10 sections, all 8 figures, emissions and energy feature tables, check-question record. Local only (gitignored).
 - Session 1 fully closed. Next exact action: Session 2, `src/build_features.py` plus `notebooks/02_build_features_walkthrough.ipynb`, verifying Qatar by hand.
+
+### 13 July 2026, Session 2 closed (with Claude)
+
+- Worked `notebooks/02_build_features_walkthrough.ipynb` cell by cell with Claude, in a plain chat session rather than a live Jupyter kernel (Jupyter is not installed on this machine). Every notebook claim was verified with real, live-executed code against the actual raw CSV and `data/processed/modeling_table.csv`, including several checks not in the original notebook: a live rerun of `python3 src/build_features.py` reproducing the exact 10 Jul numbers; a from-scratch reproduction of pandas' old `pct_change(fill_method="pad")` forward-fill behavior (not observable via the installed pandas 3.0.2, whose own default has since changed to `fill_method=None`) to show the fabricated-growth-rate trap concretely; a live demo of the "filter before lagging" self-inflicted-gap bug (order-of-operations cell had no code cell in the original notebook); Qatar's actual 1949-1959 rows showing the `co2_lag10` early-row gap in isolation from unrelated missing-data years; and the real Qatar 2013-2023 split table used to identify the exact three boundary years (2014, 2018, 2023) affected by a feature-year-vs-target-year split mixup.
+- Two documentation fixes made mid-session, both prompted by the `pct_change(fill_method=None)` discussion: added a standing coding rule to `AGENTS.md` (compute growth features with `fill_method=None` explicitly, since pandas' own default for this has drifted across versions) and a tenth named trap to `learning_notes/BigPicture_MentalModel_KhawarNaeem.md` ("fabricated growth across a gap"), since that document's stated purpose is to list every trap a new agent should internalize before coding, and this one was missing despite the underlying decision already being logged elsewhere. Both apply directly to the not-yet-built wave-2 growth features (coal_co2, gas_co2, gdp, consumption_co2).
+- All five check questions answered and recorded in `notebooks/02_build_features_walkthrough_check_questions.md`. Two (Qatar's 2023 target/split; why features precede filtering) were correct and unaided. One (the 5-year rolling-mean expression) needed a specific correction: the original attempt included `shift(-1)`, which is the target's formula (pulls a future value backward), not this feature's; using it here would have reintroduced the exact future-leakage trap the project is built to prevent. Two (the early/final row-drop mechanics; the feature-year-vs-target-year split bias) needed the full mechanism explained rather than being attempted independently.
+- Environment note recorded: `pandas`/`numpy` are installed on this machine and sufficient for Session 2; `scikit-learn`/`xgboost`/`jupyter` are not yet installed and will be needed before Session 3/4 can run.
+- Session 2 marked CLOSED in the status table and handoff-state section.
+- Next exact action: Khawar installs `scikit-learn`/`xgboost`/`jupyter` (`pip3 install -r requirements.txt`) if not already done, then executes `notebooks/03_baselines.ipynb`: fill the pre-registration section first, run, reconcile against `src/evaluate.py`'s comparison table, answer the three check questions, commit results.
 
 ## Skills born in this project
 
