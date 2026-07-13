@@ -1,0 +1,101 @@
+\section{Ensembles and Boosting}
+\label{sec:ensembles}
+
+\subsection{Regression trees}
+
+A regression tree partitions the feature space into disjoint regions
+$R_1,\dots,R_J$ and predicts the mean target value within each region. A
+single split at feature $j$, threshold $s$ is chosen to minimize the total
+sum of squared residuals across the two resulting regions:
+
+\begin{equation}
+\label{eq:tree-split}
+(j^*, s^*) = \arg\min_{j,s}
+\left[
+  \sum_{i:\, x_i \in R_1(j,s)} \left(y_i - \bar y_{R_1}\right)^2
+  +
+  \sum_{i:\, x_i \in R_2(j,s)} \left(y_i - \bar y_{R_2}\right)^2
+\right]
+\end{equation}
+
+Trees require no feature scaling: Equation~\ref{eq:tree-split} depends
+only on the ordering of feature values within a column, not their
+magnitude, unlike the Ridge objective in Equation~\ref{eq:ridge}.
+
+\subsection{Bagging}
+
+Bagging (bootstrap aggregating) reduces variance by averaging many trees,
+each fit to an independent bootstrap resample of the training rows:
+
+\begin{equation}
+\label{eq:bagging}
+\hat f_{\mathrm{bag}}(x) = \frac{1}{B}\sum_{b=1}^{B} \hat f_b(x)
+\end{equation}
+
+where each $\hat f_b$ is a tree fit to bootstrap sample $b$
+\cite{breiman1996bagging}. Random forests extend
+Equation~\ref{eq:bagging} by additionally restricting each split in
+Equation~\ref{eq:tree-split} to a random subset of features, further
+decorrelating the individual trees \cite{breiman2001random}.
+
+\subsection{Gradient boosting}
+
+Where bagging averages independent trees fit in parallel, gradient
+boosting fits trees sequentially, each one correcting the errors of the
+ensemble built so far. The model is an additive expansion
+
+\begin{equation}
+\label{eq:gb-additive}
+F_M(x) = \sum_{m=1}^{M} \gamma_m h_m(x)
+\end{equation}
+
+built greedily: at each stage $m$, tree $h_m$ is fit to the negative
+gradient (pseudo-residual) of the loss function $L$ with respect to the
+current model's predictions,
+
+\begin{equation}
+\label{eq:gb-pseudoresidual}
+r_{i,m} = -\left.
+\frac{\partial L(y_i, F(x_i))}{\partial F(x_i)}
+\right|_{F=F_{m-1}}
+\end{equation}
+
+which for squared-error loss reduces to the ordinary residual
+$y_i - F_{m-1}(x_i)$. This is gradient descent carried out in the space of
+functions rather than parameters \cite{friedman2001greedy}.
+\texttt{HistGradientBoostingRegressor} (scikit-learn), used in this
+project's Session 4, implements
+Equations~\ref{eq:gb-additive}--\ref{eq:gb-pseudoresidual} with
+histogram-binned feature values, which reduces the split-search cost of
+Equation~\ref{eq:tree-split} from scanning every unique value to scanning
+a fixed number of bins, and handles missing feature values natively.
+
+\subsection{XGBoost}
+\label{sec:xgboost}
+
+XGBoost augments gradient boosting with an explicit regularization term
+and a second-order (Newton) approximation of the loss. Its objective at
+boosting round $m$ is
+
+\begin{equation}
+\label{eq:xgb-objective}
+\mathcal{L}^{(m)} =
+\sum_{i=1}^n l\!\left(y_i,\, F_{m-1}(x_i) + h_m(x_i)\right)
++ \Omega(h_m),
+\qquad
+\Omega(h) = \gamma T + \tfrac{1}{2}\lambda \|w\|^2
+\end{equation}
+
+where $T$ is the number of leaves in tree $h_m$ and $w$ its leaf weights.
+Rather than fitting $h_m$ to the first-order pseudo-residual alone
+(Equation~\ref{eq:gb-pseudoresidual}), XGBoost takes a second-order Taylor
+expansion of the loss around $F_{m-1}$, using the per-observation
+gradient $g_i$ and Hessian $h_i$ of $l$, which yields a closed-form
+optimal leaf weight and an explicit split-gain criterion balancing
+improvement against the $\Omega$ penalty in
+Equation~\ref{eq:xgb-objective} \cite{chen2016xgboost}. This project
+treats XGBoost as a comparison model, not the project's goal (see
+\texttt{AGENTS.md}), with a small, defensible hyperparameter grid selected
+on the validation years rather than a wide search. This section will be
+extended with the full second-order derivation and the exact split-gain
+formula when Session 5 (XGBoost) is built.

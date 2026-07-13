@@ -1,0 +1,62 @@
+\section{Ridge Regression}
+\label{sec:ridge}
+
+\subsection{Ordinary least squares}
+
+Given a design matrix $X \in \mathbb{R}^{n\times p}$ (rows are
+(country, year) observations, columns are features) and target vector
+$y \in \mathbb{R}^n$, ordinary least squares (OLS) solves
+
+\begin{equation}
+\label{eq:ols}
+\hat\beta_{\mathrm{OLS}} = \arg\min_{\beta} \left\| y - X\beta \right\|_2^2
+\end{equation}
+
+with closed-form solution
+$\hat\beta_{\mathrm{OLS}} = (X^\top X)^{-1}X^\top y$, provided
+$X^\top X$ is invertible.
+
+\subsection{The problem with correlated features}
+
+This project's feature set includes multiple lags and rolling statistics
+of the same underlying series (\texttt{co2\_lag1}, \texttt{co2\_lag3},
+\texttt{co2\_lag5}, \texttt{co2\_lag10}, \texttt{co2\_roll5\_mean},
+\texttt{co2\_roll10\_mean}), which are, by construction, highly correlated
+with one another. When columns of $X$ are strongly correlated,
+$X^\top X$ is close to singular, and $\hat\beta_{\mathrm{OLS}}$ becomes
+highly sensitive to small changes in the data: its variance inflates even
+though it remains unbiased.
+
+\subsection{Ridge regression}
+
+Ridge regression adds an $\ell_2$ penalty on the coefficients:
+
+\begin{equation}
+\label{eq:ridge}
+\hat\beta_{\mathrm{ridge}} = \arg\min_{\beta}
+\left\| y - X\beta \right\|_2^2 + \alpha \left\| \beta \right\|_2^2,
+\qquad \alpha \ge 0
+\end{equation}
+
+with closed-form solution
+
+\begin{equation}
+\label{eq:ridge-closed-form}
+\hat\beta_{\mathrm{ridge}} = \left(X^\top X + \alpha I\right)^{-1} X^\top y
+\end{equation}
+
+Adding $\alpha I$ to $X^\top X$ in Equation~\ref{eq:ridge-closed-form}
+guarantees invertibility for any $\alpha>0$ and shrinks the coefficients of
+correlated features toward one another and toward zero. This trades a
+small amount of bias for a reduction in variance \cite{hoerl1970ridge},
+and is the reason this project prefers Ridge over OLS given its
+correlated lag and rolling-statistic feature set.
+
+\subsection{Preprocessing}
+
+Because the ridge penalty in Equation~\ref{eq:ridge} is applied uniformly
+to all coefficients, features must be on comparable scales before
+fitting; unlike tree-based models (Section~\ref{sec:ensembles}), Ridge
+requires feature scaling, and that scaler must be fit on training rows
+only, to avoid leaking validation or test distributional information into
+its parameters.

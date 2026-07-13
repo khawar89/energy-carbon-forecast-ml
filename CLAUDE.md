@@ -91,6 +91,7 @@ Deliberately NOT pre-built: its choices must react to the Sessions 3-4 validatio
 - `results/`: saved metric tables and figures. `reports/`: personal session reports, gitignored.
 - `learning_notes/` (gitignored): `BigPicture_MentalModel_KhawarNaeem.md` is the project's mental model, named traps, and standing facts; ANY NEW AI SESSION should read it right after AGENTS.md and this file to absorb the reasoning, not just the file list. Also holds the pipeline map SVG.
 - `linkedin_drafts/` (gitignored): per-session post angles, standing post rules, and the posted/ record. Read before drafting any public post about this project.
+- `math/` (committed, tracked in git): standalone LaTeX document formalizing the project's mathematical foundations (evaluation metrics, baselines, Ridge regularization, ensembles/boosting), numbered equations, verified academic references in `references.bib`. Built 13 Jul 2026 in parallel with the coding sessions (not a substitute for them); grows one new `sections/0N_*.tex` file per relevant future session. Compile with `tectonic main.tex` (from inside `math/`) to produce `main.pdf`, which is committed so it renders on GitHub without a LaTeX install. See `AGENTS.md`'s folder-layout entry for the full convention.
 
 ## Project story for employers
 
@@ -229,6 +230,44 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 - Environment note: Khawar has a working local Jupyter/Anaconda install (confirmed live via a real traceback during this session), separate from this machine's system Python used for teaching.
 - Session 3 marked CLOSED in the status table and handoff-state section.
 - Next exact action: install `scikit-learn` if not already available in whichever environment runs Session 4, then execute `notebooks/04_models_ridge_tree.ipynb`: pre-registration first, freeze the two Ridge alpha choices himself, run, reconcile, answer the four check questions, commit.
+
+### 13 July 2026, math/ foundations document built (with Claude)
+
+A new, standalone deliverable, in parallel with (not a replacement for) the numbered notebook
+sessions: `math/main.tex` + `math/sections/{00_notation,01_evaluation_metrics,02_baselines,
+03_ridge_regularization,04_ensembles_boosting}.tex` + `math/references.bib`, compiled to
+`math/main.pdf` (committed, tracked in git).
+
+- Formalizes, with numbered equations, exactly what the pipeline has built or is imminently
+  building: MAE/RMSE/MedianAE/MdAPE/skill score (matching `src/evaluate.py` exactly), the
+  persistence and linear-trend baselines, OLS vs Ridge and why correlated lag/rolling features
+  favor Ridge, and regression trees through bagging/random forests/gradient boosting/XGBoost
+  (Session 5's XGBoost math flagged for a fuller derivation once that session is built).
+- Every reference independently verified by live web search before being entered in
+  `references.bib`, not recalled from memory: Hyndman & Koehler (2006, IJF, forecast-accuracy
+  metrics), Hyndman & Athanasopoulos (2021, free OTexts textbook, naive/drift methods), Hoerl &
+  Kennard (1970, Technometrics, ridge regression), Breiman (1996 bagging, 2001 random forests,
+  both Machine Learning), Friedman (2001, Annals of Statistics, gradient boosting), Chen &
+  Guestrin (2016, KDD, XGBoost, free arXiv:1603.02754 version).
+- Toolchain: `tectonic` installed via Homebrew (lightweight, ~100-150MB, self-contained; no
+  LaTeX was previously installed on this machine). Two pre-existing, unrelated stale Homebrew
+  `opt` symlinks (`freetype`, `fontconfig` - real leftover directories instead of proper
+  symlinks, blocking `brew link`) were found and fixed during the install; not caused by this
+  session's work.
+- Compiled and verified: 7 pages, table of contents matches all 5 sections, 15 equations number
+  sequentially, all 7 in-text citations resolve correctly against the bibliography (no undefined
+  references). Bibliography via classic BibTeX (`\bibliographystyle{plain}`), which `tectonic`
+  handles automatically in one invocation (no separate `biber` install needed).
+- Also installed `scikit-learn`/`xgboost`/`jupyter` into this machine's system Python 3.13 (via
+  `pip3 install -r requirements.txt`), separately fixing an unrelated xgboost/macOS issue
+  (`libomp` missing; fixed with `brew install libomp`). This is additive only; Khawar's existing
+  working Anaconda Python 3.12 environment (used throughout Session 3) is untouched.
+- `AGENTS.md`'s folder-layout section and this file's File map both updated to register `math/`.
+  `.gitignore` updated for LaTeX build artifacts (`main.pdf` itself stays tracked).
+- Next exact action for this track: add `sections/05_xgboost.tex` (full second-order/split-gain
+  derivation) once Session 5 is built; add `sections/06_forecast_accuracy_theory.tex` when
+  Session 6 revisits the carried-forward MAE-vs-percentage-error reversal finding on real test
+  data (see the 13 Jul decisions-log entry above), citing Hyndman & Koehler directly.
 
 ## Skills born in this project
 

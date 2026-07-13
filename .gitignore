@@ -11,3 +11,14 @@ reports/
 
 learning_notes/
 linkedin_drafts/
+
+# LaTeX build artifacts (math/main.pdf itself IS tracked, not ignored)
+math/*.aux
+math/*.log
+math/*.bbl
+math/*.blg
+math/*.out
+math/*.toc
+math/*.fls
+math/*.fdb_latexmk
+math/*.synctex.gz

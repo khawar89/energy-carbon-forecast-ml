@@ -1,0 +1,52 @@
+\section{Baselines}
+\label{sec:baselines}
+
+A baseline is a model that requires no fitting: no parameters are
+estimated from data. Its purpose is to define the bar every learned model
+must clear (Section~\ref{sec:metrics}'s skill score is measured against
+it).
+
+\subsection{Persistence}
+
+\begin{equation}
+\label{eq:persistence}
+\hat y_{c,t+1} = y_{c,t}
+\end{equation}
+
+Equation~\ref{eq:persistence} predicts that next year's level equals this
+year's level. This is the naive forecast, and it is the optimal forecast
+under a random-walk-without-drift model of the underlying series
+\cite{hyndman2021forecasting}. It is a strong baseline for country-level
+CO$_2$ specifically because the underlying physical stock (power plants,
+vehicle fleets, industrial capital) changes slowly: the median absolute
+year-over-year change in this dataset since 2010 is approximately 4.4\%
+of the level (Session 1 EDA).
+
+\subsection{Linear Trend (Drift)}
+
+\begin{equation}
+\label{eq:trend}
+\hat y_{c,t+1} = y_{c,t} + \bar\Delta_{c,t}^{(5)},
+\qquad
+\bar\Delta_{c,t}^{(5)} = \frac{y_{c,t} - y_{c,t-5}}{5}
+\end{equation}
+
+Equation~\ref{eq:trend} extrapolates the average yearly change over the
+preceding five years one step forward. It is this project's
+five-year-windowed variant of the classical drift method
+\cite{hyndman2021forecasting}, which in its general form draws a line
+between a series' first and last observed points and extrapolates it. The
+trade-off is explicit: Equation~\ref{eq:trend} outperforms
+Equation~\ref{eq:persistence} for a country on a sustained trajectory, and
+underperforms it the moment a country's direction reverses, since the
+linear extrapolation has no mechanism to anticipate a turn.
+
+\subsection{Bias direction}
+
+For any series with a genuine sustained trend, persistence
+(Equation~\ref{eq:persistence}) is a biased estimator of $y_{c,t+1}$: if
+$y_{c,t}$ is rising, persistence systematically under-predicts; if
+$y_{c,t}$ is falling (for example, a country whose emissions peaked and
+have since declined), persistence systematically over-predicts. The sign
+of the bias tracks the sign of the country's own recent trend, not a
+fixed direction.

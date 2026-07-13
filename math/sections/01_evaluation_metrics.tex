@@ -1,0 +1,82 @@
+\section{Evaluation Metrics}
+\label{sec:metrics}
+
+Every model in this project, from the persistence baseline through
+XGBoost, is scored by the same set of metrics, implemented once in
+\texttt{src/evaluate.py} and reused unchanged in every later session. This
+section states each metric formally.
+
+\subsection{Mean Absolute Error (MAE)}
+
+\begin{equation}
+\label{eq:mae}
+\mathrm{MAE} = \frac{1}{n}\sum_{i=1}^{n} \left| y_i - \hat y_i \right|
+\end{equation}
+
+MAE is the average size of a miss, in the original units (Mt CO$_2$). It is
+interpretable, but because errors are measured in absolute units, its
+value is dominated by the largest countries by emissions level.
+
+\subsection{Root Mean Squared Error (RMSE)}
+
+\begin{equation}
+\label{eq:rmse}
+\mathrm{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^n \left(y_i - \hat y_i\right)^2}
+\end{equation}
+
+Squaring each error before averaging penalizes large misses quadratically.
+Consequently $\mathrm{RMSE} \gg \mathrm{MAE}$ for a given model signals
+that its error budget is concentrated in a small number of large misses (a
+``fat tail'') rather than spread evenly across rows.
+
+\subsection{Median Absolute Error (MedianAE)}
+
+\begin{equation}
+\label{eq:medianae}
+\mathrm{MedianAE} = \operatorname{median}_i \left| y_i - \hat y_i \right|
+\end{equation}
+
+MedianAE is immune to the largest emitters: it reports the typical error
+for the typical country. Comparing Equations~\ref{eq:mae}
+and~\ref{eq:medianae} on the same model reveals how much of the average
+error is attributable to a handful of very large countries rather than to
+the rest of the sample, a scale-dependence issue discussed generally by
+\cite{hyndman2006another}.
+
+\subsection{Median Absolute Percentage Error (MdAPE)}
+
+\begin{equation}
+\label{eq:mdape}
+\mathrm{MdAPE} = 100 \times \operatorname{median}_{i \,:\, y_i \ge \tau}
+\left( \frac{|y_i - \hat y_i|}{y_i} \right)
+\end{equation}
+
+where $\tau$ is a minimum-level threshold (this project uses
+$\tau = 1$~Mt). Percentage errors are undefined or explosive as
+$y_i \to 0$; the exclusion in Equation~\ref{eq:mdape} is part of the
+metric's definition, not an afterthought, following the general caution
+around percentage-based accuracy measures raised by
+\cite{hyndman2006another}.
+
+\subsection{Persistence Skill Score}
+
+\begin{equation}
+\label{eq:skill}
+\mathrm{Skill} = 1 - \frac{\mathrm{MAE}_{\mathrm{model}}}{\mathrm{MAE}_{\mathrm{persistence}}}
+\end{equation}
+
+The skill score in Equation~\ref{eq:skill} measures a model's error
+relative to the persistence baseline (Section~\ref{sec:baselines}), rather
+than in absolute terms. $\mathrm{Skill}=0$ means the model is exactly as
+accurate as assuming no change; $\mathrm{Skill}=1$ is the unreachable
+limit of zero error; negative skill means the model is less accurate than
+doing nothing and must be reported as a loss, not merely a smaller win.
+
+\subsection{The same-rows rule}
+
+Every comparison table in this project scores all candidate models on an
+identical set of rows: a row missing any model's prediction, or missing
+the target itself, is dropped for every model before
+Equations~\ref{eq:mae}--\ref{eq:skill} are computed
+(\texttt{evaluate.comparison\_table}). Without this rule, a model could
+appear to win only because it was scored on an easier subset of rows.

@@ -1,0 +1,41 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+
+\title{Mathematical Foundations \\ \large Emission-Trajectory ML Project}
+\author{Dr. Khawar Naeem \\ Qatar Transportation and Traffic Safety Center (QTTSC), Qatar University}
+\date{13 July 2026 (living document; grows with each modeling session)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document formalizes the mathematics behind the emission-trajectory
+forecasting pipeline (\url{https://github.com/khawar89/energy-carbon-forecast-ml}):
+the evaluation metrics every model is scored by, the two baselines that
+define the bar a model must clear, Ridge regression as the project's first
+learned model, and the ensemble and boosting methods that follow it. Each
+equation is numbered and tied directly to the corresponding code in
+\texttt{src/evaluate.py}, \texttt{notebooks/03\_baselines.ipynb}, and
+\texttt{notebooks/04\_models\_ridge\_tree.ipynb}. New sections are added as
+later sessions (XGBoost, error analysis) are built, so this remains a
+growing companion to the coding sessions rather than a one-time summary.
+This is intended to support future methodology writing and research
+extension of the project, not to substitute for it.
+\end{abstract}
+
+\tableofcontents
+
+\input{sections/00_notation}
+\input{sections/01_evaluation_metrics}
+\input{sections/02_baselines}
+\input{sections/03_ridge_regularization}
+\input{sections/04_ensembles_boosting}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

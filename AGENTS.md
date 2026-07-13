@@ -33,6 +33,7 @@ The SQL Global Carbon Inventory is paused, not canceled. This ML project reads t
 - `results/`: saved metrics and `figures/`. `assets/`: static images (flags). `data/`: README plus `raw/` (gitignored CSV) and `processed/` (gitignored outputs).
 - `reports/`: personal session reports, gitignored, local only.
 - `learning_notes/` and `linkedin_drafts/`: gitignored, local only. The first holds the project mental model (read it early in a new session); the second holds post angles and the standing rules for public posts. Neither may ever be committed or quoted verbatim in public files.
+- `math/`: standalone, committed LaTeX document (`main.tex` + `sections/NN_*.tex` + `references.bib`, compiled to `main.pdf` via `tectonic main.tex`) formalizing the mathematical foundations behind the pipeline (evaluation metrics, baselines, Ridge, ensembles/boosting), with numbered equations and verified academic references — a parallel track to the numbered notebook sessions, not a replacement for them. Grows one new `sections/0N_*.tex` file per relevant future session (e.g. XGBoost, error analysis). Every reference in `references.bib` must be independently verified (real search, not recalled from memory) before being added. `math/main.pdf` is tracked in git so it renders on GitHub without a LaTeX install; LaTeX build artifacts (`*.aux`, `*.log`, `*.bbl`, `*.blg`, etc.) are gitignored.
 
 ## Locked decisions
 

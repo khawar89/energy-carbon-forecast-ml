@@ -1,0 +1,29 @@
+\section{Notation}
+\label{sec:notation}
+
+This document uses consistent notation across all sections, matching the
+pipeline built in \texttt{src/build\_features.py} and \texttt{src/evaluate.py}.
+
+\begin{itemize}
+  \item $c$ indexes a country; $t$ indexes a calendar year.
+  \item $y_{c,t}$ denotes the observed production-based CO$_2$ emissions
+    (Mt) of country $c$ in year $t$.
+  \item The \emph{feature year} $t$ is the year whose information is known
+    at prediction time; the \emph{target year} $t+1$ is the year being
+    predicted. No feature used to predict $y_{c,t+1}$ may use information
+    from after year $t$ (see the project's \texttt{CLAUDE.md} and
+    \texttt{AGENTS.md} for the full leakage-prevention rationale; every
+    equation in this document assumes that constraint is already
+    enforced).
+  \item $\hat y_{c,t+1}$ denotes a model's prediction of $y_{c,t+1}$, made
+    using information available through year $t$.
+  \item $x_{c,t} \in \mathbb{R}^p$ denotes the feature vector for country
+    $c$ at year $t$ (lags, rolling statistics, population, and related
+    columns), with $p$ the number of features.
+  \item $n$ denotes the number of (country, year) rows in a given
+    evaluation set (for example, the validation split).
+  \item Splits are labeled train, val (validation), and test, assigned by
+    the \emph{target} year $t+1$, not the feature year $t$: train covers
+    target years through 2014, val covers 2015--2018, test covers
+    2019--2023, and a separate provisional table covers target year 2024.
+\end{itemize}
