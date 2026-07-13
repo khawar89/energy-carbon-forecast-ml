@@ -27,6 +27,7 @@ External affiliation must always be written as:
 | XGBoost | Not started |
 | Error analysis | Not started |
 | Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml (Session 1 pushed) |
+| Math foundations doc | Built and compiled 13 Jul (`math/main.pdf`): 5 sections, 15 numbered equations, 7 independently-verified references; parallel track, grows one new section per relevant future session |
 
 ## Current next action (handoff state, updated 13 Jul 2026)
 

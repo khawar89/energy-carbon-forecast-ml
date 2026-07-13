@@ -22,6 +22,7 @@ The SQL Global Carbon Inventory is paused, not canceled. This ML project reads t
 4. `docs/ML_Learning_Plan_KhawarNaeem.md`, the learning-depth layer; it wins on schedule, teaching mode, and the four 8 July amendments (skill score, delta parameterization, scale-aware metrics, two-wave features)
 5. `data/README.md` when handling data
 6. Only the notebook or source file required for the current session
+7. `math/main.pdf` when methodology or theory grounding is needed (equation form, a citation to reuse) - not required every session, but check it before re-deriving a formula from scratch or reaching for an uncited claim
 
 `docs/MLProject_Guide_KhawarNaeem.md` is the earlier, broader plan. Where it conflicts with the quick-sprint plan, the quick-sprint plan wins.
 
