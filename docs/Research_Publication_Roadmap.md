@@ -76,6 +76,20 @@ Global Environmental Change (GEC) was checked directly against its own aims-and-
 
 Net effect: Idea 3 has two legitimate framings for two different audiences, to be decided once the empirical work is further along: an engineering and applied framing for Applied Energy or Sustainable Production and Consumption, or a political-economy and governance framing for Global Environmental Change.
 
+### Environmental journals (added 13 July 2026, second pass)
+
+The first venue table skewed toward energy journals; this project is environmental first, so the following environmental journals in Global Environmental Change's family were checked directly. All are Elsevier; hybrid status and cost noted per journal. Metrics are 2024-2026 figures from search and should be reconfirmed at submission time.
+
+| Journal | Scope fit | Metrics / turnaround (verified where noted) | Cost via subscription route | Recommended for |
+|---|---|---|---|---|
+| Resources, Conservation and Recycling | Material flow analysis, life-cycle assessment, input-output, circular economy - arguably the single best scope match found for the MRIO/footprint methodology itself | Impact factor about 13.7 (very high); turnaround not confirmed | Hybrid; the gold-open-access companion is a separate journal (RCR Advances), so the main title's subscription route is free. OA APC applies only if chosen | Idea 3, strongest environmental scope match for the MRIO/footprint framing; possibly Idea 2 |
+| Ecological Economics | Environmental economics, input-output, footprint, natural-resource economics - a natural home for a trade-embodied-carbon/MRIO argument | Impact factor 6.7, Q1; turnaround not confirmed | Long-standing Elsevier subscription (hybrid) journal; search reported an OA APC of about 4,100 USD, which is the opt-in OA figure, not a forced fee - confirm hybrid status at submission | Idea 3, economics-leaning framing |
+| Environmental Science & Policy | Climate change, environmental resource management, sustainability, policy-society interface | Impact factor 6.55; reported review speed about 15 days (fast); acceptance about 12% | Hybrid; traditional subscription route free, OA APC about 3,410 USD, waivable in some cases | Idea 3, policy-leaning framing; a faster, environmental-science alternative to Global Environmental Change |
+| Journal of Environmental Management | Environmental system modelling and optimization, environmental impact assessment, life-cycle analysis, material flow analysis, emission accounting - explicitly names the methods this project uses | High impact factor (about 8, reconfirm); turnaround not confirmed | Hybrid | Ideas 2 and 3, technical-environmental framing |
+| Energy and Climate Change | Energy-climate intersection, emissions-reduction strategies, social and physical sciences | Impact factor 5.6 | CAUTION: search described it as "open access" with an APC of about 4,110 USD - it may be a gold-open-access (forced-fee) journal, which would violate the no-forced-fee constraint. DO NOT target until hybrid-vs-gold status is confirmed directly | Only if confirmed hybrid |
+
+Revised environmental recommendation for Idea 3: **Resources, Conservation and Recycling** is now the leading target for the MRIO/footprint framing (best scope match, very high impact, hybrid), with **Ecological Economics** (economics framing) and **Environmental Science & Policy** (policy framing, and fast) as strong environmental alternatives. The energy journals (Applied Energy, Sustainable Production and Consumption) remain valid only if the paper's framing leans genuinely toward energy systems rather than environmental footprint accounting. Sustainable Cities and Society stays relevant only under a transportation-sector framing.
+
 ## 6. Sequencing
 
 This is a separate track. It starts only after Session 7 closes the core ML sprint (Sessions 4 through 7: Ridge and tree models, XGBoost, error analysis, reproducibility). It does not compete with the sprint's 2-4 hour per day cadence; it is recorded now so none of this thinking is lost before then.
@@ -103,3 +117,13 @@ Sustainable Production and Consumption, open access information. https://www.els
 Sustainable Cities and Society, open access information. https://www.sciencedirect.com/journal/sustainable-cities-and-society/publish/open-access-options
 
 Global Environmental Change, aims and scope. https://www.sciencedirect.com/journal/global-environmental-change
+
+Resources, Conservation and Recycling, journal home. https://www.sciencedirect.com/journal/resources-conservation-and-recycling
+
+Ecological Economics, journal home. https://www.sciencedirect.com/journal/ecological-economics
+
+Environmental Science & Policy, journal home. https://www.sciencedirect.com/journal/environmental-science-and-policy
+
+Journal of Environmental Management, journal home. https://www.sciencedirect.com/journal/journal-of-environmental-management
+
+Energy and Climate Change, journal home. https://www.sciencedirect.com/journal/energy-and-climate-change
