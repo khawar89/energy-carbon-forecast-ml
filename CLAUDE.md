@@ -22,7 +22,7 @@ External affiliation must always be written as:
 | Repository scaffold | Partial |
 | Session 1 framing and EDA | Complete 8 Jul; notebook run end to end, all 5 check questions answered (see `notebooks/01_framing_eda_check_questions.md`) |
 | Modeling table | Built and verified 10 Jul (`src/build_features.py`); Session 2 CLOSED 13 Jul, five check questions answered (`notebooks/02_build_features_walkthrough_check_questions.md`) |
-| Baselines | Scaffolded 10 Jul (`notebooks/03_baselines.ipynb`, unexecuted, + `src/evaluate.py` tested); ready for Khawar to run now that Session 2 is closed |
+| Baselines | Session 3 CLOSED 13 Jul: executed end to end, `results/model_comparison.csv` saved (persistence MAE 6.757, linear_trend MAE 7.281, skill -0.078), three check questions answered (`notebooks/03_baselines_check_questions.md`) |
 | Ridge/tree models | Scaffolded 10 Jul (`notebooks/04_models_ridge_tree.ipynb`, unexecuted, smoke-tested); runs after Session 3 |
 | XGBoost | Not started |
 | Error analysis | Not started |
@@ -30,12 +30,12 @@ External affiliation must always be written as:
 
 ## Current next action (handoff state, updated 13 Jul 2026)
 
-Where things stand: Session 1 complete and pushed. **Session 2 CLOSED 13 Jul** — worked cell by cell with Claude (real code executed live against the actual raw CSV and `data/processed/modeling_table.csv`, since Jupyter is not installed on this machine; every notebook claim verified against genuine output, not toy claims), all five check questions answered and recorded in `notebooks/02_build_features_walkthrough_check_questions.md`. Sessions 3 and 4 are SCAFFOLDED (unexecuted notebooks, smoke-tested code, results deliberately withheld so they emerge for Khawar at run time). `src/evaluate.py` is finished and self-tested; `requirements.txt` exists; repo organized (plans in `docs/`, conventions in AGENTS.md). Environment note: `pandas`/`numpy` are installed on this machine; `scikit-learn`/`xgboost`/`jupyter` are not yet installed and will be needed before Session 3/4 can run (`pip3 install -r requirements.txt`).
+Where things stand: Session 1 complete and pushed. **Session 2 CLOSED 13 Jul** — worked cell by cell with Claude (real code executed live against the actual raw CSV and `data/processed/modeling_table.csv`, since Jupyter is not installed in the shell used for teaching; every notebook claim verified against genuine output, not toy claims), all five check questions answered and recorded in `notebooks/02_build_features_walkthrough_check_questions.md`. **Session 3 CLOSED 13 Jul** — pre-registration written and committed before any cell ran (2 of 3 predictions correct, 1 close), notebook executed cell by cell (Khawar also ran it independently in his own local Jupyter/Anaconda environment and confirmed matching output throughout, including hitting and resolving a genuine notebook-state error on a rerun of the save cell), `results/model_comparison.csv` saved, reconcile-and-interpret plus all three check questions answered (with Claude's full guidance, at Khawar's request) and recorded in `notebooks/03_baselines_check_questions.md`. A live finding from Session 3 (the MAE-vs-percentage-error ranking reversal: Russia/Pakistan/Vietnam) is carried forward to Session 6, not used yet — see the 13 Jul decisions-log entry below. Session 4 is SCAFFOLDED (unexecuted notebook, smoke-tested code, results deliberately withheld so they emerge for Khawar at run time). `src/evaluate.py` is finished and self-tested; `requirements.txt` exists; repo organized (plans in `docs/`, conventions in AGENTS.md). Environment note: this machine's system Python has `pandas`/`numpy` but not `scikit-learn`/`xgboost`/`jupyter`; Khawar separately has a working local Jupyter/Anaconda environment (confirmed during Session 3) — Session 4 will need `scikit-learn` available in whichever environment actually executes it.
 
 Khawar's queue, in strict order (do not skip ahead of him):
 
 1. ~~Session 2 study~~ DONE 13 Jul.
-2. Execute `notebooks/03_baselines.ipynb`: fill the pre-registration section FIRST, then run, reconcile, answer the three check questions, commit results.
+2. ~~Execute `notebooks/03_baselines.ipynb`~~ DONE 13 Jul.
 3. Execute `notebooks/04_models_ridge_tree.ipynb`: pre-registration first, freeze the two alpha choices himself (the `...` cells), run, reconcile, answer the four check questions, commit.
 4. Only THEN scaffold and run Session 5 per the approved spec below.
 
@@ -82,6 +82,7 @@ Deliberately NOT pre-built: its choices must react to the Sessions 3-4 validatio
 - `notebooks/01b_visual_eda.ipynb`: Session 1b visual EDA; six executed figures saved to `results/figures/` (skew, concentration, persistence, missingness waves, energy-CO2 coupling, Qatar anchor).
 - `notebooks/02_build_features_walkthrough.ipynb`: Session 2 classroom for the feature pipeline.
 - `notebooks/02_build_features_walkthrough_check_questions.md`: Session 2 check-question answers with corrections (closed 13 Jul).
+- `notebooks/03_baselines.ipynb`: Session 3 baselines notebook (executed 13 Jul); `notebooks/03_baselines_check_questions.md`: its check-question and reconcile answers (closed 13 Jul).
 - `src/build_features.py`: builds and verifies `data/processed/modeling_table.csv` (10 Jul).
 - `.gitignore`: excludes raw data, processed outputs, model artifacts, caches, reports, and local environments.
 - `data/README.md`: data provenance, download locations, and entity exclusions.
@@ -133,6 +134,7 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 | 8 Jul 2026 | Two-wave feature strategy | coal_co2 ~38%, gas_co2 ~44%, gdp ~29%, consumption_co2 ~47% missing in post-1990 country rows. |
 | 8 Jul 2026 | Teaching mode: assistant implements, Khawar must pass check questions | Maximize learning depth at his 2-4 hr/day cadence. |
 | 8 Jul 2026 | 2024 targets out of headline test, reported in a provisional appendix | Newest OWID release year is provisional and revisable; scoring against it would tie README claims to numbers OWID may replace. Features (2023 and earlier) are settled, so a labeled side table is safe. |
+| 13 Jul 2026 | Carry the MAE-vs-percentage-error reversal finding forward to Session 6, do not use it yet | Found live while teaching Session 3, on the persistence baseline's validation-year `error_by_country` table: Russia has the lowest percentage error (1.33%) despite a top-10 absolute-error miss, while Pakistan (11.05%) and Vietnam (8.22%) have far higher percentage errors despite smaller absolute misses - a ranking reversal parallel to figs 7-8 (totals vs per-capita), this time for model error. Numbers are validation-only; no figure or public post is built from them. Session 6 (error analysis) must re-run this same per-country MAE-vs-percentage breakdown on the final TEST-set predictions and confirm whether the reversal survives before it goes in any figure. Full detail in `linkedin_drafts/LinkedIn_Post_Points_BySession.md` (gitignored, local only). |
 
 ## Session log
 
@@ -215,6 +217,18 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 - Environment note recorded: `pandas`/`numpy` are installed on this machine and sufficient for Session 2; `scikit-learn`/`xgboost`/`jupyter` are not yet installed and will be needed before Session 3/4 can run.
 - Session 2 marked CLOSED in the status table and handoff-state section.
 - Next exact action: Khawar installs `scikit-learn`/`xgboost`/`jupyter` (`pip3 install -r requirements.txt`) if not already done, then executes `notebooks/03_baselines.ipynb`: fill the pre-registration section first, run, reconcile against `src/evaluate.py`'s comparison table, answer the three check questions, commit results.
+
+### 13 July 2026, Session 3 closed (with Claude)
+
+- Pre-registered three predictions in writing before running any cell: persistence wins overall MAE (correct), ~35% of countries favor trend (close - real answer 39.2%, 60/153), persistence wins for Qatar (correct). No prediction was wrong.
+- Worked `notebooks/03_baselines.ipynb` cell by cell, reading `src/evaluate.py`'s actual source alongside it (the `comparison_table` same-rows rule, the `mae`/`rmse`/`median_ae`/`mdape`/`skill` functions, and the module's own self-test) rather than treating the referee as a black box. Khawar separately ran the same cells in his own local Jupyter/Anaconda environment and confirmed matching output at every step.
+- Result: persistence MAE 6.757 beats linear_trend MAE 7.281 (skill -0.078) overall, but trend actually wins on MedianAE (1.103 vs 1.134) and MdAPE (3.991% vs 4.178%) - persistence's advantage is concentrated in avoiding disasters among the largest emitters, confirmed by RMSE (24.930 vs 33.251). Per-country: trend wins in 39.2% of countries (e.g. United States, Germany); persistence wins in the rest (e.g. Qatar, China).
+- Found live and flagged, not used yet: the MAE-vs-percentage-error ranking reversal in the persistence baseline's `error_by_country` table - Russia has the lowest percentage error (1.33%) despite a top-10 absolute miss, while Pakistan (11.05%) and Vietnam (8.22%) have far higher percentage errors despite smaller absolute misses. Validation-only, so carried forward to Session 6 rather than posted or visualized now (see the decisions-log entry below and `AGENTS.md`'s Figure rules); full narrative in `linkedin_drafts/LinkedIn_Post_Points_BySession.md` (gitignored).
+- Real notebook-state bug hit and resolved: rerunning the save cell a second time raised `ValueError: cannot insert split, already exists`, because `table.insert(...)` mutates in place and Jupyter keeps `table` alive between cell runs. Fixed by rerunning the cell that rebuilds `table` first - a live example of why `AGENTS.md`'s "a clean run reproduces the reported table" gate exists, not a staged teaching example.
+- `results/model_comparison.csv` saved (persistence and linear_trend rows, `split="val"`, full precision). Reconcile-and-interpret section plus all three check questions answered, with Claude's full guidance at Khawar's request; recorded in `notebooks/03_baselines_check_questions.md`.
+- Environment note: Khawar has a working local Jupyter/Anaconda install (confirmed live via a real traceback during this session), separate from this machine's system Python used for teaching.
+- Session 3 marked CLOSED in the status table and handoff-state section.
+- Next exact action: install `scikit-learn` if not already available in whichever environment runs Session 4, then execute `notebooks/04_models_ridge_tree.ipynb`: pre-registration first, freeze the two Ridge alpha choices himself, run, reconcile, answer the four check questions, commit.
 
 ## Skills born in this project
 

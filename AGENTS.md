@@ -84,6 +84,7 @@ Do not start these until the one-year model reproduces from a clean run:
 - Label counterfactuals as illustrations. Never present them as scenarios or projections.
 - The public repo is https://github.com/khawar89/energy-carbon-forecast-ml; work ships session by session, so figures must render correctly in executed notebooks on GitHub.
 - National flag assets for highlight annotations live in `assets/flags/` (flagcdn PNGs).
+- Session 6's error-analysis figure must re-verify the MAE-vs-percentage-error ranking reversal found in Session 3 (validation-only: Russia's low percentage error despite a top-10 absolute miss, versus Pakistan/Vietnam's high percentage error despite smaller absolute misses; see `CLAUDE.md`'s 13 Jul 2026 decisions-log entry) against final TEST-set numbers before using it. Do not reuse the Session 3 validation-only figures directly (13 Jul 2026).
 
 ## Verification gates
 
