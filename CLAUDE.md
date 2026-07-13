@@ -101,7 +101,7 @@ Preprint policy corrected via search: Elsevier and Nature Portfolio both explici
 - `results/`: saved metric tables and figures. `reports/`: personal session reports, gitignored.
 - `learning_notes/` (gitignored): `BigPicture_MentalModel_KhawarNaeem.md` is the project's mental model, named traps, and standing facts; ANY NEW AI SESSION should read it right after AGENTS.md and this file to absorb the reasoning, not just the file list. Also holds the pipeline map SVG.
 - `linkedin_drafts/` (gitignored): per-session post angles, standing post rules, and the posted/ record. Read before drafting any public post about this project.
-- `math/` (committed, tracked in git): standalone LaTeX document formalizing the project's mathematical foundations (evaluation metrics, baselines, Ridge regularization, ensembles/boosting), numbered equations, verified academic references in `references.bib`. Built 13 Jul 2026 in parallel with the coding sessions (not a substitute for them); grows one new `sections/0N_*.tex` file per relevant future session. Compile with `tectonic main.tex` (from inside `math/`) to produce `main.pdf`, which is committed so it renders on GitHub without a LaTeX install. See `AGENTS.md`'s folder-layout entry for the full convention.
+- `math/` (committed, tracked in git): standalone LaTeX document formalizing the project's mathematical foundations (evaluation metrics, baselines, Ridge regularization, ensembles/boosting, and uncertainty/significance of skill scores - section 6, added 13 Jul 2026), numbered equations, verified academic references in `references.bib`. Built 13 Jul 2026 in parallel with the coding sessions (not a substitute for them); grows one new `sections/0N_*.tex` file per relevant future session. Compile with `tectonic main.tex` (from inside `math/`) to produce `main.pdf`, which is committed so it renders on GitHub without a LaTeX install. See `AGENTS.md`'s folder-layout entry for the full convention.
 
 ## Project story for employers
 
@@ -278,6 +278,16 @@ sessions: `math/main.tex` + `math/sections/{00_notation,01_evaluation_metrics,02
   derivation) once Session 5 is built; add `sections/06_forecast_accuracy_theory.tex` when
   Session 6 revisits the carried-forward MAE-vs-percentage-error reversal finding on real test
   data (see the 13 Jul decisions-log entry above), citing Hyndman & Koehler directly.
+
+### 13 July 2026, research-rigor audit + uncertainty tooling (with Claude, Opus 4.8)
+
+A deep-read audit of the whole technical stack (`src/build_features.py`, `src/evaluate.py`, the scaffolded Session 4 notebook) to find the highest-value weak area for turning this into a publishable paper. Finding: the code is clean and correct - no bug fix needed - but every metric is a bare POINT ESTIMATE with no uncertainty or significance. For a project whose whole thesis is "an evaluation that cannot fool its author," the missing piece is whether a skill difference is statistically distinguishable from zero. Closed that gap, additively:
+
+- **`src/evaluate.py` gains `cluster_bootstrap_skill`** (plus two behavior-preserving guards: zero-division in `skill`, empty-sample in `mdape`). It resamples whole COUNTRIES with replacement (a cluster bootstrap - the panel-data-correct choice, since a country's own years are correlated and a naive row bootstrap would understate the interval) and returns a CI + a two-sided bootstrap p-value on the persistence skill score. **Deliberately NOT wired into `comparison_table`** - it is optional infrastructure, so nothing in Sessions 3-5 changes, no committed result moves, and no withheld Session 4/5 number is revealed. Self-test extended and passes (`python3 src/evaluate.py` -> OK).
+- **Demonstration on the already-committed Session 3 validation baselines** (not a spoiler; Session 3 is closed): linear-trend point skill -0.078 vs persistence, but the country-clustered 95% CI is [-0.335, +0.199] with bootstrap p ~= 0.69 - so trend and persistence are STATISTICALLY INDISTINGUISHABLE on validation, a conclusion the bare point estimate hides. This is exactly the nuance a journal reviewer would demand.
+- **`math/` gains section 6 (Uncertainty)** formalizing the loss differential, the clustered-bootstrap CI, and the bootstrap p-value with numbered equations; three references added, each independently search-verified: Diebold & Mariano (1995, JBES), Efron & Tibshirani (1993, bootstrap), Cameron, Gelbach & Miller (2008, cluster bootstrap). PDF recompiled and verified (8 pages, all citations resolve).
+- **Ownership boundary kept explicit** (per AGENTS.md): the tool is added, but WHICH significance test to adopt and HOW to interpret it remain Khawar's modeling decisions, to be settled when the research-paper track (idea 2) is actually developed. Recorded in `docs/Research_Publication_Roadmap.md` under idea 2.
+- No modeling decision was made for Khawar, no notebook was executed, and `results/model_comparison.csv` was not touched.
 
 ## Skills born in this project
 

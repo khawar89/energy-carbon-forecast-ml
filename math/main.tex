@@ -17,7 +17,9 @@ This document formalizes the mathematics behind the emission-trajectory
 forecasting pipeline (\url{https://github.com/khawar89/energy-carbon-forecast-ml}):
 the evaluation metrics every model is scored by, the two baselines that
 define the bar a model must clear, Ridge regression as the project's first
-learned model, and the ensemble and boosting methods that follow it. Each
+learned model, the ensemble and boosting methods that follow it, and the
+uncertainty quantification that decides whether a skill difference is
+statistically real. Each
 equation is numbered and tied directly to the corresponding code in
 \texttt{src/evaluate.py}, \texttt{notebooks/03\_baselines.ipynb}, and
 \texttt{notebooks/04\_models\_ridge\_tree.ipynb}. New sections are added as
@@ -34,6 +36,7 @@ extension of the project, not to substitute for it.
 \input{sections/02_baselines}
 \input{sections/03_ridge_regularization}
 \input{sections/04_ensembles_boosting}
+\input{sections/05_uncertainty}
 
 \bibliographystyle{plain}
 \bibliography{references}

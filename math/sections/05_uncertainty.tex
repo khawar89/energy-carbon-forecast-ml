@@ -1,0 +1,98 @@
+\section{Uncertainty and Significance of a Skill Score}
+\label{sec:uncertainty}
+
+The metrics of Section~\ref{sec:metrics} are point estimates. A skill
+score of, say, $-0.078$ reports that a model's average error is 7.8 percent
+larger than persistence's on the evaluation sample, but it does not say
+whether that gap is distinguishable from zero or is within sampling noise.
+For a comparison to support a claim, the gap needs an interval and a
+significance statement. This section formalizes both, implemented as
+optional functions in \texttt{src/evaluate.py} that are deliberately not
+wired into the mandatory comparison table.
+
+\subsection{Loss differential}
+
+Let $e_i^{\mathrm{m}} = |y_i - \hat y_i^{\mathrm{m}}|$ and
+$e_i^{\mathrm{p}} = |y_i - \hat y_i^{\mathrm{p}}|$ be the absolute errors of
+a candidate model and of persistence on row $i$. Their difference
+
+\begin{equation}
+\label{eq:loss-diff}
+d_i = e_i^{\mathrm{p}} - e_i^{\mathrm{m}}
+\end{equation}
+
+is positive when the model beats persistence on row $i$. The classical
+Diebold--Mariano test \cite{diebold1995comparing} assesses the null
+hypothesis $\mathbb{E}[d_i]=0$ (equal predictive accuracy) using the mean
+and a serial-correlation-robust variance of $\{d_i\}$. The skill score of
+Equation~\ref{eq:skill} is a monotone reparameterization of the ratio of
+mean absolute errors, so testing whether skill differs from zero is the
+same question as testing whether the mean loss differential
+(Equation~\ref{eq:loss-diff}) differs from zero.
+
+\subsection{Why a row-level interval is wrong here}
+
+The Diebold--Mariano test was designed for a single time series of
+forecasts. This project's evaluation sample is a panel: each country
+contributes several years, and a country's own years are correlated
+(its emissions, and its errors, move together). Treating the $n$ rows as
+independent would understate the sampling variance, because the effective
+number of independent observations is closer to the number of countries
+than to the number of rows. In addition, a few large emitters dominate the
+absolute error (Section~\ref{sec:metrics}), so the influence of individual
+countries is uneven. Both features call for resampling at the level of the
+country, not the row.
+
+\subsection{Country-clustered bootstrap interval}
+
+Let $\mathcal{C}$ be the set of countries in the evaluation sample, with
+$|\mathcal{C}| = C$. A cluster bootstrap \cite{cameron2008bootstrap},
+\cite{efron1993bootstrap} draws $C$ countries with replacement, pools all
+rows of the drawn countries, and recomputes the statistic. For bootstrap
+replicate $b = 1,\dots,B$, let $\mathcal{C}^{(b)}$ be the multiset of drawn
+countries and $R^{(b)}$ the pooled rows; the resampled skill is
+
+\begin{equation}
+\label{eq:boot-skill}
+s^{(b)} = 1 - \frac{\sum_{i \in R^{(b)}} e_i^{\mathrm{m}}}
+                   {\sum_{i \in R^{(b)}} e_i^{\mathrm{p}}}
+\end{equation}
+
+Resampling whole countries preserves the within-country dependence that a
+row-level resample would destroy. A $100(1-\alpha)$ percent confidence
+interval for the skill is the empirical interval of the replicates,
+
+\begin{equation}
+\label{eq:boot-ci}
+\left[\; q_{\alpha/2}\!\left(\{s^{(b)}\}\right),\;
+        q_{1-\alpha/2}\!\left(\{s^{(b)}\}\right) \;\right]
+\end{equation}
+
+where $q_\tau$ is the $\tau$ empirical quantile. A two-sided bootstrap
+$p$-value for the null hypothesis that the model ties persistence
+($s = 0$) is
+
+\begin{equation}
+\label{eq:boot-p}
+p = 2 \min\!\left(
+  \frac{1}{B}\sum_{b=1}^{B}\mathbf{1}\{s^{(b)} \le 0\},\;
+  \frac{1}{B}\sum_{b=1}^{B}\mathbf{1}\{s^{(b)} \ge 0\}
+\right),
+\end{equation}
+
+clipped to $[0,1]$. This is a bootstrap tail probability, not an exact
+analytic test, and should be reported as such.
+
+\subsection{Worked reading}
+
+On this project's validation years (targets 2015--2018, 153 countries),
+the linear-trend baseline has point skill $-0.078$ against persistence, but
+the country-clustered 95 percent interval (Equation~\ref{eq:boot-ci}) spans
+roughly $[-0.34, +0.20]$ with a bootstrap $p$-value near $0.7$. The honest
+conclusion is therefore not ``trend loses to persistence'' but ``trend and
+persistence are statistically indistinguishable on this sample'': the point
+gap is well within sampling noise once the country-level dependence is
+accounted for. Reporting the interval, not only the point estimate, is what
+keeps the evaluation honest at the level of statistical significance, which
+is the same discipline this project already applies at the level of the
+baseline comparison itself.
