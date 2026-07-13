@@ -23,7 +23,7 @@ External affiliation must always be written as:
 | Session 1 framing and EDA | Complete 8 Jul; notebook run end to end, all 5 check questions answered (see `notebooks/01_framing_eda_check_questions.md`) |
 | Modeling table | Built and verified 10 Jul (`src/build_features.py`); Session 2 CLOSED 13 Jul, five check questions answered (`notebooks/02_build_features_walkthrough_check_questions.md`) |
 | Baselines | Session 3 CLOSED 13 Jul: executed end to end, `results/model_comparison.csv` saved (persistence MAE 6.757, linear_trend MAE 7.281, skill -0.078), three check questions answered (`notebooks/03_baselines_check_questions.md`) |
-| Ridge/tree models | Scaffolded 10 Jul (`notebooks/04_models_ridge_tree.ipynb`, unexecuted, smoke-tested); runs after Session 3 |
+| Ridge/tree models | Session 4 CLOSED 13 Jul: `notebooks/04_models_ridge_tree.ipynb` executed; Ridge alphas frozen at 0.1/0.1; `results/model_comparison.csv` now has six validation rows; persistence remains best MAE, hgb_delta closest ML model |
 | XGBoost | Not started |
 | Error analysis | Not started |
 | Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml (Session 1 pushed) |
@@ -31,14 +31,14 @@ External affiliation must always be written as:
 
 ## Current next action (handoff state, updated 13 Jul 2026)
 
-Where things stand: Session 1 complete and pushed. **Session 2 CLOSED 13 Jul** — worked cell by cell with Claude (real code executed live against the actual raw CSV and `data/processed/modeling_table.csv`, since Jupyter is not installed in the shell used for teaching; every notebook claim verified against genuine output, not toy claims), all five check questions answered and recorded in `notebooks/02_build_features_walkthrough_check_questions.md`. **Session 3 CLOSED 13 Jul** — pre-registration written and committed before any cell ran (2 of 3 predictions correct, 1 close), notebook executed cell by cell (Khawar also ran it independently in his own local Jupyter/Anaconda environment and confirmed matching output throughout, including hitting and resolving a genuine notebook-state error on a rerun of the save cell), `results/model_comparison.csv` saved, reconcile-and-interpret plus all three check questions answered (with Claude's full guidance, at Khawar's request) and recorded in `notebooks/03_baselines_check_questions.md`. A live finding from Session 3 (the MAE-vs-percentage-error ranking reversal: Russia/Pakistan/Vietnam) is carried forward to Session 6, not used yet — see the 13 Jul decisions-log entry below. Session 4 is SCAFFOLDED (unexecuted notebook, smoke-tested code, results deliberately withheld so they emerge for Khawar at run time). `src/evaluate.py` is finished and self-tested; `requirements.txt` exists; repo organized (plans in `docs/`, conventions in AGENTS.md). Environment note (updated again 13 Jul, later same day): this machine's system Python 3.13 now ALSO has `scikit-learn`/`xgboost`/`jupyter` installed (`pip3 install -r requirements.txt`, done while building `math/`); Khawar's separate local Jupyter/Anaconda 3.12 environment (confirmed working during Session 3) is untouched and still available too. Either environment is ready for Session 4 — no install step needed to resume.
+Where things stand: Session 1 complete and pushed. **Session 2 CLOSED 13 Jul** — worked cell by cell with Claude (real code executed live against the actual raw CSV and `data/processed/modeling_table.csv`, since Jupyter is not installed in the shell used for teaching; every notebook claim verified against genuine output, not toy claims), all five check questions answered and recorded in `notebooks/02_build_features_walkthrough_check_questions.md`. **Session 3 CLOSED 13 Jul** — pre-registration written and committed before any cell ran (2 of 3 predictions correct, 1 close), notebook executed cell by cell (Khawar also ran it independently in his own local Jupyter/Anaconda environment and confirmed matching output throughout, including hitting and resolving a genuine notebook-state error on a rerun of the save cell), `results/model_comparison.csv` saved, reconcile-and-interpret plus all three check questions answered (with Claude's full guidance, at Khawar's request) and recorded in `notebooks/03_baselines_check_questions.md`. **Session 4 CLOSED 13 Jul** — pre-registration written before model execution, Ridge level and Ridge delta alphas both frozen at 0.1, notebook executed in Khawar's VS Code/Jupyter environment, `results/model_comparison.csv` saved with six validation rows, reconciliation and all four check questions recorded in `notebooks/04_models_ridge_tree_check_questions.md`. Result: persistence remains best on validation MAE (6.757); the best ML row is hgb_delta (MAE 6.874, skill -0.017), close but still worse than persistence; hgb_level fails badly on MAE/RMSE, likely from large-emitter threshold errors. A live finding from Session 3 (the MAE-vs-percentage-error ranking reversal: Russia/Pakistan/Vietnam) is carried forward to Session 6, not used yet — see the 13 Jul decisions-log entry below. `src/evaluate.py` is finished and self-tested; `requirements.txt` is now pinned to the Anaconda environment that reproduces Session 4 tree metrics (`pandas==2.2.2`, `numpy==1.26.4`, `scikit-learn==1.5.1`, `matplotlib==3.9.2`; XGBoost still to be installed/used in Session 5). Environment note: Khawar's Anaconda Python 3.12 / scikit-learn 1.5.1 reproduces the saved Session 4 table exactly; this machine's system Python 3.13 / scikit-learn 1.9.0 reproduces baselines and Ridge exactly but gives different HistGradientBoosting rows, so use the pinned environment for clean reproduction.
 
 Khawar's queue, in strict order (do not skip ahead of him):
 
 1. ~~Session 2 study~~ DONE 13 Jul.
 2. ~~Execute `notebooks/03_baselines.ipynb`~~ DONE 13 Jul.
-3. Execute `notebooks/04_models_ridge_tree.ipynb`: pre-registration first, freeze the two alpha choices himself (the `...` cells), run, reconcile, answer the four check questions, commit.
-4. Only THEN scaffold and run Session 5 per the approved spec below.
+3. ~~Execute `notebooks/04_models_ridge_tree.ipynb`~~ DONE 13 Jul.
+4. Scaffold and run Session 5 per the approved spec below: `notebooks/05_xgboost.ipynb` plus `src/train.py`, with small validation tuning and the single test-set evaluation only after pre-registration.
 
 Standing agent behavior: teaching mode per AGENTS.md (implement AND explain; sessions close on check answers). Never reveal the withheld Session 3/4 numeric results before Khawar executes the notebooks with his pre-registrations written. Commit and push at the end of each session. Read `learning_notes/BigPicture_MentalModel_KhawarNaeem.md` early for the project's reasoning and named traps.
 
@@ -124,11 +124,15 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 ## Writing rules
 
 - US English.
-- Plain, direct, cautious claims.
-- No em dashes.
-- Use “suggests” or “indicates” when interpretation is uncertain.
+- Plain, direct, cautious academic claims.
+- No em dashes. Use commas, semicolons, or parentheses instead.
+- Use human academic prose: varied sentence openings, concrete nouns, and logical paragraph flow. Avoid formulaic AI-sounding transitions and empty signposting.
+- Avoid ornate or filler phrasing, including: delve into, it is worth noting, moreover, furthermore, in conclusion, plays a crucial role, comprehensive, holistic, paradigm shift, real-world impact, and unprecedented unless literature-verified.
+- Structure academic paragraphs as one claim, then evidence, then cautious interpretation.
+- Use "suggests," "indicates," "is consistent with," "points to," "reflects," "shows," or "appears to" when interpretation is uncertain.
 - Do not claim causal effects.
 - Tie every quantitative README claim to a saved result.
+- Future methodology and manuscript sections should reuse `math/main.pdf` and the LaTeX source in `math/sections/` for equation forms, notation, and citation anchors rather than re-deriving formulas from memory.
 - End polished project documents with a References section containing full URLs.
 
 ## Decisions log
@@ -146,6 +150,7 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 | 8 Jul 2026 | Teaching mode: assistant implements, Khawar must pass check questions | Maximize learning depth at his 2-4 hr/day cadence. |
 | 8 Jul 2026 | 2024 targets out of headline test, reported in a provisional appendix | Newest OWID release year is provisional and revisable; scoring against it would tie README claims to numbers OWID may replace. Features (2023 and earlier) are settled, so a labeled side table is safe. |
 | 13 Jul 2026 | Carry the MAE-vs-percentage-error reversal finding forward to Session 6, do not use it yet | Found live while teaching Session 3, on the persistence baseline's validation-year `error_by_country` table: Russia has the lowest percentage error (1.33%) despite a top-10 absolute-error miss, while Pakistan (11.05%) and Vietnam (8.22%) have far higher percentage errors despite smaller absolute misses - a ranking reversal parallel to figs 7-8 (totals vs per-capita), this time for model error. Numbers are validation-only; no figure or public post is built from them. Session 6 (error analysis) must re-run this same per-country MAE-vs-percentage breakdown on the final TEST-set predictions and confirm whether the reversal survives before it goes in any figure. Full detail in `linkedin_drafts/LinkedIn_Post_Points_BySession.md` (gitignored, local only). |
+| 13 Jul 2026 | Pin the reproducibility environment after Session 4 | Session 4's baselines and Ridge rows reproduce across environments, but `HistGradientBoostingRegressor` rows differ between scikit-learn 1.5.1 and 1.9.0. `requirements.txt` is pinned to the Anaconda versions that reproduce the saved Session 4 table exactly. |
 
 ## Session log
 
@@ -289,6 +294,16 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
 - **Ownership boundary kept explicit** (per AGENTS.md): the tool is added, but WHICH significance test to adopt and HOW to interpret it remain Khawar's modeling decisions, to be settled when the research-paper track (idea 2) is actually developed. Recorded in `docs/Research_Publication_Roadmap.md` under idea 2.
 - No modeling decision was made for Khawar, no notebook was executed, and `results/model_comparison.csv` was not touched.
 
+### 13 July 2026, Session 4 closed (with Codex)
+
+- Worked through the Session 4 Ridge/tree notebook in teaching mode. Before running model-result cells, Khawar wrote a pre-registration: Ridge level expected close to persistence and maybe slightly better; Ridge delta uncertain; boosting expected to possibly beat Ridge; full ranking explicitly uncertain.
+- Executed `notebooks/04_models_ridge_tree.ipynb` in Khawar's VS Code/Jupyter environment. Ridge level alpha candidates gave validation MAE 7.292, 7.530, 8.575, 9.946 for alpha 0.1, 1.0, 10.0, 100.0; Khawar froze `RIDGE_LEVEL_ALPHA = 0.1`. Ridge delta alpha candidates gave validation MAE 7.267, 7.318, 7.453, 7.385; Khawar froze `RIDGE_DELTA_ALPHA = 0.1`.
+- Saved `results/model_comparison.csv` with six validation rows. Ranking by MAE: persistence 6.757; hgb_delta 6.874; ridge_delta 7.267; linear_trend 7.281; ridge_level 7.292; hgb_level 18.856. All ML rows have negative persistence skill; hgb_delta is closest at -0.017.
+- Interpretation recorded in the notebook: persistence remains the best validation benchmark; delta parameterization helped both Ridge and HGB; hgb_level likely made large-emitter threshold errors, as indicated by RMSE 142.706; linear_trend still has the best MedianAE and MdAPE, reinforcing that typical-country and large-emitter metrics tell different stories.
+- All four Session 4 check questions answered and recorded in `notebooks/04_models_ridge_tree_check_questions.md`. The key learning points were: Ridge needs scaling because the coefficient penalty depends on units; trees split by order/thresholds and do not need scaling; HGB is boosting, not bagging; the Ridge imputer is fitted only on training rows; level Ridge behaves partly like persistence, while delta Ridge must learn movement.
+- Verification: `/opt/anaconda3/bin/python` (Python 3.12, pandas 2.2.2, numpy 1.26.4, scikit-learn 1.5.1, matplotlib 3.9.2) reproduces the saved Session 4 table exactly within tolerance. System Python 3.13 / scikit-learn 1.9.0 reproduces baselines and Ridge exactly but gives different HGB rows, so `requirements.txt` was pinned to the Anaconda versions for reproducibility. `python3 src/evaluate.py` self-test passes.
+- Session 4 marked CLOSED. Next exact action: build Session 5, `notebooks/05_xgboost.ipynb` plus `src/train.py`, using the approved spec: small validation tuning, pre-registration before the single test-set evaluation, then freeze results with no post-test retuning.
+
 ## Skills born in this project
 
 Reusable skills live in `1_CV-khawar/0_Skills_Library_/` per the standing convention (never create or update skills inside projects). Born here so far, both in `4_Communication/`: `session-report-builder` (from the Session 1 report build) and `data-storytelling-figures` (from figures 1-8). A `panel-data-leakage-review` skill is planned after Session 2 exercises the AGENTS.md checklist for real. When this project teaches one of these skills something new, update the library copy, re-zip into `_installable/`, and log it in the library registry.
@@ -310,4 +325,3 @@ OWID CO2 data repository: https://github.com/owid/co2-data
 Scikit-learn lagged-feature example: https://scikit-learn.org/stable/auto_examples/applications/plot_time_series_lagged_features.html
 
 XGBoost documentation: https://xgboost.readthedocs.io/en/stable/
-

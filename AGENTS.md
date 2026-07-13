@@ -88,6 +88,18 @@ Do not start these until the one-year model reproduces from a clean run:
 - National flag assets for highlight annotations live in `assets/flags/` (flagcdn PNGs).
 - Session 6's error-analysis figure must re-verify the MAE-vs-percentage-error ranking reversal found in Session 3 (validation-only: Russia's low percentage error despite a top-10 absolute miss, versus Pakistan/Vietnam's high percentage error despite smaller absolute misses; see `CLAUDE.md`'s 13 Jul 2026 decisions-log entry) against final TEST-set numbers before using it. Do not reuse the Session 3 validation-only figures directly (13 Jul 2026).
 
+## Research and project writing rules
+
+- Apply these rules to README prose, methodology notes, report text, manuscript sections, figure captions, and LinkedIn drafts unless a narrower file gives stronger instructions.
+- Use US English, plain academic wording, and grammatically correct sentences.
+- Use human academic prose: varied sentence openings, concrete nouns, and logical paragraph flow. Avoid formulaic AI-sounding transitions and empty signposting.
+- Do not use em dashes. Use commas, semicolons, or parentheses instead.
+- Avoid ornate or filler phrasing, including: delve into, it is worth noting, moreover, furthermore, in conclusion, plays a crucial role, comprehensive, holistic, paradigm shift, real-world impact, and unprecedented unless literature-verified.
+- Structure academic paragraphs as one claim, then evidence, then cautious interpretation.
+- Use cautious verbs for empirical interpretation: suggests, indicates, is consistent with, points to, reflects, shows, or appears to. Do not claim causality unless the design supports it.
+- Every quantitative or literature-facing claim must trace to a saved result, a verified source, or an explicit "unverified" flag.
+- Future methodology sections should reuse `math/main.pdf` and `math/sections/*.tex` for equation forms and citation anchors rather than re-deriving formulas from memory.
+
 ## Verification gates
 
 Before accepting a result, verify:
@@ -129,4 +141,3 @@ OWID CO2 data repository: https://github.com/owid/co2-data
 Scikit-learn user guide: https://scikit-learn.org/stable/user_guide.html
 
 XGBoost documentation: https://xgboost.readthedocs.io/en/stable/
-
