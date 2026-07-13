@@ -38,7 +38,7 @@ Khawar's queue, in strict order (do not skip ahead of him):
 1. ~~Session 2 study~~ DONE 13 Jul.
 2. ~~Execute `notebooks/03_baselines.ipynb`~~ DONE 13 Jul.
 3. ~~Execute `notebooks/04_models_ridge_tree.ipynb`~~ DONE 13 Jul.
-4. Scaffold and run Session 5 per the approved spec below: `notebooks/05_xgboost.ipynb` plus `src/train.py`, with small validation tuning and the single test-set evaluation only after pre-registration.
+4. Run Session 5. **The scaffold is already BUILT and committed** (Claude Opus 4.8, 13 Jul): `notebooks/05_xgboost.ipynb` (18 cells, unexecuted, results withheld, test gated behind `RUN_FINAL_TEST=False`) + `src/train.py` (guarded until frozen XGB configs are transcribed) + `xgboost==3.3.0` pinned and installed in both envs. **RESUME POINTER (temporary): `learning_notes/SESSION5_CODEX_HANDOFF.md`** holds the ready-to-paste resume prompt and the exact teaching order — read it first to continue Session 5 with any agent. Delete that file and remove this pointer + the AGENTS.md pointer as part of the Session 5 closing commit.
 
 Standing agent behavior: teaching mode per AGENTS.md (implement AND explain; sessions close on check answers). Never reveal the withheld Session 3/4 numeric results before Khawar executes the notebooks with his pre-registrations written. Commit and push at the end of each session. Read `learning_notes/BigPicture_MentalModel_KhawarNaeem.md` early for the project's reasoning and named traps.
 

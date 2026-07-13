@@ -1,6 +1,8 @@
 # AGENTS.md — Emission-Trajectory ML Project
 
 > Tool-neutral instructions for Codex and other coding agents. This file outranks model recall about this project. Read it first, then `CLAUDE.md`, then `docs/ML_QuickSprint_Execution_Plan.md`. Last updated: 13 July 2026.
+>
+> **RESUMING? (temporary pointer, 13 Jul 2026)** Session 5 (XGBoost) is mid-flight: the scaffold (`notebooks/05_xgboost.ipynb`, `src/train.py`) is built and committed but unexecuted. Read `learning_notes/SESSION5_CODEX_HANDOFF.md` for the ready-to-paste resume prompt and teaching order. Delete that file and remove this pointer when Session 5 closes.
 
 ## Current objective
 
