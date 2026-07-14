@@ -26,12 +26,18 @@ External affiliation must always be written as:
 | Ridge/tree models | Session 4 CLOSED 13 Jul: `notebooks/04_models_ridge_tree.ipynb` executed; Ridge alphas frozen at 0.1/0.1; `results/model_comparison.csv` now has six validation rows; persistence remains best MAE, hgb_delta closest ML model |
 | XGBoost | Session 5 CLOSED 14 Jul: validation grid run, configs frozen (xgb_level d6/lr0.10/125 trees; xgb_delta d3/lr0.10/173 trees), single test evaluation run, results frozen; `results/model_comparison.csv` has 8 val + 8 test rows; xgb_delta best test MAE 9.345 (skill +0.151, CI includes zero); check questions in `notebooks/05_xgboost_check_questions.md` |
 | Error analysis | Session 6 CLOSED 14 Jul: by-year/by-country/by-tier decomposition executed; skill is giant-tier only (xgb_delta +0.325 there, -0.863 small tier); reversal SURVIVES on test (cleared for figures/post); figs 9-11 + four CSVs saved; check questions in `notebooks/06_error_analysis_check_questions.md` |
-| Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml (Session 1 pushed) |
+| Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml; all 7 sessions pushed; description + 8 topics set 14 Jul |
+| Reproducibility (Session 7) | CLOSED 14 Jul: clean-clone reproduction verified (fresh clone + documented download -> `src/train.py` reproduces the committed table exactly); README "Reproduce the result" section added; check record in `notebooks/07_reproducibility_check_questions.md` |
+| SPRINT | COMPLETE 14 Jul 2026. Results frozen; new modeling requires a new pre-registration |
 | Math foundations doc | Extended 14 Jul (`math/main.pdf`, commit 6ab13da): 6 sections, 10 pages, 28 numbered equations, 10 verified references; now includes the full XGBoost second-order derivation (leaf weight, split gain, gamma pruning, early-stopping refit rule) and the level/delta parameterization, both verified against executed xgboost 3.3.0 |
 
 ## Current next action (handoff state, updated 14 Jul 2026)
 
-**Sessions 5 AND 6 CLOSED 14 Jul.** Results are FROZEN (AGENTS.md "Post-test freeze"). Next exact action: **Session 7, reproducibility and publication pass**: (1) clean-clone dry run: fresh clone, pinned env, `python src/build_features.py` then `python src/train.py` must reproduce `results/model_comparison.csv` exactly; (2) README final pass against the verification gates (every claim traces to a saved artifact); (3) repo hygiene for portfolio use (description, topics, pinned repo); (4) the LinkedIn post from `linkedin_drafts/Session5_PreRegistered_Drafts_WinsAndLoses.md` (Version B framing: positive point skill, interval includes zero; the Session 6 tier/reversal findings may fold in, figures are cleared) plus the Session 6 angle if posted separately; (5) then the deferred future-sessions planning (extensions per gates, `docs/Research_Publication_Roadmap.md` timing, RAG flagship handoff).
+**ALL SEVEN SESSIONS CLOSED; SPRINT SCOPE COMPLETE (14 Jul 2026).** Results are FROZEN (AGENTS.md "Post-test freeze"). The clean-clone reproduction is verified, the README is final, and the repo metadata is set for portfolio use. Remaining actions, none of them modeling:
+
+1. Khawar reviews and publishes the LinkedIn post himself; final ready text with prepared objections: `linkedin_drafts/Session5_7_FINAL_post_text_ready.md` (Version B framing). After posting, save the text per the `posted/` convention.
+2. Future-sessions planning (a fresh planning conversation, not a sprint session): gated extensions (horizons 2-5, SHAP, uncertainty intervals, Streamlit, SQL extraction; each requires a new pre-registered protocol per AGENTS.md), `docs/Research_Publication_Roadmap.md` timing (idea 1, the metric-reversal note, now has its test-set evidence in `results/error_by_country_persistence_top10.csv` and fig10), and the sprint handoff to the RAG flagship project.
+3. Any new modeling work on this repo re-opens under a new pre-registration; the frozen test may not be reused for selection.
 
 Historical handoff state from 13 Jul (Sessions 1-4) follows.
 
@@ -323,6 +329,15 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
 - `src/train.py` clean run reproduces the notebook test table exactly and wrote `results/model_comparison.csv` (8 val + 8 test rows), `results/test_predictions.csv` (for Session 6), `results/provisional_2024.csv`. `evaluate.py` self-test OK. Notebook committed EXECUTED, with outputs.
 - Reconcile + check questions recorded in `notebooks/05_xgboost_check_questions.md` (Claude-guided at Khawar's request, marked). README updated with the headline table and the significance-caveated framing. AGENTS.md gains the post-test freeze section. `learning_notes/SESSION5_CODEX_HANDOFF.md` deleted and both pointers removed per its own instruction.
 - Next exact action: Session 6, error analysis (`notebooks/06_error_analysis.ipynb` from `results/test_predictions.csv`): errors by country/year/size tier, the 2020 break, and the test-set re-verification of the Session 3 MAE-vs-percentage reversal before any figure uses it. Then Session 7 (reproducibility/publication), math/ error-analysis section, and the LinkedIn post (Version B framing).
+
+### 14 July 2026, Session 7 closed; project sprint complete (with Claude, Fable 5)
+
+- Clean-clone gate PASSED: fresh clone of the public repo + the documented OWID download step, pinned Anaconda env; `src/build_features.py` rebuilt the modeling table (all verification checks passed) and `src/train.py` reproduced the committed `results/model_comparison.csv` exactly (assert_frame_equal, rtol 1e-12).
+- README finalized: status complete; "Reproduce the result" section added (exact commands, the data/README.md download URL, the pinned-versions caveat); extensions explicitly declared out of scope until re-opened as new pre-registered experiments.
+- Repo metadata set for portfolio use: description ("...an evaluation designed to be un-foolable...") and 8 topics via `gh repo edit`.
+- Session 7 check questions answered (Claude-guided, marked) in `notebooks/07_reproducibility_check_questions.md`: the single reproduction command, and three examples of honesty-boundary-violating README claims with their compliant rephrasings.
+- Final LinkedIn post text (Version B, real numbers, four prepared objections) written to `linkedin_drafts/Session5_7_FINAL_post_text_ready.md` for Khawar to publish himself.
+- Sprint verdict: all seven sessions closed 8-14 July; three sessions (5, 6, 7) closed on 14 July in one working day. Next actions recorded in the handoff-state section (post, future planning, RAG handoff); no modeling remains on this repo without a new pre-registration.
 
 ### 14 July 2026, Session 6 closed (with Claude, Fable 5)
 

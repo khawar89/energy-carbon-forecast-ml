@@ -2,7 +2,7 @@
 
 One-year-ahead forecasting of country CO2 emissions from the official Our World in Data (OWID) dataset, benchmarked honestly against simple baselines.
 
-**Status: analysis complete, final reproducibility pass remaining.** Sessions 1-6 (framing and EDA, feature engineering, baselines, Ridge and tree models, XGBoost with the single test evaluation, error analysis) are complete. The final reproducibility and publication pass (Session 7) remains. Every metric claimed here exists in `results/`, written by the clean-run script `src/train.py` and the executed notebooks.
+**Status: complete.** All seven sessions (framing and EDA, feature engineering, baselines, Ridge and tree models, XGBoost with the single test evaluation, error analysis, reproducibility) are done. Every metric claimed here exists in `results/`, written by the clean-run script `src/train.py` and the executed notebooks, and the full result reproduces from a fresh clone (verified 14 July 2026). Extensions (multi-year horizons, SHAP, uncertainty intervals, deployment) are deliberately out of scope until re-opened as new, pre-registered experiments.
 
 ## The question
 
@@ -71,6 +71,21 @@ The single test number above decomposes into a much sharper story (`notebooks/06
 Total and per-capita emissions produce almost disjoint top-10 lists; only Saudi Arabia and the United States appear on both. The same denominator choice will shape how model errors are judged across country sizes.
 
 Full exploratory analysis: `notebooks/01_framing_eda.ipynb` and `notebooks/01b_visual_eda.ipynb`, with all figures in `results/figures/`.
+
+## Reproduce the result
+
+Verified from a fresh clone on 14 July 2026. The pinned environment is Python 3.12 with `pandas==2.2.2`, `numpy==1.26.4`, `scikit-learn==1.5.1`, `xgboost==3.3.0` (`requirements.txt`); HistGradientBoosting rows are version-sensitive, so use the pins.
+
+```bash
+git clone https://github.com/khawar89/energy-carbon-forecast-ml.git
+cd energy-carbon-forecast-ml
+pip install -r requirements.txt
+# one manual step: download the OWID CSV (not committed; see data/README.md)
+curl -L -o data/raw/owid-co2-data.csv https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv
+python src/train.py
+```
+
+`src/train.py` rebuilds the modeling table if missing (running its built-in verification checks, which refuse to save on any failure), refits every model on the frozen configurations, and rewrites `results/model_comparison.csv` (validation and test rows), `results/test_predictions.csv`, and `results/provisional_2024.csv`. One command, one table, no notebook state.
 
 ## Repository notes
 
