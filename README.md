@@ -2,7 +2,7 @@
 
 One-year-ahead forecasting of country CO2 emissions from the official Our World in Data (OWID) dataset, benchmarked honestly against simple baselines.
 
-**Status: in progress.** Session 1 (framing, EDA, problem statement) is complete. Feature engineering, baselines, and models land in the coming sessions. This README grows as results are produced; no metric is claimed here before it exists in `results/`.
+**Status: modeling complete, interpretation in progress.** Sessions 1-5 (framing and EDA, feature engineering, baselines, Ridge and tree models, XGBoost with the single test evaluation) are complete. Error analysis (Session 6) and the final reproducibility pass (Session 7) remain. Every metric claimed here exists in `results/model_comparison.csv`, written by the clean-run script `src/train.py`.
 
 ## The question
 
@@ -26,6 +26,31 @@ Official OWID CO2 dataset: about 50,000 country-year rows, 79 columns, 1750-2024
 - Features for predicting year *t+1* use data through year *t* only; all lags and rolling statistics are computed within country.
 - Baselines: persistence and recent linear trend. Models: Ridge, histogram gradient boosting, XGBoost.
 - Metrics: MAE, RMSE, persistence skill score, plus scale-aware breakdowns (the top five emitters account for roughly 62 percent of global CO2, so a single overall MAE would be dominated by giants).
+
+## Headline result (Session 5, the single test evaluation)
+
+All eight models were scored once on the held-out test years (targets 2019-2023, 762 country-year rows, identical rows for every model), after hyperparameters and tree counts were frozen on validation and expectations were pre-registered in writing. The window deliberately includes the 2020 COVID disruption.
+
+| model | test MAE | test RMSE | MedianAE | skill vs persistence |
+|---|---|---|---|---|
+| xgb_delta | 9.345 | 33.009 | 1.486 | +0.151 |
+| linear_trend | 9.751 | 35.064 | 1.450 | +0.114 |
+| hgb_delta | 10.369 | 39.921 | 1.419 | +0.058 |
+| ridge_level | 10.578 | 34.484 | 2.194 | +0.039 |
+| ridge_delta | 10.603 | 34.598 | 2.219 | +0.036 |
+| persistence | 11.004 | 43.971 | 1.367 | 0.000 |
+| hgb_level | 22.479 | 160.414 | 1.491 | -1.043 |
+| xgb_level | 31.181 | 272.674 | 1.616 | -1.834 |
+
+The honest one-sentence summary: XGBoost predicting year-over-year changes beat persistence by about 15 percent on test MAE, but a country-clustered bootstrap (95 percent interval [-0.018, +0.271], p = 0.14) cannot rule out that the gap is sampling noise, and for the typical country (median absolute error, median percentage error) persistence remained the best forecast.
+
+Three further findings the table supports:
+
+- Parameterization mattered more than algorithm. Models predicting the year-over-year change (delta) and reconstructing the level consistently beat their level-predicting twins; the level tree models failed severely (skill -1.0 to -1.8), which is consistent with trees being unable to extrapolate a rising level past their training ceiling. The only statistically distinguishable test result is xgb_level losing to persistence (p = 0.005).
+- The window decides the winner. On the calm validation years (2015-2018), persistence ranked second and only xgb_delta beat it; on the disrupted test years, five models passed persistence, which suggests the no-change forecast suffers most when large year-over-year changes arrive. On the separate provisional 2024 table (a calm year, revisable data), persistence is best again.
+- Overall MAE and typical-country error rank models differently. Persistence keeps the best MedianAE and MdAPE on test while ranking sixth on MAE; the ML gains appear concentrated in large, volatile rows. Session 6 decomposes this by country, year, and emitter size.
+
+Frozen configurations, both taken as the validation-grid winners before the test ran: xgb_level (max_depth 6, learning_rate 0.10, 125 trees), xgb_delta (max_depth 3, learning_rate 0.10, 173 trees); Ridge alpha 0.1 and the HistGB settings were frozen in Session 4. Reproduce the full table with `python src/train.py` in the pinned environment (`requirements.txt`). The mathematical foundations, including the XGBoost second-order derivation and the clustered-bootstrap inference, are in `math/main.pdf`.
 
 ## Findings so far (Session 1, EDA)
 

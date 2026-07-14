@@ -52,9 +52,10 @@ HGB = dict(max_depth=None, max_iter=300, learning_rate=0.05,
 XGB_FIXED = dict(subsample=0.8, colsample_bytree=0.8, reg_lambda=1.0,
                  random_state=SEED, n_jobs=-1)
 
-# TODO(Khawar): fill these from the Session 5 notebook freeze, then run.
-XGB_LEVEL = None   # e.g. dict(max_depth=3, learning_rate=0.05, n_trees=535)
-XGB_DELTA = None   # e.g. dict(max_depth=3, learning_rate=0.05, n_trees=261)
+# Frozen by Khawar Naeem, 14 Jul 2026: both validation-grid winners, taken as
+# printed (early stopping on val chose the tree counts; see the Session 5 notebook).
+XGB_LEVEL = dict(max_depth=6, learning_rate=0.10, n_trees=125)
+XGB_DELTA = dict(max_depth=3, learning_rate=0.10, n_trees=173)
 
 
 def _ensure_table() -> pd.DataFrame:

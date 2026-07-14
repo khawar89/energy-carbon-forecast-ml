@@ -1,8 +1,6 @@
 # AGENTS.md — Emission-Trajectory ML Project
 
-> Tool-neutral instructions for Codex and other coding agents. This file outranks model recall about this project. Read it first, then `CLAUDE.md`, then `docs/ML_QuickSprint_Execution_Plan.md`. Last updated: 13 July 2026.
->
-> **RESUMING? (temporary pointer, 13 Jul 2026)** Session 5 (XGBoost) is mid-flight: the scaffold (`notebooks/05_xgboost.ipynb`, `src/train.py`) is built and committed but unexecuted. Read `learning_notes/SESSION5_CODEX_HANDOFF.md` for the ready-to-paste resume prompt and teaching order. Delete that file and remove this pointer when Session 5 closes.
+> Tool-neutral instructions for Codex and other coding agents. This file outranks model recall about this project. Read it first, then `CLAUDE.md`, then `docs/ML_QuickSprint_Execution_Plan.md`. Last updated: 14 July 2026.
 
 ## Current objective
 
@@ -52,6 +50,14 @@ The SQL Global Carbon Inventory is paused, not canceled. This ML project reads t
 - Error reporting is scale-aware: median errors, percentage errors, and emitter-size tiers beside overall MAE/RMSE (8 Jul).
 - Required interpretation: errors by country and prediction year, including the 2020 disruption.
 - Raw data stays out of Git. Publish source URLs and reproducible retrieval instructions.
+
+## Post-test freeze (in force since 14 Jul 2026)
+
+The single test evaluation has been run (Session 5). Results are frozen: no
+model may be retuned or refit on any split, and no metric in
+`results/model_comparison.csv` may change except by the clean-run
+reproduction `python src/train.py` with the committed frozen configs.
+Session 6 interprets; it does not re-fit.
 
 ## Extension gates
 
