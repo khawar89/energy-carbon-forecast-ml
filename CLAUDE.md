@@ -36,9 +36,9 @@ External affiliation must always be written as:
 
 **ALL SEVEN SESSIONS CLOSED; SPRINT SCOPE COMPLETE (14 Jul 2026).** Results are FROZEN (AGENTS.md "Post-test freeze"). The clean-clone reproduction is verified, the README is final, and the repo metadata is set for portfolio use. Remaining actions, none of them modeling:
 
-1. Khawar reviews the published static site at `https://khawar89.github.io/energy-carbon-forecast-ml/`. Any later website edit remains frozen-results communication, not modeling.
-2. Khawar reviews and publishes the LinkedIn post himself, revised so its primary call to action is the live project page; retain the source-repository link and prepared objections in `linkedin_drafts/Session5_7_FINAL_post_text_ready.md`. After posting, save the text per the `posted/` convention.
-3. Add the verified live-page URL to the CV project entry only after deployment and link testing. Use the approved CV wording below; do not claim a statistically settled or country-wide model win.
+1. ~~Khawar reviews the published static site~~ DONE. Independently re-verified by Claude 15 Jul (browser-tested at desktop and mobile widths, dark and light: every number matches `results/model_comparison.csv`, `error_by_tier.csv`, and `error_by_country_persistence_top10.csv` exactly; the lens toggle re-ranks correctly; no horizontal overflow; og.png unfurl carries the caveat). No wrong information found. Full record: `linkedin_drafts/posted/POST_Session5_2026-07-15.md`.
+2. ~~Khawar reviews and publishes the LinkedIn post~~ DONE 15 Jul, using `linkedin_drafts/LinkedIn_Short_Live_Project_15Jul2026.md` (superseding the earlier `Session5_7_FINAL_post_text_ready.md` draft, written before the website existed). Exact posted text saved to `linkedin_drafts/posted/POST_Session5_2026-07-15.md` per the standing convention.
+3. STILL OPEN: add the verified live-page URL to the master CV project entry (`3_CV_Latest_updated`), using the "Approved CV wording" below; do not claim a statistically settled or country-wide model win.
 4. Future-sessions planning (a fresh planning conversation, not a sprint session): gated extensions (horizons 2-5, SHAP, uncertainty intervals, Streamlit, SQL extraction; each requires a new pre-registered protocol per AGENTS.md), `docs/Research_Publication_Roadmap.md` timing (idea 1, the metric-reversal note, now has its test-set evidence in `results/error_by_country_persistence_top10.csv` and fig10), and the sprint handoff to the RAG flagship project.
 5. Any new modeling work on this repo re-opens under a new pre-registration; the frozen test may not be reused for selection.
 
@@ -520,6 +520,39 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
 - Next exact action: Khawar reviews the public page. Then revise the prepared
   LinkedIn post so its main call to action is the live project page, and add the
   verified live-project link to the CV entry when ready.
+
+### 15 July 2026, published website independently re-verified; LinkedIn post published (with Claude, Fable 5)
+
+- Khawar published the LinkedIn post using `linkedin_drafts/LinkedIn_Short_Live_Project_15Jul2026.md`
+  with the native social-card image; exact posted text saved to
+  `linkedin_drafts/posted/POST_Session5_2026-07-15.md` per the standing convention.
+- Independently browser-tested the live `gh-pages` site end to end (a second
+  pair of eyes on Codex/GPT-5's build, not a rebuild): every number on the
+  page, hero, the eight-row test table, the four tier-skill cards, the
+  China/Vietnam reversal percentages, and the by-year narrative, checked
+  against `results/model_comparison.csv`, `error_by_tier.csv`, and
+  `error_by_country_persistence_top10.csv` and found to match exactly. The
+  metric-lens toggle correctly re-ranks between overall MAE (xgb_delta wins)
+  and typical-country MedianAE (persistence wins, 1.367) and both states
+  persist correctly alongside the independent dark/light toggle. Verified at
+  1400px and 375px widths: no horizontal overflow, images load 200 OK with
+  alt text, and the og.png social card carries the honest caveat directly on
+  the image. No console errors.
+- Confirmed Codex's own 15 Jul correction was necessary and is now accurate:
+  an earlier claim in this file, the README, and the Session 6 notebook
+  ("2020 is every model's worst year, and no model dodged it") overstated the
+  by-year finding. The saved `error_by_year.csv` shows linear_trend's worst
+  test-year MAE is actually 2021 (13.386), not 2020 (13.135); only
+  persistence, hgb_delta, and xgb_delta peak in 2020. That claim originated
+  in this agent's own 14 Jul README/notebook edits; Codex caught it during
+  the website evidence audit and corrected the README, the Session 6
+  notebook reconciliation cell, `06_error_analysis_check_questions.md`, and
+  this file. No underlying metric or model result was affected, only the
+  prose summary.
+- Verdict to Khawar: everything landed well. No other wrong or inconsistent
+  information found on the live site, the README, or the published post text.
+- Outstanding: add the verified live-page URL to the master CV
+  (`3_CV_Latest_updated`) using the "Approved CV wording" above.
 
 ## Skills born in this project
 
