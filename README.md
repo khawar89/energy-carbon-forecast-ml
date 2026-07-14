@@ -2,7 +2,9 @@
 
 One-year-ahead forecasting of country CO2 emissions from the official Our World in Data (OWID) dataset, benchmarked honestly against simple baselines.
 
-**[Open the live project story](https://khawar89.github.io/energy-carbon-forecast-ml/)** | **[Inspect the frozen results](results/model_comparison.csv)**
+> [!IMPORTANT]
+> **Live project website:** [Explore the interactive results story](https://khawar89.github.io/energy-carbon-forecast-ml/)  
+> [Inspect the frozen results](results/model_comparison.csv) and [review the mathematical foundations](math/main.pdf).
 
 **Status: complete.** All seven sessions (framing and EDA, feature engineering, baselines, Ridge and tree models, XGBoost with the single test evaluation, error analysis, reproducibility) are done. Every metric claimed here exists in `results/`, written by the clean-run script `src/train.py` and the executed notebooks, and the full result reproduces from a fresh clone (verified 14 July 2026). Extensions (multi-year horizons, SHAP, uncertainty intervals, deployment) are deliberately out of scope until re-opened as new, pre-registered experiments.
 
