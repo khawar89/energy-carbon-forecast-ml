@@ -26,9 +26,9 @@ External affiliation must always be written as:
 | Ridge/tree models | Session 4 CLOSED 13 Jul: `notebooks/04_models_ridge_tree.ipynb` executed; Ridge alphas frozen at 0.1/0.1; `results/model_comparison.csv` now has six validation rows; persistence remains best MAE, hgb_delta closest ML model |
 | XGBoost | Session 5 CLOSED 14 Jul: validation grid run, configs frozen (xgb_level d6/lr0.10/125 trees; xgb_delta d3/lr0.10/173 trees), single test evaluation run, results frozen; `results/model_comparison.csv` has 8 val + 8 test rows; xgb_delta best test MAE 9.345 (skill +0.151, CI includes zero); check questions in `notebooks/05_xgboost_check_questions.md` |
 | Error analysis | Session 6 CLOSED 14 Jul: by-year/by-country/by-tier decomposition executed; skill is giant-tier only (xgb_delta +0.325 there, -0.863 small tier); reversal SURVIVES on test (cleared for figures/post); figs 9-11 + four CSVs saved; check questions in `notebooks/06_error_analysis_check_questions.md` |
-| Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml; all 7 sessions pushed; description + 8 topics set 14 Jul |
+| Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml; all 7 sessions pushed; description + 8 topics set 14 Jul; original repository name retained by Khawar on 15 Jul |
 | Reproducibility (Session 7) | CLOSED 14 Jul: clean-clone reproduction verified (fresh clone + documented download -> `src/train.py` reproduces the committed table exactly); README "Reproduce the result" section added; check record in `notebooks/07_reproducibility_check_questions.md` |
-| Static portfolio website | APPROVED AND PLANNED 14 Jul with Codex (GPT-5); static GitHub Pages presentation of frozen results, no live inference; build and deployment still pending |
+| Static portfolio website | LOCAL PREVIEW BUILT AND PUBLICATION APPROVED 15 Jul with Codex (GPT-5); static GitHub Pages presentation of frozen results, no live inference; deployment to the existing repository is in progress |
 | SPRINT | COMPLETE 14 Jul 2026. Results frozen; new modeling requires a new pre-registration |
 | Math foundations doc | Extended 14 Jul (`math/main.pdf`, commit 6ab13da): 6 sections, 10 pages, 28 numbered equations, 10 verified references; now includes the full XGBoost second-order derivation (leaf weight, split gain, gamma pruning, early-stopping refit rule) and the level/delta parameterization, both verified against executed xgboost 3.3.0 |
 
@@ -36,7 +36,7 @@ External affiliation must always be written as:
 
 **ALL SEVEN SESSIONS CLOSED; SPRINT SCOPE COMPLETE (14 Jul 2026).** Results are FROZEN (AGENTS.md "Post-test freeze"). The clean-clone reproduction is verified, the README is final, and the repo metadata is set for portfolio use. Remaining actions, none of them modeling:
 
-1. Build and verify the approved static GitHub Pages site from the brief below and the standing rules in `AGENTS.md`. This is frozen-results communication, not modeling.
+1. Publish the approved static site from the existing repository's separate `gh-pages` branch, then verify `https://khawar89.github.io/energy-carbon-forecast-ml/`. This is frozen-results communication, not modeling.
 2. Khawar reviews and publishes the LinkedIn post himself, revised so its primary call to action is the live project page; retain the source-repository link and prepared objections in `linkedin_drafts/Session5_7_FINAL_post_text_ready.md`. After posting, save the text per the `posted/` convention.
 3. Add the verified live-page URL to the CV project entry only after deployment and link testing. Use the approved CV wording below; do not claim a statistically settled or country-wide model win.
 4. Future-sessions planning (a fresh planning conversation, not a sprint session): gated extensions (horizons 2-5, SHAP, uncertainty intervals, Streamlit, SQL extraction; each requires a new pre-registered protocol per AGENTS.md), `docs/Research_Publication_Roadmap.md` timing (idea 1, the metric-reversal note, now has its test-set evidence in `results/error_by_country_persistence_top10.csv` and fig10), and the sprint handoff to the RAG flagship project.
@@ -281,6 +281,8 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 | 14 Jul 2026 | Post-test freeze: results final, no retuning on any split | The single test evaluation ran 14 Jul after both pre-registrations and both LinkedIn drafts were written. Any post-test change to a model would make the test a second validation set. Session 6 interprets only. |
 | 14 Jul 2026 | README headline carries the significance caveat, not just the point win | xgb_delta beat persistence on test (MAE 9.345 vs 11.004, skill +0.151) but the country-clustered 95% CI [-0.018, +0.271] includes zero (p=0.14), and persistence kept the best MedianAE/MdAPE. Claiming a clean ML win would overstate the evidence; the honest framing (point win, interval includes zero, typical country still favors persistence) is the project's thesis in action. |
 | 14 Jul 2026 | Build the portfolio page as static GitHub Pages, not Streamlit | The results are frozen and the immediate need is a fast evidence story for LinkedIn and the CV. Static HTML can reveal committed results without serving new predictions. Streamlit and live inference remain gated extensions requiring a new protocol. |
+| 15 Jul 2026 | Consider renaming the repository to `country-co2-forecasting-ml` before publishing GitHub Pages | The completed model forecasts country-level CO2 emissions. Energy variables are predictors, not a forecast target. The proposed name states the unit, target, temporal task, and ML framing without centering one algorithm. |
+| 15 Jul 2026 | Retain the existing `energy-carbon-forecast-ml` repository and publish the website there | Khawar chose continuity with the established repository. The website and README use the precise human-facing title "Country CO2 Forecasting with Machine Learning," while the README explains that energy variables remain predictors. |
 
 ## Session log
 
@@ -316,7 +318,7 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 
 ### 8 July 2026, evening: repo shipped, 2024 decided, visual EDA added (with Claude)
 
-- Public repository created and pushed: https://github.com/khawar89/energy-carbon-forecast-ml (name chosen by Khawar with Claude's casing cleanup; description: one-year-ahead country CO2 forecasting with honest baseline comparisons).
+- Public repository created and pushed as `energy-carbon-forecast-ml`; description: one-year-ahead country CO2 forecasting with honest baseline comparisons. A rename was considered, but Khawar retained the original repository on 15 Jul for continuity.
 - 2024 test-year question decided (option 3): headline test = 2019-2023 targets; 2024 in a labeled provisional appendix. Frozen problem statement in the notebook updated to match.
 - Khawar proposed adding visualization to Session 1 and expanding scope to energy prediction. Resolved: visual EDA built now (`notebooks/01b_visual_eda.ipynb`, six figures in `results/figures/`); energy columns adopted as feature candidates (7-8% missing); energy as a second prediction target deferred as a gated extension per the sprint cut rules.
 - Next exact action: Session 2, `src/build_features.py` plus `notebooks/02_build_features_walkthrough.ipynb`.
@@ -457,7 +459,7 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
 ### 14 July 2026, Session 6 closed (with Claude, Fable 5)
 
 - Built `notebooks/06_error_analysis.ipynb` (19 cells) reading `results/test_predictions.csv`; smoke-tested with output suppressed, pre-registration (Claude-guided at Khawar's request, marked) recorded before execution. Interpretation only; the sole fit was reproducing the frozen xgb_delta config unchanged for permutation importance.
-- By year: 2020 is every model's worst year (persistence MAE 13.95); xgb_delta holds positive skill in ALL five test years (+0.051 to +0.301) but earns most in calm 2019/2022, so the ML advantage reads post-shock and steady-state structure rather than anticipating disruptions. Trend's only losing year is 2021 (-0.043), the pre-registered mirror miss (slope window contaminated by the collapse into the rebound); the 2020 half of that prediction missed (trend slightly BEAT persistence in 2020, 13.135 vs 13.950, because enough large emitters had flat/declining pre-2020 slopes).
+- By year: 2020 is the worst test-year MAE for persistence (13.950), hgb_delta (14.735), and xgb_delta (12.622), while linear trend's worst test-year MAE is 2021 (13.386), after the collapse entered its slope window. xgb_delta holds positive skill in ALL five test years (+0.051 to +0.301) but earns most in calm 2019/2022, so the ML advantage reads post-shock and steady-state structure rather than anticipating disruptions. Trend's only losing year is 2021 (-0.043), the pre-registered mirror miss; the 2020 half of that prediction missed because trend slightly BEAT persistence in 2020 (13.135 vs 13.950), with enough large emitters flat or declining before the shock.
 - By country: the Session 3 MAE-vs-percentage reversal SURVIVES on test with the same lead actors: Russia lowest percentage error (2.14%) in persistence's top-10 absolute list, China 3.19% on the largest absolute miss (365 Mt), Vietnam 11.26% opposite signature, Pakistan 13.20% in xgb_delta's list. Cleared for figures and the public post per the 13 Jul gate; `fig10_reversal_test.png` is the cleared figure.
 - By tier: the headline +0.151 skill is giant-tier only (xgb_delta +0.325 on the 25 rows >= 1000 Mt; ridge_delta quietly best there at +0.329); ~zero in large/mid; every ML model loses to persistence in the small tier (xgb_delta -0.863). Level trees' giant-tier MAE 508/773 vs persistence 169 is the saturation failure made visible. Deployment claim must be tier-scoped.
 - Permutation importance (frozen xgb_delta): co2_slope5 first (2.889), population second; the co2 level family individually low (roll5 0.098) from redundancy, read as group structure per the correlated-features caveat.
@@ -484,6 +486,31 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
 - Next exact action: build the static files, verify every displayed number
   against the committed CSVs, preview on mobile and desktop, then ask Khawar to
   approve the wording before deployment or posting.
+
+### 15 July 2026, static website local preview built (with Codex, GPT-5)
+
+- Khawar initially approved the clearer repository name
+  `country-co2-forecasting-ml`, then chose to retain the established
+  `energy-carbon-forecast-ml` repository. The public-facing page title remains
+  "Country CO2 Forecasting with Machine Learning," which states the target
+  precisely without disrupting the existing repository history.
+- Built a responsive static site using HTML, CSS, and vanilla JavaScript. It
+  includes the honest headline result, a visible uncertainty caveat, an
+  interactive overall-MAE versus typical-country lens, emitter-tier evidence,
+  the denominator reversal, by-year context, five evaluation safeguards, a
+  compact level-versus-delta explanation, and reproducibility links.
+- Built matching 1200 by 630 social-preview artwork and a small favicon. Browser
+  checks passed at desktop and 390-pixel mobile widths with no horizontal
+  overflow; the metric switch and theme control both work; all three committed
+  figures load with descriptive alternative text.
+- The website evidence audit found and corrected an overbroad Session 6 claim.
+  The saved CSV shows that 2020 is the worst test-year MAE for persistence,
+  hgb_delta, and xgb_delta, while linear trend peaks in 2021. Corrected the
+  README, Session 6 notebook reconciliation, check-question record, this file,
+  and website wording. No metric or model result changed.
+- Next exact action: commit and push the main-branch documentation corrections,
+  publish the prepared `gh-pages` branch to the existing repository, enable
+  GitHub Pages from that branch, and verify the live page and social preview.
 
 ## Skills born in this project
 

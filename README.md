@@ -1,4 +1,4 @@
-# energy-carbon-forecast-ml
+# Country CO2 Forecasting with Machine Learning
 
 One-year-ahead forecasting of country CO2 emissions from the official Our World in Data (OWID) dataset, benchmarked honestly against simple baselines.
 
@@ -12,7 +12,9 @@ The honest benchmark matters more than the model: country emissions change slowl
 
 ## Scope
 
-The current target is production-based annual CO2 (Mt) per country, one year ahead. Energy variables (primary energy consumption and related columns) are used as candidate features; forecasting energy as a second target is a planned extension, gated until the core CO2 result is reproducible. The name of the repository reflects the intended full arc, not the current deliverable.
+The current target is production-based annual CO2 (Mt) per country, one year ahead. Energy variables, including primary energy consumption and related columns, are candidate predictors. The project does not forecast energy consumption.
+
+The repository retains its original name, `energy-carbon-forecast-ml`, because energy variables are part of the predictor set and the name already anchors the project's public history. The title above states the current forecasting task more precisely.
 
 This is a statistical extrapolation portfolio project using historical public data. It is not a causal model, a policy forecast, or an energy-system scenario.
 
@@ -59,7 +61,7 @@ The single test number above decomposes into a much sharper story (`notebooks/06
 ![Within-tier skill against persistence](results/figures/fig11_skill_by_tier.png)
 
 - The best model's skill is tier-scoped. xgb_delta's overall +0.151 comes almost entirely from the giant emitters (within-tier skill +0.325 for the 25 rows above 1000 Mt); it is near zero for large and mid emitters and sharply negative for small ones (-0.863 below 10 Mt), where every learned model loses to persistence. An honest deployment claim is therefore: this model adds value for the largest emitters only.
-- 2020 is every model's worst year, and no model dodged it. xgb_delta held positive skill in all five test years, but its largest gains came in the calmer years 2019 and 2022, which suggests the advantage comes from reading post-shock and steady-state structure, not from anticipating disruptions (`results/figures/fig9_error_by_year.png`).
+- The 2020 disruption produced the worst test-year MAE for persistence, hgb_delta, and xgb_delta. Linear trend's worst test-year MAE arrived in 2021, after the collapse entered its five-year slope window. xgb_delta held positive skill in all five test years, but its largest gains came in the calmer years 2019 and 2022, which suggests the advantage comes from reading post-shock and steady-state structure, not from anticipating disruptions (`results/figures/fig9_error_by_year.png`).
 - Extrapolation fails on a delay. The trend baseline survived 2020 (its flat and declining country slopes absorbed part of the drop) but 2021 is its only losing year: by then its five-year window contained the collapse and pointed down into the rebound.
 - The absolute-versus-percentage ranking reversal survives on test. In persistence's top-10 absolute-miss list, Russia shows the lowest percentage error (2.1 percent on a 1,733 Mt denominator) and China 3.2 percent despite the sample's largest absolute miss, while Vietnam shows 11.3 percent on a smaller miss (`results/figures/fig10_reversal_test.png`). The error metric must match the question: absolute for global-budget questions, percentage for national-planning ones.
 - Permutation importance on the frozen xgb_delta ranks the five-year slope first (co2_slope5), with the co2 level family individually low because its columns are near-copies that can stand in for one another; read as group structure, not a per-feature ranking (`results/permutation_importance_xgb_delta.csv`).

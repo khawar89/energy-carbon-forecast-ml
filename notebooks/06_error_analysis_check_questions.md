@@ -23,7 +23,8 @@ family individually understated (co2_roll5_mean 0.098).
 ## Reconcile and interpret
 
 Recorded in the notebook's section 6 (reconcile cell) with the numbers;
-highlights: 2020 is every model's worst year; xgb_delta holds positive skill
+highlights: 2020 is the worst test-year MAE for persistence, hgb_delta, and
+xgb_delta, while linear trend peaks in 2021; xgb_delta holds positive skill
 in all five test years but earns most of it in the calm years 2019/2022 and
 almost entirely in the giant tier (+0.325 there, -0.863 small tier);
 ridge_delta is the giant tier's quiet winner (+0.329); the level trees'
