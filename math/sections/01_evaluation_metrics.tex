@@ -72,6 +72,33 @@ accurate as assuming no change; $\mathrm{Skill}=1$ is the unreachable
 limit of zero error; negative skill means the model is less accurate than
 doing nothing and must be reported as a loss, not merely a smaller win.
 
+\subsection{Level and delta parameterizations, scored on the level}
+
+A model in this project may be trained against either of two targets: the
+level $y_{c,t+1}$ directly, or the year-over-year change
+$\delta_{c,t+1} = y_{c,t+1} - y_{c,t}$. In the delta parameterization the
+model's raw output $\hat\delta_{c,t+1}$ is converted back to a level
+before any metric is computed:
+
+\begin{equation}
+\label{eq:level-delta}
+\hat y_{c,t+1} =
+\begin{cases}
+\hat f(x_{c,t}) & \text{(level parameterization)} \\[2pt]
+y_{c,t} + \hat\delta_{c,t+1} & \text{(delta parameterization)}
+\end{cases}
+\end{equation}
+
+All metrics in this section are always computed on the reconstructed
+level of Equation~\ref{eq:level-delta}, on identical rows, so the two
+parameterizations remain directly comparable. The motivation is that
+next-year emissions are close to this-year emissions
+(Section~\ref{sec:baselines}), so a level-target model can appear
+accurate by approximately reproducing its own \texttt{co2} input;
+predicting the change forces the model to learn what moves emissions.
+The parameterization changes the question the model is asked, never the
+quantity it is scored on.
+
 \subsection{The same-rows rule}
 
 Every comparison table in this project scores all candidate models on an

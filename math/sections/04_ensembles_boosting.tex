@@ -87,15 +87,154 @@ boosting round $m$ is
 \end{equation}
 
 where $T$ is the number of leaves in tree $h_m$ and $w$ its leaf weights.
+This project treats XGBoost as a comparison model, not the project's goal
+(see \texttt{AGENTS.md}), with a small, defensible hyperparameter grid
+selected on the validation years rather than a wide search, implemented
+in \texttt{notebooks/05\_xgboost.ipynb} and \texttt{src/train.py}.
+
+\subsubsection{The second-order (Newton) step}
+
 Rather than fitting $h_m$ to the first-order pseudo-residual alone
-(Equation~\ref{eq:gb-pseudoresidual}), XGBoost takes a second-order Taylor
-expansion of the loss around $F_{m-1}$, using the per-observation
-gradient $g_i$ and Hessian $h_i$ of $l$, which yields a closed-form
-optimal leaf weight and an explicit split-gain criterion balancing
-improvement against the $\Omega$ penalty in
-Equation~\ref{eq:xgb-objective} \cite{chen2016xgboost}. This project
-treats XGBoost as a comparison model, not the project's goal (see
-\texttt{AGENTS.md}), with a small, defensible hyperparameter grid selected
-on the validation years rather than a wide search. This section will be
-extended with the full second-order derivation and the exact split-gain
-formula when Session 5 (XGBoost) is built.
+(Equation~\ref{eq:gb-pseudoresidual}), XGBoost approximates the loss in
+Equation~\ref{eq:xgb-objective} by its second-order Taylor expansion
+around the current prediction $F_{m-1}(x_i)$. Writing, for each
+observation,
+
+\begin{equation}
+\label{eq:xgb-grad-hess}
+g_i = \left.\frac{\partial\, l(y_i, F)}{\partial F}\right|_{F=F_{m-1}(x_i)},
+\qquad
+h_i = \left.\frac{\partial^2 l(y_i, F)}{\partial F^2}\right|_{F=F_{m-1}(x_i)},
+\end{equation}
+
+(the Hessian $h_i$ carries an observation subscript $i$; the tree $h_m$
+carries a round subscript $m$, so the two symbols do not collide), the
+objective becomes, up to a constant that does not depend on $h_m$,
+
+\begin{equation}
+\label{eq:xgb-taylor}
+\tilde{\mathcal{L}}^{(m)} =
+\sum_{i=1}^{n}\left[ g_i\, h_m(x_i) + \tfrac{1}{2} h_i\, h_m(x_i)^2 \right]
++ \gamma T + \tfrac{1}{2}\lambda \sum_{j=1}^{T} w_j^2 .
+\end{equation}
+
+A tree with fixed structure assigns every observation to exactly one leaf
+$j$ with constant value $w_j$. Collecting the per-leaf sums
+$G_j = \sum_{i \in I_j} g_i$ and $H_j = \sum_{i \in I_j} h_i$, where
+$I_j$ is the set of observations in leaf $j$, Equation~\ref{eq:xgb-taylor}
+separates across leaves:
+
+\begin{equation}
+\label{eq:xgb-per-leaf}
+\tilde{\mathcal{L}}^{(m)} =
+\sum_{j=1}^{T}\left[ G_j w_j + \tfrac{1}{2}\left(H_j + \lambda\right) w_j^2 \right]
++ \gamma T .
+\end{equation}
+
+Each bracket is a one-dimensional quadratic in $w_j$, minimized in closed
+form:
+
+\begin{equation}
+\label{eq:xgb-leaf-weight}
+w_j^{*} = -\frac{G_j}{H_j + \lambda},
+\qquad
+\tilde{\mathcal{L}}^{(m)}_{\min} =
+-\tfrac{1}{2}\sum_{j=1}^{T}\frac{G_j^2}{H_j + \lambda} + \gamma T .
+\end{equation}
+
+\subsubsection{Split gain and pruning}
+
+Because Equation~\ref{eq:xgb-leaf-weight} scores any fixed tree structure,
+the value of splitting one leaf into left and right children ($L$, $R$) is
+the reduction in the minimized objective, the split gain
+\cite{chen2016xgboost}:
+
+\begin{equation}
+\label{eq:xgb-gain}
+\mathrm{Gain} = \tfrac{1}{2}\left[
+\frac{G_L^2}{H_L + \lambda} + \frac{G_R^2}{H_R + \lambda}
+- \frac{(G_L + G_R)^2}{H_L + H_R + \lambda}
+\right] - \gamma .
+\end{equation}
+
+Splits are grown greedily by maximizing Equation~\ref{eq:xgb-gain} over
+candidate features and thresholds; any split whose gain is negative after
+the $\gamma$ deduction is not made, so $\gamma$ acts as a pruning
+threshold on weak splits. (The xgboost implementation reports gain without
+the constant factor $\tfrac{1}{2}$, which does not change which split is
+chosen; verified against xgboost 3.3.0, whose reported gain is exactly
+twice Equation~\ref{eq:xgb-gain} at $\gamma = 0$.)
+
+\subsubsection{Specialization to squared error, and what $\lambda$ does}
+
+Under the squared-error loss $l = \tfrac{1}{2}(y_i - F)^2$ used in this
+project, Equation~\ref{eq:xgb-grad-hess} gives
+$g_i = F_{m-1}(x_i) - y_i = -r_i$ (the negative residual) and $h_i = 1$,
+so for a leaf containing $n_j$ observations Equation~\ref{eq:xgb-leaf-weight}
+becomes
+
+\begin{equation}
+\label{eq:xgb-shrunk-leaf}
+w_j^{*} = \frac{\sum_{i \in I_j} r_i}{n_j + \lambda}
+        = \bar r_j \cdot \frac{n_j}{n_j + \lambda},
+\end{equation}
+
+where $\bar r_j$ is the mean residual in the leaf. Plain gradient boosting
+(Section on gradient boosting above) would output $\bar r_j$ itself;
+XGBoost multiplies it by $n_j / (n_j + \lambda)$, shrinking every leaf's
+correction toward zero and shrinking thin-evidence leaves (small $n_j$)
+hardest. This is the second-order machinery's practical effect on this
+project's data: corrections supported by few country-year rows are damped
+before they can overfit. Equations~\ref{eq:xgb-leaf-weight},
+\ref{eq:xgb-gain}, and~\ref{eq:xgb-shrunk-leaf} were verified numerically
+against xgboost 3.3.0 on a worked four-observation example (a single
+depth-one tree, $\lambda = 1$): the fitted leaf values equal both
+closed-form expressions exactly, and the split chosen is the gain-maximal
+one.
+
+\subsubsection{Shrinkage, subsampling, and early stopping}
+
+Each fitted tree enters the ensemble scaled by a learning rate
+$\eta \in (0, 1]$:
+
+\begin{equation}
+\label{eq:xgb-shrinkage}
+F_m(x) = F_{m-1}(x) + \eta\, h_m(x),
+\end{equation}
+
+so a smaller $\eta$ requires more boosting rounds $M$ to reach the same
+fit; $\eta$ and $M$ trade off directly, and slow learning with more trees
+generalizes better at higher compute cost \cite{friedman2001greedy}.
+XGBoost additionally fits each tree on a random fraction of rows
+(\texttt{subsample}) and columns (\texttt{colsample\_bytree}), which
+decorrelates successive trees in the same spirit as bagging
+\cite{chen2016xgboost}.
+
+The number of rounds $M$ is not tuned by grid search in this project but
+chosen by early stopping: trees are added while the validation-set MAE
+improves, and boosting stops when it has not improved for a fixed patience
+window, freezing
+
+\begin{equation}
+\label{eq:xgb-early-stop}
+M^{*} = \arg\min_{m \le M_{\max}} \mathrm{MAE}_{\mathrm{val}}(F_m).
+\end{equation}
+
+Early stopping is model selection on the validation years, which this
+project's protocol allows; selecting anything by test-set performance is
+not. For the single test evaluation, each model is refit on the pooled
+training and validation rows (target years through 2018) with the tree
+count fixed at $M^{*}$ and early stopping disabled, so the test years
+never influence any modeling choice, including the number of trees.
+
+\subsubsection{Why trees require the delta parameterization}
+
+A regression tree predicts a constant within each region of
+Equation~\ref{eq:tree-split}, so an ensemble of trees can never predict a
+level outside the range of its training targets. A country whose emissions
+rise beyond anything seen in training saturates at the training ceiling
+and is systematically under-predicted in the level parameterization of
+Equation~\ref{eq:level-delta}. Predicting the bounded year-over-year
+change $\delta_{c,t+1}$ and reconstructing the level from the known
+current value sidesteps this failure mode, which is why the tree-based
+models in this project are evaluated in both parameterizations.
