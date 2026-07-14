@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Country CO2 Forecasting with Machine Learning | Khawar Naeem</title>
+  <meta name="description" content="A reproducible comparison of persistence, trend, Ridge, histogram gradient boosting, and XGBoost for one-year-ahead country CO2 forecasting.">
+  <meta name="author" content="Dr. Khawar Naeem">
+  <meta name="theme-color" content="#0b2836">
+  <link rel="canonical" href="https://khawar89.github.io/country-co2-forecasting-ml/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Can machine learning beat no change?">
+  <meta property="og:description" content="Country CO2 forecasting evaluated against persistence, with chronological testing, uncertainty, and failure analysis.">
+  <meta property="og:url" content="https://khawar89.github.io/country-co2-forecasting-ml/">
+  <meta property="og:image" content="https://khawar89.github.io/country-co2-forecasting-ml/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Can machine learning beat no change?">
+  <meta name="twitter:description" content="An honest evaluation of one-year-ahead country CO2 forecasts.">
+  <meta name="twitter:image" content="https://khawar89.github.io/country-co2-forecasting-ml/og.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    document.documentElement.classList.add('js');
+    try {
+      const savedTheme = localStorage.getItem('co2-site-theme');
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = savedTheme || (systemDark ? 'dark' : 'light');
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to the evidence</a>
+
+  <header class="site-header" data-header>
+    <a class="brand" href="#top" aria-label="Country CO2 forecasting, return to top">
+      <span class="brand-mark" aria-hidden="true">CO<sub>2</sub></span>
+      <span class="brand-copy">Forecasting<br><small>evaluated honestly</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Page sections">
+      <a href="#result">Result</a>
+      <a href="#lens">Judging lens</a>
+      <a href="#where">Where it works</a>
+      <a href="#method">Method</a>
+    </nav>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme">
+      <span aria-hidden="true" data-theme-icon>◐</span>
+      <span class="theme-label" data-theme-label>Dark</span>
+    </button>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-content shell">
+        <div class="hero-copy">
+          <p class="eyebrow">153 countries · 762 test country-years · 2019-2023</p>
+          <h1 id="hero-title">Can machine learning beat <span>“nothing will change”</span>?</h1>
+          <p class="hero-lead">I tested one-year-ahead national CO<sub>2</sub> forecasts against persistence, the simple rule that next year will equal this year. XGBoost predicting the annual change produced the lowest overall test error, but that is only the first part of the result.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#result">See the evidence</a>
+            <a class="button button-quiet" href="https://github.com/khawar89/country-co2-forecasting-ml" rel="noopener">View source <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <aside class="result-card" aria-label="Headline test result">
+          <p class="card-kicker">Test mean absolute error</p>
+          <div class="score-row">
+            <div class="score score-winner">
+              <span class="score-model">XGBoost delta</span>
+              <strong>9.345</strong>
+              <span>MtCO<sub>2</sub></span>
+            </div>
+            <span class="versus" aria-hidden="true">vs</span>
+            <div class="score">
+              <span class="score-model">Persistence</span>
+              <strong>11.004</strong>
+              <span>MtCO<sub>2</sub></span>
+            </div>
+          </div>
+          <div class="point-gain">
+            <strong>15.1%</strong>
+            <span>lower point-estimate MAE</span>
+          </div>
+          <div class="caveat">
+            <span class="caveat-icon" aria-hidden="true">!</span>
+            <p><strong>Promising, not statistically settled.</strong> The country-clustered 95% skill interval is -0.018 to +0.271 (p = 0.14), so it includes zero.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="benchmark section" id="result" aria-labelledby="benchmark-title">
+      <div class="shell split-intro">
+        <div>
+          <p class="section-label">01 · The opponent</p>
+          <h2 id="benchmark-title">A baseline that is difficult to beat</h2>
+        </div>
+        <div class="intro-copy">
+          <p>National emissions usually move gradually. Since 2010, the median absolute annual change in this dataset is about 4.4% of the emissions level. That makes yesterday’s level a serious forecast, not a token comparison.</p>
+        </div>
+      </div>
+
+      <div class="shell benchmark-grid">
+        <article class="formula-card">
+          <p class="mini-label">Persistence forecast</p>
+          <p class="formula" aria-label="Predicted emissions next year equal emissions this year">
+            <span>ŷ</span><sub>t+1</sub> = <span>y</span><sub>t</sub>
+          </p>
+          <p>Next year’s forecast is simply this year’s observed value.</p>
+        </article>
+        <article class="formula-card formula-card-accent">
+          <p class="mini-label">Skill against persistence</p>
+          <p class="formula formula-small" aria-label="Skill equals one minus model mean absolute error divided by persistence mean absolute error">
+            Skill = 1 - <span class="fraction"><span>MAE<sub>model</sub></span><span>MAE<sub>persistence</sub></span></span>
+          </p>
+          <p>Positive skill means the model improves on persistence. Negative skill means the simple baseline wins.</p>
+        </article>
+        <article class="principle-card">
+          <p class="mini-label">The project rule</p>
+          <blockquote>“A model that loses to persistence will be reported as losing.”</blockquote>
+          <p>Every model uses the same chronological test rows and the same scoring code.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="lens section section-ink" id="lens" aria-labelledby="lens-title">
+      <div class="shell">
+        <div class="split-intro split-intro-light">
+          <div>
+            <p class="section-label">02 · Choose the question</p>
+            <h2 id="lens-title">The winner changes with the judging lens</h2>
+          </div>
+          <div class="intro-copy">
+            <p>Overall MAE gives every tonne of error the same weight, so the largest emitters dominate. Median error asks what happens for the typical country. Both are valid, but they answer different questions.</p>
+          </div>
+        </div>
+
+        <div class="lens-panel">
+          <div class="lens-controls" role="group" aria-label="Select evaluation lens">
+            <button type="button" class="lens-button is-active" data-lens="overall" aria-pressed="true">
+              <span>Overall emissions error</span>
+              <small>Mean absolute error</small>
+            </button>
+            <button type="button" class="lens-button" data-lens="typical" aria-pressed="false">
+              <span>Typical-country error</span>
+              <small>Median absolute error</small>
+            </button>
+          </div>
+
+          <div class="lens-result" aria-live="polite" aria-atomic="true">
+            <div class="lens-summary">
+              <p class="mini-label" data-lens-kicker>Overall MAE, lower is better</p>
+              <h3 data-lens-headline>XGBoost delta has the lowest point-estimate error.</h3>
+              <p data-lens-explanation>Its advantage is driven by large, volatile country-year rows. The uncertainty interval still includes zero.</p>
+            </div>
+            <ol class="ranking" data-ranking>
+              <li class="rank-row is-winner">
+                <span class="rank-number">1</span><span class="rank-model">XGBoost delta</span><strong>9.345</strong><span class="rank-unit">MtCO<sub>2</sub></span>
+              </li>
+              <li class="rank-row">
+                <span class="rank-number">2</span><span class="rank-model">Linear trend</span><strong>9.751</strong><span class="rank-unit">MtCO<sub>2</sub></span>
+              </li>
+              <li class="rank-row">
+                <span class="rank-number">3</span><span class="rank-model">HGB delta</span><strong>10.369</strong><span class="rank-unit">MtCO<sub>2</sub></span>
+              </li>
+              <li class="rank-row is-baseline">
+                <span class="rank-number">4</span><span class="rank-model">Persistence</span><strong>11.004</strong><span class="rank-unit">MtCO<sub>2</sub></span>
+              </li>
+            </ol>
+          </div>
+
+          <p class="lens-takeaway" data-lens-takeaway><strong>Interpretation:</strong> XGBoost delta is the overall point winner, but the evidence does not establish a uniform or statistically settled advantage.</p>
+        </div>
+
+        <details class="full-table">
+          <summary>View all eight frozen test results</summary>
+          <div class="table-scroll" tabindex="0" aria-label="Scrollable model comparison table">
+            <table>
+              <caption>All models, identical 2019-2023 test rows. Lower error is better.</caption>
+              <thead>
+                <tr><th>Model</th><th>MAE</th><th>RMSE</th><th>MedianAE</th><th>Skill</th></tr>
+              </thead>
+              <tbody>
+                <tr><th>XGBoost delta</th><td>9.345</td><td>33.009</td><td>1.486</td><td class="positive">+0.151</td></tr>
+                <tr><th>Linear trend</th><td>9.751</td><td>35.064</td><td>1.450</td><td class="positive">+0.114</td></tr>
+                <tr><th>HGB delta</th><td>10.369</td><td>39.921</td><td>1.419</td><td class="positive">+0.058</td></tr>
+                <tr><th>Ridge level</th><td>10.578</td><td>34.484</td><td>2.194</td><td class="positive">+0.039</td></tr>
+                <tr><th>Ridge delta</th><td>10.603</td><td>34.598</td><td>2.219</td><td class="positive">+0.036</td></tr>
+                <tr><th>Persistence</th><td>11.004</td><td>43.971</td><td class="best-cell">1.367</td><td>0.000</td></tr>
+                <tr><th>HGB level</th><td>22.479</td><td>160.414</td><td>1.491</td><td class="negative">-1.043</td></tr>
+                <tr><th>XGBoost level</th><td>31.181</td><td>272.674</td><td>1.616</td><td class="negative">-1.834</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="where section" id="where" aria-labelledby="where-title">
+      <div class="shell split-intro">
+        <div>
+          <p class="section-label">03 · Where the skill lives</p>
+          <h2 id="where-title">The aggregate gain is concentrated among giant emitters</h2>
+        </div>
+        <div class="intro-copy">
+          <p>XGBoost delta improves sharply on persistence for country-years above 1,000 MtCO<sub>2</sub>. For small emitters, every learned model loses. The correct claim is tier-specific.</p>
+        </div>
+      </div>
+
+      <div class="shell tier-strip" aria-label="XGBoost delta skill by emitter-size tier">
+        <article class="tier-card tier-loss">
+          <span class="tier-name">Small</span><small>&lt;10 Mt</small><strong>-0.863</strong><span>skill</span>
+        </article>
+        <article class="tier-card tier-neutral">
+          <span class="tier-name">Mid</span><small>10-100 Mt</small><strong>-0.027</strong><span>skill</span>
+        </article>
+        <article class="tier-card tier-neutral">
+          <span class="tier-name">Large</span><small>100-1,000 Mt</small><strong>-0.001</strong><span>skill</span>
+        </article>
+        <article class="tier-card tier-win">
+          <span class="tier-name">Giant</span><small>≥1,000 Mt</small><strong>+0.325</strong><span>skill</span>
+        </article>
+      </div>
+
+      <figure class="shell evidence-figure">
+        <div class="figure-frame">
+          <img src="assets/fig11_skill_by_tier.png" width="1800" height="1000" loading="lazy" alt="Comparison of model skill against persistence across small, mid, large, and giant emitter tiers. XGBoost delta is strongly positive only for the giant tier and negative for the small tier.">
+        </div>
+        <figcaption><strong>Modeling consequence:</strong> one global skill score hides who benefits. A deployment claim would need to be restricted to the largest emitters.</figcaption>
+      </figure>
+    </section>
+
+    <section class="reversal section section-warm" aria-labelledby="reversal-title">
+      <div class="shell split-intro">
+        <div>
+          <p class="section-label">04 · The denominator story</p>
+          <h2 id="reversal-title">A large miss can still be a small percentage error</h2>
+        </div>
+        <div class="intro-copy">
+          <p>China has the largest absolute persistence miss in this test, 365 MtCO<sub>2</sub>, but the mean percentage error is 3.2%. Vietnam’s smaller absolute miss corresponds to 11.3%. Rankings reverse when the denominator changes.</p>
+        </div>
+      </div>
+
+      <figure class="shell evidence-figure">
+        <div class="figure-frame">
+          <img src="assets/fig10_reversal_test.png" width="2179" height="927" loading="lazy" alt="Two-panel ranking of persistence errors. China and other large emitters lead absolute errors, while Vietnam has a higher percentage error despite a smaller absolute miss.">
+        </div>
+        <figcaption><strong>Evaluation consequence:</strong> use absolute error for global-budget questions and percentage error for proportional national-planning questions.</figcaption>
+      </figure>
+    </section>
+
+    <section class="time section" aria-labelledby="time-title">
+      <div class="shell split-intro">
+        <div>
+          <p class="section-label">05 · Time and disruption</p>
+          <h2 id="time-title">The 2020 shock changed the error regime</h2>
+        </div>
+        <div class="intro-copy">
+          <p>Persistence, HGB delta, and XGBoost delta record their worst test-year MAE in 2020. Linear trend peaks in 2021, after the collapse enters its five-year slope window. XGBoost delta maintains positive point skill in all five years, but its largest gains occur in calmer years.</p>
+        </div>
+      </div>
+
+      <figure class="shell evidence-figure">
+        <div class="figure-frame">
+          <img src="assets/fig9_error_by_year.png" width="1800" height="1000" loading="lazy" alt="Year-by-year test mean absolute error for persistence, linear trend, HGB delta, and XGBoost delta from 2019 to 2023. The delta models and persistence peak in 2020, while linear trend peaks in 2021.">
+        </div>
+        <figcaption><strong>Forecasting consequence:</strong> model rankings depend on the evaluation window, so chronological testing across calm and disrupted years matters.</figcaption>
+      </figure>
+    </section>
+
+    <section class="method section section-ink" id="method" aria-labelledby="method-title">
+      <div class="shell">
+        <div class="split-intro split-intro-light">
+          <div>
+            <p class="section-label">06 · Evaluation design</p>
+            <h2 id="method-title">Five safeguards against an easy ML win</h2>
+          </div>
+          <div class="intro-copy">
+            <p>The main product is not one algorithm. It is an evaluation that makes weak performance visible and keeps the final test from becoming another tuning set.</p>
+          </div>
+        </div>
+
+        <div class="safeguards">
+          <article><span>01</span><h3>Chronological splits</h3><p>Training ends in 2014, validation covers 2015-2018, and the held-out test covers 2019-2023.</p></article>
+          <article><span>02</span><h3>Strong baseline</h3><p>Every model is compared with persistence, not only with another learned model.</p></article>
+          <article><span>03</span><h3>Identical rows</h3><p>All test metrics use the same 762 country-year observations.</p></article>
+          <article><span>04</span><h3>One gated test</h3><p>Expectations and configurations were frozen before the test was opened.</p></article>
+          <article><span>05</span><h3>Clustered uncertainty</h3><p>Countries, rather than individual rows, are resampled to respect within-country dependence.</p></article>
+        </div>
+
+        <details class="under-hood">
+          <summary>
+            <span><small>Optional method note</small>Why delta prediction mattered more than algorithm choice</span>
+            <span class="summary-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="under-hood-grid">
+            <article>
+              <p class="mini-label">Level prediction</p>
+              <p class="method-formula">Forecast ŷ<sub>t+1</sub> directly</p>
+              <p>The model must recover the large existing emissions level and then estimate the small movement around it.</p>
+            </article>
+            <article>
+              <p class="mini-label">Delta prediction</p>
+              <p class="method-formula">Forecast Δŷ<sub>t+1</sub>, then add y<sub>t</sub></p>
+              <p>The model learns the change from a persistence anchor. This reduced the burden on Ridge, HGB, and XGBoost.</p>
+            </article>
+            <article>
+              <p class="mini-label">Boosted correction</p>
+              <p class="method-formula">Forecast = base + small trees</p>
+              <p>XGBoost adds regularized correction trees sequentially. Direct level trees failed badly for the largest emitters because trees do not extrapolate beyond learned terminal values.</p>
+            </article>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="reproduce section" id="reproduce" aria-labelledby="reproduce-title">
+      <div class="shell reproduce-panel">
+        <div>
+          <p class="section-label">07 · Inspect and reproduce</p>
+          <h2 id="reproduce-title">The result is traceable from data to claim</h2>
+          <p>A fresh clone, the documented OWID download, and the frozen training script reproduce the committed comparison table. The repository also contains the executed notebooks, check questions, mathematical foundations, and failure analysis.</p>
+        </div>
+        <div class="resource-links">
+          <a href="https://github.com/khawar89/country-co2-forecasting-ml" rel="noopener"><span>Source repository</span><small>Code, notebooks, decisions</small><b aria-hidden="true">↗</b></a>
+          <a href="https://github.com/khawar89/country-co2-forecasting-ml#reproduce-the-result" rel="noopener"><span>Reproduce the result</span><small>Environment and commands</small><b aria-hidden="true">↗</b></a>
+          <a href="https://github.com/khawar89/country-co2-forecasting-ml/blob/main/math/main.pdf" rel="noopener"><span>Mathematical foundations</span><small>Metrics, Ridge, boosting, uncertainty</small><b aria-hidden="true">↗</b></a>
+          <a href="https://github.com/khawar89/country-co2-forecasting-ml/blob/main/results/model_comparison.csv" rel="noopener"><span>Frozen result table</span><small>Validation and test metrics</small><b aria-hidden="true">↗</b></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div>
+        <strong>Dr. Khawar Naeem</strong>
+        <p>Qatar Transportation and Traffic Safety Center (QTTSC), Qatar University</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/khawar-naeem-203a6524/" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/khawar89" rel="noopener">GitHub</a>
+        <a href="https://github.com/owid/co2-data" rel="noopener">OWID data</a>
+      </div>
+    </div>
+    <div class="shell footer-note">
+      <p>Personal portfolio project. This is a statistical extrapolation exercise, not a causal model, policy forecast, or energy-system scenario.</p>
+      <p>Results frozen 14 July 2026.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
