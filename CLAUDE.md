@@ -1,6 +1,6 @@
 # CLAUDE.md — Emission-Trajectory ML Project
 
-> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 13 July 2026.
+> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 14 July 2026.
 
 ## Identity and purpose
 
@@ -28,6 +28,7 @@ External affiliation must always be written as:
 | Error analysis | Session 6 CLOSED 14 Jul: by-year/by-country/by-tier decomposition executed; skill is giant-tier only (xgb_delta +0.325 there, -0.863 small tier); reversal SURVIVES on test (cleared for figures/post); figs 9-11 + four CSVs saved; check questions in `notebooks/06_error_analysis_check_questions.md` |
 | Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml; all 7 sessions pushed; description + 8 topics set 14 Jul |
 | Reproducibility (Session 7) | CLOSED 14 Jul: clean-clone reproduction verified (fresh clone + documented download -> `src/train.py` reproduces the committed table exactly); README "Reproduce the result" section added; check record in `notebooks/07_reproducibility_check_questions.md` |
+| Static portfolio website | APPROVED AND PLANNED 14 Jul with Codex (GPT-5); static GitHub Pages presentation of frozen results, no live inference; build and deployment still pending |
 | SPRINT | COMPLETE 14 Jul 2026. Results frozen; new modeling requires a new pre-registration |
 | Math foundations doc | Extended 14 Jul (`math/main.pdf`, commit 6ab13da): 6 sections, 10 pages, 28 numbered equations, 10 verified references; now includes the full XGBoost second-order derivation (leaf weight, split gain, gamma pruning, early-stopping refit rule) and the level/delta parameterization, both verified against executed xgboost 3.3.0 |
 
@@ -35,9 +36,122 @@ External affiliation must always be written as:
 
 **ALL SEVEN SESSIONS CLOSED; SPRINT SCOPE COMPLETE (14 Jul 2026).** Results are FROZEN (AGENTS.md "Post-test freeze"). The clean-clone reproduction is verified, the README is final, and the repo metadata is set for portfolio use. Remaining actions, none of them modeling:
 
-1. Khawar reviews and publishes the LinkedIn post himself; final ready text with prepared objections: `linkedin_drafts/Session5_7_FINAL_post_text_ready.md` (Version B framing). After posting, save the text per the `posted/` convention.
-2. Future-sessions planning (a fresh planning conversation, not a sprint session): gated extensions (horizons 2-5, SHAP, uncertainty intervals, Streamlit, SQL extraction; each requires a new pre-registered protocol per AGENTS.md), `docs/Research_Publication_Roadmap.md` timing (idea 1, the metric-reversal note, now has its test-set evidence in `results/error_by_country_persistence_top10.csv` and fig10), and the sprint handoff to the RAG flagship project.
-3. Any new modeling work on this repo re-opens under a new pre-registration; the frozen test may not be reused for selection.
+1. Build and verify the approved static GitHub Pages site from the brief below and the standing rules in `AGENTS.md`. This is frozen-results communication, not modeling.
+2. Khawar reviews and publishes the LinkedIn post himself, revised so its primary call to action is the live project page; retain the source-repository link and prepared objections in `linkedin_drafts/Session5_7_FINAL_post_text_ready.md`. After posting, save the text per the `posted/` convention.
+3. Add the verified live-page URL to the CV project entry only after deployment and link testing. Use the approved CV wording below; do not claim a statistically settled or country-wide model win.
+4. Future-sessions planning (a fresh planning conversation, not a sprint session): gated extensions (horizons 2-5, SHAP, uncertainty intervals, Streamlit, SQL extraction; each requires a new pre-registered protocol per AGENTS.md), `docs/Research_Publication_Roadmap.md` timing (idea 1, the metric-reversal note, now has its test-set evidence in `results/error_by_country_persistence_top10.csv` and fig10), and the sprint handoff to the RAG flagship project.
+5. Any new modeling work on this repo re-opens under a new pre-registration; the frozen test may not be reused for selection.
+
+## Approved brief: static portfolio website (planned with Codex, GPT-5, 14 Jul 2026)
+
+### Purpose and audience
+
+Build a fast, mobile-first GitHub Pages site that explains the finished project
+in about 90 seconds. The primary audience is recruiters and hiring managers for
+sustainability data-science or evaluated-AI roles. Secondary audiences are ML
+practitioners and sustainability researchers. The page should sell Khawar's
+evaluation judgment, not only the XGBoost implementation.
+
+The core public message is:
+
+> Most ML projects show a model winning. This project asks where it wins, where
+> it loses, whether the gain is statistically settled, and why the baseline
+> still matters.
+
+### Page narrative
+
+1. **Hero:** "Can machine learning beat 'nothing will change' when forecasting
+   national CO2 emissions one year ahead?" Show test MAE per country-year,
+   xgb_delta 9.34 MtCO2 versus persistence 11.00 MtCO2, with "15.1% lower point
+   estimate" and the interval-includes-zero caveat in the same visual block.
+2. **The opponent:** explain persistence and why gradual annual emissions make
+   it a strong benchmark. Show the skill formula in plain language.
+3. **Choose the judging lens:** a two-state JavaScript control switches between
+   overall MAE and typical-country MedianAE/MdAPE. Under MAE, xgb_delta is the
+   point winner; under the typical-country metrics, persistence wins. Explain
+   that large emitters dominate overall absolute error.
+4. **Where the skill lives:** lead with `fig11_skill_by_tier.png`. Show xgb_delta
+   skill +0.325 for giant emitters and -0.863 for the small tier. State that the
+   aggregate improvement is tier-concentrated, not universal.
+5. **The denominator story:** use the cleared test-set reversal figure
+   `fig10_reversal_test.png` to show why absolute and percentage errors produce
+   different rankings.
+6. **Time and disruption:** use `fig9_error_by_year.png`; explain the 2020 break
+   and that xgb_delta had positive point skill in all five test years without
+   claiming it anticipated the shock.
+7. **How the evaluation resists self-deception:** five short cards for
+   chronological splits, a strong persistence baseline, identical rows,
+   pre-registration plus one gated test, and country-clustered uncertainty.
+8. **Under the hood, optional accordion:** a compact level-versus-delta and
+   XGBoost correction explanation for visitors who want the method.
+9. **Reproduce and inspect:** link the repository, frozen result CSVs,
+   `math/main.pdf`, README reproduction commands, data source, and LinkedIn.
+
+### Visual and interaction direction
+
+Use a research-editorial visual style rather than the dense study-dashboard
+layout of Khawar's earlier software-engineering guide. Use generous whitespace,
+one dark navy base, one restrained teal accent, warm neutral backgrounds, and
+one warning color reserved for caveats. Use large numbers sparingly. The metric
+lens switch is the signature interaction. A light/dark theme is useful, but it
+must not compete with the evidence. Charts remain the project's committed
+figures; do not redraw them with altered scales merely to fit the page.
+
+### Technical and branch plan
+
+- Static HTML, CSS, and vanilla JavaScript only; no Streamlit and no model
+  runtime.
+- Publish from a separate `gh-pages` branch at
+  `https://khawar89.github.io/energy-carbon-forecast-ml/`; keep `main` as the
+  research and reproducibility source of truth.
+- Prefer `index.html`, `styles.css`, `script.js`, a social-preview image, and
+  compressed copies of the required figures. Add `.nojekyll` if the chosen
+  Pages deployment path needs it.
+- Add responsive breakpoints, semantic landmarks, keyboard navigation,
+  descriptive alt text, reduced-motion support, and persistent theme choice.
+- Keep every displayed number traceable to `results/model_comparison.csv` or a
+  committed Session 6 CSV. Verify the built page against those files before
+  pushing.
+
+### LinkedIn conversion plan
+
+The LinkedIn post should teach one paradox: XGBoost delta has the best overall
+test MAE point estimate, while persistence remains best for the typical
+country. The post should lead to the live page, which carries the complete
+evidence and links onward to the repository. Keep the tone learning-first and
+state the interval caveat before the call to action. Use one mobile-readable
+social card derived from the website hero, not a screenshot of the whole page.
+
+### Approved CV wording
+
+Primary bullet:
+
+> Built and published a reproducible country-level CO2 forecasting pipeline for
+> 153 countries using OWID data, with chronological validation, persistence
+> benchmarking, pre-registered test evaluation, and country-clustered
+> uncertainty analysis.
+
+Optional result bullet, only if space permits:
+
+> XGBoost delta reduced test MAE by 15.1% relative to persistence as a point
+> estimate; the 95% country-clustered interval included zero, and the gains were
+> concentrated among the largest emitters.
+
+After deployment, label and link the two destinations distinctly as "Live
+project" and "Source code." Do not place a provisional URL in the CV.
+
+### Definition of done
+
+- All site numbers match the committed CSVs, including rounding and units.
+- The significance caveat is visible without opening a tooltip or accordion.
+- The page works at narrow mobile width and desktop width, with no horizontal
+  scrolling.
+- The metric switch, theme control, keyboard focus, and all outbound links work.
+- Images have useful alt text and do not cause layout shift.
+- GitHub Pages returns the final URL successfully over HTTPS.
+- The social-preview image renders correctly when the URL is shared.
+- Khawar approves the final wording before the site or LinkedIn post is made
+  public.
 
 Historical handoff state from 13 Jul (Sessions 1-4) follows.
 
@@ -166,6 +280,7 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 | 14 Jul 2026 | Freeze XGBoost configs as the validation-grid winners, as printed | Khawar's decision: xgb_level = max_depth 6, learning_rate 0.10, 125 trees (val MAE 8.528); xgb_delta = max_depth 3, learning_rate 0.10, 173 trees (val MAE 6.184). Taking the grid winners without second-guessing avoids hand-tuning past the frozen grid; the near-tie with d3/lr0.05 (6.194) was noted and rejected on that ground. |
 | 14 Jul 2026 | Post-test freeze: results final, no retuning on any split | The single test evaluation ran 14 Jul after both pre-registrations and both LinkedIn drafts were written. Any post-test change to a model would make the test a second validation set. Session 6 interprets only. |
 | 14 Jul 2026 | README headline carries the significance caveat, not just the point win | xgb_delta beat persistence on test (MAE 9.345 vs 11.004, skill +0.151) but the country-clustered 95% CI [-0.018, +0.271] includes zero (p=0.14), and persistence kept the best MedianAE/MdAPE. Claiming a clean ML win would overstate the evidence; the honest framing (point win, interval includes zero, typical country still favors persistence) is the project's thesis in action. |
+| 14 Jul 2026 | Build the portfolio page as static GitHub Pages, not Streamlit | The results are frozen and the immediate need is a fast evidence story for LinkedIn and the CV. Static HTML can reveal committed results without serving new predictions. Streamlit and live inference remain gated extensions requiring a new protocol. |
 
 ## Session log
 
@@ -350,6 +465,25 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
 - `math/` gains section 7 (error decomposition: within-group MAE/skill, scale dependence per Hyndman-Koehler, permutation importance with the correlated-features caveat); 11 pages, 31 equations, no undefined references, no new bib entries needed.
 - README gains the "Where the skill lives" section, every bullet tied to a saved CSV or figure. Check questions recorded in `notebooks/06_error_analysis_check_questions.md` (Claude-guided, marked).
 - Next exact action: Session 7 (see handoff-state section above).
+
+### 14 July 2026, static portfolio website planned (with Codex, GPT-5)
+
+- Reviewed the completed sprint, post-test freeze, saved comparison table, and
+  Session 6 by-year and by-tier results before defining the public page.
+- Chose static GitHub Pages on a separate `gh-pages` branch. The site is a
+  presentation of committed evidence; it will not run a model, accept scenario
+  inputs, or generate new country forecasts.
+- Added durable website rules to `AGENTS.md`: numeric sources of truth, required
+  caveats, tier-scoped claims, accessibility, mobile behavior, metadata,
+  affiliation wording, verification, and the boundary with Streamlit.
+- Added the approved page narrative, visual direction, technical plan,
+  LinkedIn conversion plan, CV wording, and definition of done to this file.
+- Signature interaction: switch the judging lens between overall MAE and
+  typical-country MedianAE/MdAPE. It teaches why xgb_delta is the overall point
+  winner while persistence remains best for the typical country.
+- Next exact action: build the static files, verify every displayed number
+  against the committed CSVs, preview on mobile and desktop, then ask Khawar to
+  approve the wording before deployment or posting.
 
 ## Skills born in this project
 

@@ -70,6 +70,64 @@ Do not start these until the one-year model reproduces from a clean run:
 - Streamlit deployment;
 - SQL extraction.
 
+## Static portfolio website rules (approved 14 Jul 2026)
+
+The public results website is a communication layer over frozen artifacts, not a
+model deployment. Build it as static HTML, CSS, and minimal vanilla JavaScript
+on a separate `gh-pages` branch so the `main` branch layout and reproducibility
+record remain unchanged. The intended URL is
+`https://khawar89.github.io/energy-carbon-forecast-ml/`. Streamlit, live model
+inference, country prediction controls, scenario inputs, and any recalculated
+result remain gated extensions that require a new pre-registered protocol.
+
+The website must tell a 90-second evidence story for recruiters, data-science
+peers, and sustainability researchers. The required sequence is: research
+question; persistence as the benchmark; headline point result with its
+uncertainty caveat; metric-lens reversal; emitter-tier concentration of skill;
+year and disruption context; evaluation safeguards; reproducibility links. An
+optional collapsed section may explain level versus delta prediction and the
+XGBoost correction logic, but it must not crowd the main story.
+
+Website evidence rules:
+
+- Treat `results/model_comparison.csv` and the committed Session 6 result CSVs
+  as the numeric source of truth. Do not type a stronger rounded claim than the
+  files support.
+- Present the headline as a point-estimate result: xgb_delta test MAE 9.345
+  MtCO2 versus persistence 11.004 MtCO2, skill +0.151. State beside it that the
+  country-clustered 95% interval [-0.018, +0.271] includes zero (p=0.14).
+- State that persistence retains the best test MedianAE and MdAPE. The website
+  may let visitors switch between overall-error and typical-country views, but
+  the interface must explain that the metrics answer different questions.
+- Scope the tier result: xgb_delta skill is positive in the giant tier (+0.325)
+  and negative in the small tier (-0.863). Never imply uniform improvement
+  across countries.
+- Use only final committed figures for empirical claims. Label the 2024 table
+  provisional and keep it out of the headline result.
+- Do not present the site as an official Qatar University product. If an
+  affiliation appears, write exactly "Qatar Transportation and Traffic Safety
+  Center (QTTSC), Qatar University" and identify the page as a personal
+  portfolio project.
+
+Website product rules:
+
+- Use semantic, responsive HTML; readable mobile typography; keyboard-visible
+  focus states; descriptive alt text; and sufficient color contrast.
+- Prefer three maintainable source files (`index.html`, `styles.css`,
+  `script.js`) plus compressed figure assets. Avoid frameworks and runtime
+  dependencies for this frozen story.
+- Include a light/dark theme, a compact sticky navigation, metric definitions,
+  and one meaningful interaction: the MAE versus MedianAE/MdAPE judging-lens
+  switch. Interactions may reveal saved results but must not compute forecasts.
+- Include clear links to the GitHub repository, `math/main.pdf`, the saved
+  results, reproduction instructions, and Khawar's LinkedIn profile.
+- Add page title, description, canonical URL, favicon, Open Graph metadata, and
+  a dedicated social-preview image. Do not add trackers or third-party scripts
+  by default.
+- Before publication, test locally and at the live URL on desktop and mobile;
+  check all links, theme persistence, keyboard navigation, image loading, and
+  exact agreement with the committed CSVs.
+
 ## Coding rules
 
 - Khawar owns the target, split, feature timing, baseline choice, model-selection rationale, and interpretation.
