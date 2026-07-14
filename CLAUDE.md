@@ -60,8 +60,8 @@ The core public message is:
 
 ### Page narrative
 
-1. **Hero:** "Can machine learning beat 'nothing will change' when forecasting
-   national CO2 emissions one year ahead?" Show test MAE per country-year,
+1. **Hero:** "Can machine learning beat a simple no-change forecast for
+   national CO2 emissions?" Show test MAE per country-year,
    xgb_delta 9.34 MtCO2 versus persistence 11.00 MtCO2, with "15.1% lower point
    estimate" and the interval-includes-zero caveat in the same visual block.
 2. **The opponent:** explain persistence and why gradual annual emissions make
@@ -283,6 +283,7 @@ Teaching mode (agreed 8 Jul 2026): the assistant implements and explains; Khawar
 | 14 Jul 2026 | Build the portfolio page as static GitHub Pages, not Streamlit | The results are frozen and the immediate need is a fast evidence story for LinkedIn and the CV. Static HTML can reveal committed results without serving new predictions. Streamlit and live inference remain gated extensions requiring a new protocol. |
 | 15 Jul 2026 | Consider renaming the repository to `country-co2-forecasting-ml` before publishing GitHub Pages | The completed model forecasts country-level CO2 emissions. Energy variables are predictors, not a forecast target. The proposed name states the unit, target, temporal task, and ML framing without centering one algorithm. |
 | 15 Jul 2026 | Retain the existing `energy-carbon-forecast-ml` repository and publish the website there | Khawar chose continuity with the established repository. The website and README use the precise human-facing title "Country CO2 Forecasting with Machine Learning," while the README explains that energy variables remain predictors. |
+| 15 Jul 2026 | Replace the hero phrase “nothing will change” with “a simple no-change forecast” | The original phrase was catchy but did not clearly identify persistence. The revised wording keeps the question format while stating that the opponent is a forecasting rule, not a claim that the real world is static. |
 
 ## Session log
 
@@ -512,6 +513,10 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
   confirmed GitHub Pages uses that branch at its root. The live page, social
   preview, stylesheet, JavaScript, favicon, and all three research figures
   returned successfully over HTTPS.
+- After Khawar flagged the phrase “nothing will change” as unclear, revised the
+  hero, metadata, social card, and LinkedIn draft to ask whether machine
+  learning can beat “a simple no-change forecast.” This names persistence more
+  directly without changing the underlying evaluation or any reported number.
 - Next exact action: Khawar reviews the public page. Then revise the prepared
   LinkedIn post so its main call to action is the live project page, and add the
   verified live-project link to the CV entry when ready.
