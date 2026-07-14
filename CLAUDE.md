@@ -1,6 +1,6 @@
 # CLAUDE.md — Emission-Trajectory ML Project
 
-> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 14 July 2026.
+> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 15 July 2026.
 
 ## Identity and purpose
 
@@ -28,7 +28,7 @@ External affiliation must always be written as:
 | Error analysis | Session 6 CLOSED 14 Jul: by-year/by-country/by-tier decomposition executed; skill is giant-tier only (xgb_delta +0.325 there, -0.863 small tier); reversal SURVIVES on test (cleared for figures/post); figs 9-11 + four CSVs saved; check questions in `notebooks/06_error_analysis_check_questions.md` |
 | Public GitHub repository | Created 8 Jul: https://github.com/khawar89/energy-carbon-forecast-ml; all 7 sessions pushed; description + 8 topics set 14 Jul; original repository name retained by Khawar on 15 Jul |
 | Reproducibility (Session 7) | CLOSED 14 Jul: clean-clone reproduction verified (fresh clone + documented download -> `src/train.py` reproduces the committed table exactly); README "Reproduce the result" section added; check record in `notebooks/07_reproducibility_check_questions.md` |
-| Static portfolio website | LOCAL PREVIEW BUILT AND PUBLICATION APPROVED 15 Jul with Codex (GPT-5); static GitHub Pages presentation of frozen results, no live inference; deployment to the existing repository is in progress |
+| Static portfolio website | PUBLISHED 15 Jul with Codex (GPT-5): https://khawar89.github.io/energy-carbon-forecast-ml/; static GitHub Pages presentation of frozen results, no live inference; live HTML, CSS, JavaScript, figures, favicon, and social card verified |
 | SPRINT | COMPLETE 14 Jul 2026. Results frozen; new modeling requires a new pre-registration |
 | Math foundations doc | Extended 14 Jul (`math/main.pdf`, commit 6ab13da): 6 sections, 10 pages, 28 numbered equations, 10 verified references; now includes the full XGBoost second-order derivation (leaf weight, split gain, gamma pruning, early-stopping refit rule) and the level/delta parameterization, both verified against executed xgboost 3.3.0 |
 
@@ -36,7 +36,7 @@ External affiliation must always be written as:
 
 **ALL SEVEN SESSIONS CLOSED; SPRINT SCOPE COMPLETE (14 Jul 2026).** Results are FROZEN (AGENTS.md "Post-test freeze"). The clean-clone reproduction is verified, the README is final, and the repo metadata is set for portfolio use. Remaining actions, none of them modeling:
 
-1. Publish the approved static site from the existing repository's separate `gh-pages` branch, then verify `https://khawar89.github.io/energy-carbon-forecast-ml/`. This is frozen-results communication, not modeling.
+1. Khawar reviews the published static site at `https://khawar89.github.io/energy-carbon-forecast-ml/`. Any later website edit remains frozen-results communication, not modeling.
 2. Khawar reviews and publishes the LinkedIn post himself, revised so its primary call to action is the live project page; retain the source-repository link and prepared objections in `linkedin_drafts/Session5_7_FINAL_post_text_ready.md`. After posting, save the text per the `posted/` convention.
 3. Add the verified live-page URL to the CV project entry only after deployment and link testing. Use the approved CV wording below; do not claim a statistically settled or country-wide model win.
 4. Future-sessions planning (a fresh planning conversation, not a sprint session): gated extensions (horizons 2-5, SHAP, uncertainty intervals, Streamlit, SQL extraction; each requires a new pre-registered protocol per AGENTS.md), `docs/Research_Publication_Roadmap.md` timing (idea 1, the metric-reversal note, now has its test-set evidence in `results/error_by_country_persistence_top10.csv` and fig10), and the sprint handoff to the RAG flagship project.
@@ -508,9 +508,13 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
   hgb_delta, and xgb_delta, while linear trend peaks in 2021. Corrected the
   README, Session 6 notebook reconciliation, check-question record, this file,
   and website wording. No metric or model result changed.
-- Next exact action: commit and push the main-branch documentation corrections,
-  publish the prepared `gh-pages` branch to the existing repository, enable
-  GitHub Pages from that branch, and verify the live page and social preview.
+- Published the prepared `gh-pages` branch to the existing repository and
+  confirmed GitHub Pages uses that branch at its root. The live page, social
+  preview, stylesheet, JavaScript, favicon, and all three research figures
+  returned successfully over HTTPS.
+- Next exact action: Khawar reviews the public page. Then revise the prepared
+  LinkedIn post so its main call to action is the live project page, and add the
+  verified live-project link to the CV entry when ready.
 
 ## Skills born in this project
 
