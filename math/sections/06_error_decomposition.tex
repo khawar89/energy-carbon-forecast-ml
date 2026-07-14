@@ -1,0 +1,75 @@
+\section{Error Decomposition and Feature Importance}
+\label{sec:errordecomp}
+
+The comparison table of Section~\ref{sec:metrics} reports one number per
+model per split. Error analysis (Session 6) decomposes that number along
+observable dimensions of the panel: prediction year, country, and
+emitter-size tier, so that a claim like ``the model beats persistence''
+can be scoped to where it is actually true.
+
+\subsection{Conditional error and within-group skill}
+
+For any partition of the evaluation rows into groups $\mathcal{G}$ (years,
+countries, or size tiers), the conditional MAE of model $\mathrm{m}$ in
+group $G \in \mathcal{G}$ is
+
+\begin{equation}
+\label{eq:group-mae}
+\mathrm{MAE}^{\mathrm{m}}_{G} =
+\frac{1}{|G|}\sum_{i \in G}\left| y_i - \hat y_i^{\mathrm{m}} \right|,
+\end{equation}
+
+and the within-group skill compares each group against persistence's error
+in the same group,
+
+\begin{equation}
+\label{eq:group-skill}
+\mathrm{Skill}_{G} = 1 -
+\frac{\mathrm{MAE}^{\mathrm{m}}_{G}}{\mathrm{MAE}^{\mathrm{p}}_{G}},
+\end{equation}
+
+so each tier or year is its own honest comparison. Because overall MAE is a
+row-share-weighted average of Equation~\ref{eq:group-mae} over groups, a
+positive overall skill (Equation~\ref{eq:skill}) is compatible with negative
+skill in most groups when the error mass is concentrated in a few of them.
+On this project's test years, the headline skill of the best model lives
+almost entirely in the giant-emitter tier while every learned model loses
+to persistence among small emitters; the overall number alone would have
+hidden that scope.
+
+\subsection{Scale dependence of error rankings}
+
+Absolute errors (Equations~\ref{eq:mae}--\ref{eq:medianae}) weight rows by
+the size of the miss in Mt; percentage errors (Equation~\ref{eq:mdape})
+weight misses by the emitter's own level. The two views can rank the same
+countries in reverse: a giant emitter can produce one of the sample's
+largest absolute errors at one of its smallest percentage errors, while a
+mid-size volatile emitter shows the opposite signature. This is the
+scale-dependence problem of forecast-accuracy measures discussed by
+\cite{hyndman2006another}, observed here first on the validation years and
+re-verified on the held-out test years before being used in any figure.
+Percentage errors additionally degenerate as $y_i \to 0$, which is why the
+threshold in Equation~\ref{eq:mdape} is part of the metric's definition.
+
+\subsection{Permutation importance and correlated features}
+
+For a frozen fitted model $\hat f$ with evaluation-set error
+$L(\hat f)$, the permutation importance of feature $j$ is the increase in
+error when column $j$ is randomly permuted across the evaluation rows,
+breaking its relationship to the target while preserving its marginal
+distribution \cite{breiman2001random}:
+
+\begin{equation}
+\label{eq:perm-importance}
+\mathrm{PI}_j = \mathbb{E}\!\left[ L\!\left(\hat f;\, X^{(\pi_j)}\right) \right] - L\!\left(\hat f;\, X\right),
+\end{equation}
+
+estimated by averaging over several independent permutations $\pi_j$. When
+two features carry overlapping information, as this project's co2 level,
+lag, and rolling-mean columns do by construction, permuting either column
+alone leaves the model able to lean on the other, so both can receive small
+values of Equation~\ref{eq:perm-importance} even when their shared signal
+is essential. Importances over correlated features are therefore read as
+group structure rather than a per-feature ranking; no feature is dropped or
+added in response to them here, since the configuration is frozen
+post-test.

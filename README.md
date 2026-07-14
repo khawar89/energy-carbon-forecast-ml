@@ -2,7 +2,7 @@
 
 One-year-ahead forecasting of country CO2 emissions from the official Our World in Data (OWID) dataset, benchmarked honestly against simple baselines.
 
-**Status: modeling complete, interpretation in progress.** Sessions 1-5 (framing and EDA, feature engineering, baselines, Ridge and tree models, XGBoost with the single test evaluation) are complete. Error analysis (Session 6) and the final reproducibility pass (Session 7) remain. Every metric claimed here exists in `results/model_comparison.csv`, written by the clean-run script `src/train.py`.
+**Status: analysis complete, final reproducibility pass remaining.** Sessions 1-6 (framing and EDA, feature engineering, baselines, Ridge and tree models, XGBoost with the single test evaluation, error analysis) are complete. The final reproducibility and publication pass (Session 7) remains. Every metric claimed here exists in `results/`, written by the clean-run script `src/train.py` and the executed notebooks.
 
 ## The question
 
@@ -51,6 +51,18 @@ Three further findings the table supports:
 - Overall MAE and typical-country error rank models differently. Persistence keeps the best MedianAE and MdAPE on test while ranking sixth on MAE; the ML gains appear concentrated in large, volatile rows. Session 6 decomposes this by country, year, and emitter size.
 
 Frozen configurations, both taken as the validation-grid winners before the test ran: xgb_level (max_depth 6, learning_rate 0.10, 125 trees), xgb_delta (max_depth 3, learning_rate 0.10, 173 trees); Ridge alpha 0.1 and the HistGB settings were frozen in Session 4. Reproduce the full table with `python src/train.py` in the pinned environment (`requirements.txt`). The mathematical foundations, including the XGBoost second-order derivation and the clustered-bootstrap inference, are in `math/main.pdf`.
+
+## Where the skill lives, and where it does not (Session 6, error analysis)
+
+The single test number above decomposes into a much sharper story (`notebooks/06_error_analysis.ipynb`; tables in `results/error_by_year.csv`, `results/error_by_tier.csv`, `results/error_by_country_persistence_top10.csv`).
+
+![Within-tier skill against persistence](results/figures/fig11_skill_by_tier.png)
+
+- The best model's skill is tier-scoped. xgb_delta's overall +0.151 comes almost entirely from the giant emitters (within-tier skill +0.325 for the 25 rows above 1000 Mt); it is near zero for large and mid emitters and sharply negative for small ones (-0.863 below 10 Mt), where every learned model loses to persistence. An honest deployment claim is therefore: this model adds value for the largest emitters only.
+- 2020 is every model's worst year, and no model dodged it. xgb_delta held positive skill in all five test years, but its largest gains came in the calmer years 2019 and 2022, which suggests the advantage comes from reading post-shock and steady-state structure, not from anticipating disruptions (`results/figures/fig9_error_by_year.png`).
+- Extrapolation fails on a delay. The trend baseline survived 2020 (its flat and declining country slopes absorbed part of the drop) but 2021 is its only losing year: by then its five-year window contained the collapse and pointed down into the rebound.
+- The absolute-versus-percentage ranking reversal survives on test. In persistence's top-10 absolute-miss list, Russia shows the lowest percentage error (2.1 percent on a 1,733 Mt denominator) and China 3.2 percent despite the sample's largest absolute miss, while Vietnam shows 11.3 percent on a smaller miss (`results/figures/fig10_reversal_test.png`). The error metric must match the question: absolute for global-budget questions, percentage for national-planning ones.
+- Permutation importance on the frozen xgb_delta ranks the five-year slope first (co2_slope5), with the co2 level family individually low because its columns are near-copies that can stand in for one another; read as group structure, not a per-feature ranking (`results/permutation_importance_xgb_delta.csv`).
 
 ## Findings so far (Session 1, EDA)
 
