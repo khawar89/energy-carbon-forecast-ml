@@ -34,6 +34,8 @@ External affiliation must always be written as:
 
 ## Current next action (handoff state, updated 14 Jul 2026)
 
+Codex restart anchor for the journal article: journal_article_private/codex_state/HANDOFF.md.
+
 **ALL SEVEN SESSIONS CLOSED; SPRINT SCOPE COMPLETE (14 Jul 2026).** Results are FROZEN (AGENTS.md "Post-test freeze"). The clean-clone reproduction is verified, the README is final, and the repo metadata is set for portfolio use. Remaining actions, none of them modeling:
 
 1. ~~Khawar reviews the published static site~~ DONE. Independently re-verified by Claude 15 Jul (browser-tested at desktop and mobile widths, dark and light: every number matches `results/model_comparison.csv`, `error_by_tier.csv`, and `error_by_country_persistence_top10.csv` exactly; the lens toggle re-ranks correctly; no horizontal overflow; og.png unfurl carries the caveat). No wrong information found. Full record: `linkedin_drafts/posted/POST_Session5_2026-07-15.md`.
