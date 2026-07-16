@@ -79,8 +79,9 @@ Editing route decided 16 Jul: Khawar edits locally in VS Code with LaTeX
 Workshop (installed and configured); preview builds write to the gitignored
 `tmp/preview/`, never to the tracked `manuscript/output/`. Overleaf was assessed
 and NOT adopted; the three blockers are recorded in the workspace README so the
-analysis is not repeated. Open question for Khawar: whether QU provides an
-institutional Overleaf license.
+analysis is not repeated. CONFIRMED 16 Jul: QU does not provide an institutional
+Overleaf license; Khawar's `khawar.naeem@qu.edu.qa` account shows the free plan,
+with Git/GitHub integration among the paid-only features. Question closed.
 
 Restart map (read in this order for the journal work):
 1. `journal_article_private/AGENTS.md` (rules; also the Codex/GPT entry point)
