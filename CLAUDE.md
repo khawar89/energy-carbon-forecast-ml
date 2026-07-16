@@ -36,6 +36,68 @@ External affiliation must always be written as:
 
 Codex restart anchor for the journal article: journal_article_private/codex_state/HANDOFF.md.
 
+### JOURNAL ARTICLE STATUS (updated 16 Jul 2026, end of Claude session)
+
+A full IJF journal article was developed in `journal_article_private/` (local
+only, not public, no remote) from the frozen sprint results. Target:
+International Journal of Forecasting. Title: "Model rankings in national CO2
+forecasting vary by evaluation window, loss function, and emitter scale."
+
+State: MANUSCRIPT AND CODE ARE SUBMISSION-READY. Two independent Claude
+reviews (v1 harsh, v2 after revisions), a Codex cross-review, AND the v3
+independent round (16 Jul) are all resolved. A post-review statistical-baseline
+extension (drift, ETS, AR(1)) was added under a frozen protocol; it shifted the
+recent-window point ranking and strengthened the evaluation-instability thesis.
+An anonymized replication package was built AND rehearsed from an isolated
+environment: 18 tests pass, all 14 output CSVs reproduce to 1e-9. Figures are
+IJF-compliant (no on-figure titles) and their embedded author metadata is
+anonymized. The anonymized manuscript PDF is verified free of identifying
+strings.
+
+**The journal workspace now has its own `CLAUDE.md` beside its `AGENTS.md`**
+(added 16 Jul at Khawar's request; AGENTS.md retained so Codex/GPT can work from
+the same rules). Read those two first for any journal work.
+
+v3 round (16 Jul, Opus 4.8) found nine real issues that had survived the earlier
+reviews. The durable ones, now recorded as rules in the workspace's AGENTS.md:
+(1) no table and one figure had been cited anywhere in the text, which Elsevier
+requires in consecutive order; (2) the built DOCX carried the OLD pre-reframing
+title and a stale keyword list, because `build_manuscript.py` hardcoded both and
+the reframing missed them, so title and keywords are now DERIVED from
+`main.tex`, the declared canonical source; (3) source-file numbers are not
+display numbers (`fig02` is Figure 1, `table06` is Table 1), which had produced
+an off-by-one in the DOCX and two wrong supplement cross-references; (4) all 32
+references were verified against Crossref, fixing one real issue-number error.
+
+Table 5 (`table05_inference_sensitivity`) was promoted into the main text as
+Table 3 on 16 Jul at Khawar's decision. Placing it immediately exposed a
+prose-vs-source rounding error ($-0.026$ where the source gives $-0.025$),
+which is the standing argument for putting load-bearing numbers in generated
+tables rather than prose.
+
+Editing route decided 16 Jul: Khawar edits locally in VS Code with LaTeX
+Workshop (installed and configured); preview builds write to the gitignored
+`tmp/preview/`, never to the tracked `manuscript/output/`. Overleaf was assessed
+and NOT adopted; the three blockers are recorded in the workspace README so the
+analysis is not repeated. Open question for Khawar: whether QU provides an
+institutional Overleaf license.
+
+Restart map (read in this order for the journal work):
+1. `journal_article_private/AGENTS.md` (rules; also the Codex/GPT entry point)
+2. `journal_article_private/CLAUDE.md` (state, next action, hard-won rules)
+3. `journal_article_private/codex_state/HANDOFF.md` (Codex restart anchor)
+4. `journal_article_private/codex_state/REVISION_LEDGER.md` (full task ledger)
+5. `journal_article_private/codex_state/TASK_LOG.md` (commit-by-commit trail)
+6. `journal_article_private/external_review/claude_critical_review_v2_2026-07-16/`
+   (v2 report + MORNING_SUMMARY.md + v2.1 addendum)
+7. `journal_article_private/external_review/claude_critical_review_2026-07-15/CLAUDE_HANDOFF.md`
+   (Claude reviewer restart anchor + numerical audit CSV)
+
+What remains before submission: Khawar's four author-only decisions (funding
+statement, referee contact verification, archive-transport choice, final
+approval) and one optional clean `conda create` install test. Nothing is
+submitted or made public without Khawar's explicit approval.
+
 **ALL SEVEN SESSIONS CLOSED; SPRINT SCOPE COMPLETE (14 Jul 2026).** Results are FROZEN (AGENTS.md "Post-test freeze"). The clean-clone reproduction is verified, the README is final, and the repo metadata is set for portfolio use. Remaining actions, none of them modeling:
 
 1. ~~Khawar reviews the published static site~~ DONE. Independently re-verified by Claude 15 Jul (browser-tested at desktop and mobile widths, dark and light: every number matches `results/model_comparison.csv`, `error_by_tier.csv`, and `error_by_country_persistence_top10.csv` exactly; the lens toggle re-ranks correctly; no horizontal overflow; og.png unfurl carries the caveat). No wrong information found. Full record: `linkedin_drafts/posted/POST_Session5_2026-07-15.md`.
