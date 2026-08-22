@@ -36,6 +36,31 @@ External affiliation must always be written as:
 
 Codex restart anchor for the journal article: journal_article_private/codex_state/HANDOFF.md.
 
+### JOURNAL ARTICLE STATUS (updated 23 Aug 2026)
+
+**v4 round, 22 to 23 Aug 2026.** Khawar judged the paper had passed technical
+verification without a deep author read and asked for a simulated IJF review and
+improvement. Both done. The contribution is reframed around the finding that 97
+giant-emitter rows, about three percent of the historical sample, decide the sign
+of the pooled skill statistic, which is a transferable result about pooled
+absolute loss on skewed panels rather than an emissions result. The reframe was
+driven by IJF's stated desk-screening criterion. The scaled measure is renamed
+MSER at the table layer, leaving `analysis/` and its frozen checksums untouched. A
+prior-dissemination declaration was added. A reference-parity test was added after
+`make verify` passed while the Word copy was missing a reference. Build and verify
+pass; 24 tests, previously 18.
+
+**Two flags for Khawar.** Double-anonymized review is compromised: the frozen
+numbers are public under his name and searchable, and this repository's own
+tracked `CLAUDE.md` already names the target journal and the manuscript title, so
+the disclosure route is the honest one. And a systematic design audit was started
+on 23 Aug and paused with 3,016 candidates searched and nothing screened.
+
+Full record: `journal_article_private/external_review/simulated_IJF_review_2026-08-22/`
+and `journal_article_private/literature/systematic_audit/STATE.md`.
+
+The 16 July status below is retained as history.
+
 ### JOURNAL ARTICLE STATUS (updated 16 Jul 2026, end of Claude session)
 
 A full IJF journal article was developed in `journal_article_private/` (local
