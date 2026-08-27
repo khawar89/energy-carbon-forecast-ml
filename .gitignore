@@ -23,3 +23,7 @@ math/*.toc
 math/*.fls
 math/*.fdb_latexmk
 math/*.synctex.gz
+
+# Local visual learning aids (never publish: teaching decks, generators)
+learning_notes/slides/
+*.pptx
