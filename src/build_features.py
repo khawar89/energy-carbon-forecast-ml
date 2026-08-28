@@ -127,9 +127,10 @@ def _one_country(g: pd.DataFrame) -> pd.DataFrame:
 def add_target_and_features(df: pd.DataFrame) -> pd.DataFrame:
     """Apply the per-country temporal logic to every country.
 
-    group_keys=False keeps the output flat. Nothing here crosses a country
-    boundary: the groupby is the wall between Zimbabwe's last year and
-    Zambia's first.
+    Each group from groupby(sort=True) goes through _one_country, and
+    pd.concat with ignore_index=True stitches the pieces back into one
+    flat table. Nothing here crosses a country boundary: the groupby is
+    the wall between Zimbabwe's last year and Zambia's first.
     """
     parts = [_one_country(g) for _, g in df.groupby("country", sort=True)]
     return pd.concat(parts, ignore_index=True)
@@ -160,7 +161,9 @@ def add_splits(df: pd.DataFrame) -> pd.DataFrame:
 
     A row with feature year 2014 predicts 2015, so it belongs to
     validation, not training: the split guards the target's vintage.
+    Works on a copy; the caller's frame is left unmodified.
     """
+    df = df.copy()
     df["target_year"] = df["year"] + 1
     conditions = [
         df["target_year"] <= TRAIN_END,

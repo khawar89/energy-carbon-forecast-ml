@@ -29,6 +29,7 @@ from sklearn.linear_model import Ridge
 from sklearn.ensemble import HistGradientBoostingRegressor
 
 import evaluate
+from build_features import CORE_FEATURES, NULLABLE_FEATURES
 
 ROOT = Path(__file__).resolve().parents[1]
 TABLE = ROOT / "data" / "processed" / "modeling_table.csv"
@@ -38,12 +39,10 @@ OUT_PROVISIONAL = ROOT / "results" / "provisional_2024.csv"
 
 SEED = 42
 
-CORE = ["co2", "co2_lag1", "co2_lag3", "co2_lag5", "co2_lag10",
-        "co2_roll5_mean", "co2_roll10_mean", "co2_slope5",
-        "co2_per_capita", "share_global_co2",
-        "population", "pop_growth5_pct", "cement_co2", "flaring_co2"]
-NULLABLE = ["primary_energy_consumption", "energy_growth1_pct", "energy_per_capita"]
-FEATURES = CORE + NULLABLE
+# Imported from build_features so the models always train on exactly the
+# columns the modeling table was built and verified with (drift guard:
+# src/test_feature_lists.py).
+FEATURES = CORE_FEATURES + NULLABLE_FEATURES
 
 # ---- Frozen configuration -------------------------------------------------
 RIDGE_ALPHA = 0.1                       # frozen in Session 4

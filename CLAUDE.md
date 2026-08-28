@@ -1,6 +1,6 @@
 # CLAUDE.md — Emission-Trajectory ML Project
 
-> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 15 July 2026.
+> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 27 August 2026.
 
 ## Identity and purpose
 
@@ -561,6 +561,30 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
   information found on the live site, the README, or the published post text.
 - Outstanding: add the verified live-page URL to the master CV
   (`3_CV_Latest_updated`) using the "Approved CV wording" above.
+
+### 27 August 2026, code-hygiene maintenance prepared on a side branch (with Claude, Fable 5)
+
+- Fixed the three hygiene defects recorded in the local study guide's code-review
+  section, none of them behavior-changing. The `add_target_and_features` docstring
+  described a `group_keys=False` `.apply()` implementation that was never committed;
+  it now describes the actual list-comprehension implementation. `add_splits` now
+  works on a copy of its argument instead of writing `target_year` and `split` into
+  the caller's frame. `src/train.py` now imports `CORE_FEATURES` and
+  `NULLABLE_FEATURES` from `build_features.py` instead of keeping duplicate copies,
+  and a new `src/test_feature_lists.py` asserts the lists match, so a reintroduced
+  copy that drifts fails a test instead of silently training models on a feature
+  set the table was never verified for.
+- Reproduction verified in the pinned Anaconda environment: `python src/train.py`
+  rebuilt the modeling table (7,443 rows, 153 countries, all structural checks
+  passed) and rewrote `results/model_comparison.csv`, `results/test_predictions.csv`,
+  and `results/provisional_2024.csv` byte-identical to the committed files;
+  `python src/evaluate.py` self-test passes; the new list test passes. The
+  post-test freeze stands; no model, configuration, split, or metric changed.
+- Committed on the local branch `claude/agitated-elion-5a8ed6` and deliberately not
+  pushed. The repository is frozen by convention, so merging to `main` and pushing
+  wait for Khawar's explicit approval.
+- Update, 28 August 2026: Khawar approved the push, and the branch is now public as
+  a pull request. Merging to `main` still waits for his explicit go-ahead.
 
 ## Skills born in this project
 
