@@ -583,6 +583,8 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
 - Committed on the local branch `claude/agitated-elion-5a8ed6` and deliberately not
   pushed. The repository is frozen by convention, so merging to `main` and pushing
   wait for Khawar's explicit approval.
+- Update, 28 August 2026: Khawar approved the push, and the branch is now public as
+  a pull request. Merging to `main` still waits for his explicit go-ahead.
 
 ## Skills born in this project
 
