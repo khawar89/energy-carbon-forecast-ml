@@ -1,6 +1,6 @@
 # CLAUDE.md — Emission-Trajectory ML Project
 
-> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 15 July 2026.
+> Master context for this project. It outranks conversation memory and older planning text. Read `AGENTS.md` first. Update the status and session log at the end of every working session. Last updated: 29 August 2026.
 
 ## Identity and purpose
 
@@ -31,6 +31,7 @@ External affiliation must always be written as:
 | Static portfolio website | PUBLISHED 15 Jul with Codex (GPT-5): https://khawar89.github.io/energy-carbon-forecast-ml/; static GitHub Pages presentation of frozen results, no live inference; live HTML, CSS, JavaScript, figures, favicon, and social card verified |
 | SPRINT | COMPLETE 14 Jul 2026. Results frozen; new modeling requires a new pre-registration |
 | Math foundations doc | Extended 14 Jul (`math/main.pdf`, commit 6ab13da): 6 sections, 10 pages, 28 numbered equations, 10 verified references; now includes the full XGBoost second-order derivation (leaf weight, split gain, gamma pruning, early-stopping refit rule) and the level/delta parameterization, both verified against executed xgboost 3.3.0 |
+| Math teaching companion | Built 29 Aug 2026 (`math/teaching_companion.pdf`, 15 pages, 10 figures): six plain-language lessons re-teaching all 31 equations of `main.pdf` with hand-checkable toy examples, teach-back questions, and model answers; companion to `main.pdf`, not a replacement; NOT yet committed (Khawar decides whether it joins the public repo) |
 
 ## Current next action (handoff state, updated 14 Jul 2026)
 
@@ -235,7 +236,7 @@ Preprint policy corrected via search: Elsevier and Nature Portfolio both explici
 - `results/`: saved metric tables and figures. `reports/`: personal session reports, gitignored.
 - `learning_notes/` (gitignored): `BigPicture_MentalModel_KhawarNaeem.md` is the project's mental model, named traps, and standing facts; ANY NEW AI SESSION should read it right after AGENTS.md and this file to absorb the reasoning, not just the file list. Also holds the pipeline map SVG.
 - `linkedin_drafts/` (gitignored): per-session post angles, standing post rules, and the posted/ record. Read before drafting any public post about this project.
-- `math/` (committed, tracked in git): standalone LaTeX document formalizing the project's mathematical foundations (evaluation metrics, baselines, Ridge regularization, ensembles/boosting, and uncertainty/significance of skill scores - section 6, added 13 Jul 2026), numbered equations, verified academic references in `references.bib`. Built 13 Jul 2026 in parallel with the coding sessions (not a substitute for them); grows one new `sections/0N_*.tex` file per relevant future session. Compile with `tectonic main.tex` (from inside `math/`) to produce `main.pdf`, which is committed so it renders on GitHub without a LaTeX install. See `AGENTS.md`'s folder-layout entry for the full convention.
+- `math/` (committed, tracked in git): standalone LaTeX document formalizing the project's mathematical foundations (evaluation metrics, baselines, Ridge regularization, ensembles/boosting, and uncertainty/significance of skill scores - section 6, added 13 Jul 2026), numbered equations, verified academic references in `references.bib`. Built 13 Jul 2026 in parallel with the coding sessions (not a substitute for them); grows one new `sections/0N_*.tex` file per relevant future session. Compile with `tectonic main.tex` (from inside `math/`) to produce `main.pdf`, which is committed so it renders on GitHub without a LaTeX install. See `AGENTS.md`'s folder-layout entry for the full convention. Also holds `teaching_companion.tex` / `teaching_companion.pdf` (built 29 Aug 2026, not yet committed): a six-lesson plain-language teaching companion with worked toy examples, 10 figures, teach-back questions, and model answers, compiled the same way (`tectonic teaching_companion.tex`); it cites `main.pdf` equation numbers and `main.pdf` remains authoritative.
 
 ## Project story for employers
 
@@ -561,6 +562,33 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
   information found on the live site, the README, or the published post text.
 - Outstanding: add the verified live-page URL to the master CV
   (`3_CV_Latest_updated`) using the "Approved CV wording" above.
+
+### 29 August 2026, math teaching companion built (with Claude, Fable 5)
+
+- Live tutoring sessions taught the full `math/main.pdf` equation set (all 31
+  equations, evaluation metrics through error decomposition) lesson by lesson.
+  The teaching format was settled during the sessions at Khawar's request and
+  saved to assistant memory: plain-language math in chat (the chat pane renders
+  no LaTeX), typeset equations and interactive charts in the visual panel, one
+  small worked example per equation, and teach-back questions gating each
+  lesson. Fictional multi-country toy names were dropped mid-course as hard to
+  follow; single unnamed small tables replaced them.
+- Built `math/teaching_companion.tex`, compiled with tectonic to
+  `teaching_companion.pdf` (15 pages, 10 pgfplots figures, Palatino, zero
+  compile warnings): six lessons mirroring the tutoring sessions, each with the
+  concept in plain words, the equations explained symbol by symbol, a
+  hand-checkable toy example, a figure, the trap, and teach-back questions,
+  plus an appendix of model answers and a closing six-sentence summary of the
+  whole document. All ten `references.bib` entries are cited. The companion
+  cites `main.pdf` equation numbers throughout and states explicitly that the
+  formal document remains authoritative; toy numbers are labeled invented, and
+  every real-project claim ties to frozen results (xgb_delta test skill +0.151
+  with CI [-0.018, +0.271] and p 0.14; tier skills +0.325 giant and -0.863
+  small; frozen count M* = 173 trees; alpha = 0.1 freeze).
+- Registered the companion in this file's status table and file map and in
+  `AGENTS.md`'s folder-layout entry for `math/`.
+- NOT committed or pushed; Khawar decides whether the companion joins the
+  public repository.
 
 ## Skills born in this project
 
