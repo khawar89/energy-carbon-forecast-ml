@@ -587,12 +587,21 @@ A deep-read audit of the whole technical stack (`src/build_features.py`, `src/ev
   small; frozen count M* = 173 trees; alpha = 0.1 freeze).
 - Registered the companion in this file's status table and file map and in
   `AGENTS.md`'s folder-layout entry for `math/`.
-- NOT committed or pushed; Khawar decides whether the companion joins the
-  public repository.
+- Committed and pushed later the same day at Khawar's request (commit 72943f9)
+  after an ignore-rules cross-check: no Word, PowerPoint, or large files
+  tracked; the companion PDF follows the deliberate `math/*.pdf`
+  render-on-GitHub exception; `journal_article_private/` confirmed excluded
+  via `.git/info/exclude` (local-only, so the public `.gitignore` never names
+  it).
+- Same day, two skills were born from this course into the skills library
+  (details in the "Skills born in this project" section below):
+  `equation-by-equation-tutor` and `panel-forecasting-pipeline`, plus a v2 of
+  `first-principles-teacher`. All three zipped into `_installable/`; install
+  pending with Khawar.
 
 ## Skills born in this project
 
-Reusable skills live in `1_CV-khawar/0_Skills_Library_/` per the standing convention (never create or update skills inside projects). Born here so far, both in `4_Communication/`: `session-report-builder` (from the Session 1 report build) and `data-storytelling-figures` (from figures 1-8). A `panel-data-leakage-review` skill is planned after Session 2 exercises the AGENTS.md checklist for real. When this project teaches one of these skills something new, update the library copy, re-zip into `_installable/`, and log it in the library registry.
+Reusable skills live in `1_CV-khawar/0_Skills_Library_/` per the standing convention (never create or update skills inside projects). Born here so far: `session-report-builder` (4_Communication, from the Session 1 report build), `data-storytelling-figures` (4_Communication, from figures 1-8), `equation-by-equation-tutor` (4_Communication, 29 Aug 2026, from the math tutoring course that produced `math/teaching_companion.pdf`), and `panel-forecasting-pipeline` (1_Research_Methods, 29 Aug 2026, the whole sprint's honesty-first forecasting workflow distilled, with a generalized `reference_evaluate.py`). The same course also produced a v2 of `first-principles-teacher` (rendering check; naming and notation rules). The formerly planned `panel-data-leakage-review` skill is ABSORBED into `panel-forecasting-pipeline` Stage 1 and is no longer a separate item. When this project teaches one of these skills something new, update the library copy, re-zip into `_installable/`, and log it in the library registry.
 
 ## Approved plan: Session 1 report (approved by Khawar 8 Jul 2026, evening; BUILT same evening)
 
